@@ -1,0 +1,25 @@
+{
+  "name": "portAL",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^1.2.2",
+    "@material-ui/icons": "^1.1.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "mobx": "^4.2.1",
+    "mobx-react": "^5.1.2",
+    "prop-types": "^15.6.1",
+    "react": "^16.3.2",
+    "react-app-rewire-mobx": "^1.0.8",
+    "react-app-rewired": "^1.5.2",
+    "react-dom": "^16.3.2",
+    "react-scripts": "1.1.4",
+    "typeface-roboto": "0.0.54"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --env=jsdom",
+    "eject": "react-app-rewired eject"
+  }
+}
