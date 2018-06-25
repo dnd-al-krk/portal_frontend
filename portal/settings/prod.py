@@ -10,7 +10,7 @@ TEMPLATE_DEBUG = False
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.postgresql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': read_env('PORTAL_PROD_DB_NAME'),                      # Or path to database file if using sqlite3.
         'USER': read_env('PORTAL_PROD_DB_USER'),                      # Not used with sqlite3.
         'PASSWORD': read_env('PORTAL_PROD_DB_PASS'),                  # Not used with sqlite3.
