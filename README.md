@@ -1,6 +1,10 @@
 # portal
 portAL - Adventure's League community management service
 
+# Requirements
+
+This project is developed for Python 3.5.3 (or newer). 
+
 # Installation
 
 ## Backend
