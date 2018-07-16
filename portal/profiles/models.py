@@ -55,6 +55,8 @@ class PlayerCharacter(UUIDModel):
     race = models.ForeignKey(CharacterRace, on_delete=models.CASCADE)
     faction = models.ForeignKey(CharacterFaction, on_delete=models.CASCADE)
     level = models.PositiveIntegerField(_('Level'), default=1)
+    created = models.DateTimeField(_('Created'), auto_now_add=True)
+    modified = models.DateTimeField(_('Modified'), auto_now=True)
 
     def __str__(self):
         return self.name
@@ -65,6 +67,7 @@ class DMNote(UUIDModel):
     player = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='dm_notes')
     note = models.TextField(_('Note on player'))
     created = models.DateTimeField(_('Created'), auto_now_add=True)
+    modified = models.DateTimeField(_('Modified'), auto_now=True)
 
     def __str__(self):
         return 'Note by {} for {}'.format(self.dm, self.player)
