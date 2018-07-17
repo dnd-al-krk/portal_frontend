@@ -7,6 +7,7 @@ from profiles.api import views as profiles_views
 router = DefaultRouter()
 router.register(r'characters', profiles_views.PlayerCharacterViewSet)
 router.register(r'notes', profiles_views.DMNoteViewSet)
+router.register(r'profiles', profiles_views.ProfileViewSet)
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [

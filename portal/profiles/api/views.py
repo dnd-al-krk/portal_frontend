@@ -1,9 +1,9 @@
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticated
 
-from .permissions import IsOwnerOrReadOnly, IsDMOwnerOrReadOnly, OnlyDMCanRead
-from .serializers import PlayerCharacterSerializer, DMNoteSerializer
-from ..models import PlayerCharacter, DMNote
+from .permissions import IsOwnerOrReadOnly, IsDMOwnerOrReadOnly, OnlyDMCanRead, IsProfileOwnerOrReadOnly
+from .serializers import PlayerCharacterSerializer, DMNoteSerializer, ProfileSerializer
+from ..models import PlayerCharacter, DMNote, Profile
 
 
 class PlayerCharacterViewSet(viewsets.ModelViewSet):
@@ -28,3 +28,13 @@ class DMNoteViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(dm=self.request.user.profile)
+
+
+class ProfileViewSet(mixins.UpdateModelMixin,
+                     mixins.RetrieveModelMixin,
+                     mixins.ListModelMixin,
+                     viewsets.GenericViewSet):
+    serializer_class = ProfileSerializer
+    queryset = Profile.objects.all()
+    permission_classes = [IsAuthenticated,
+                          IsProfileOwnerOrReadOnly]
