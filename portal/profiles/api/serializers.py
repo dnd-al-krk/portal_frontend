@@ -39,8 +39,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         except KeyError:
             pass
         else:
-            user = instance.user
-
             instance.dci = validated_data.get('dci', instance.dci)
             instance.save()
 
