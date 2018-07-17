@@ -20,27 +20,26 @@ class ProfileInline(admin.StackedInline):
 
 class UserAdmin(BaseUserAdmin):
     inlines = (ProfileInline, )
-    actions = ['make_dm', 'make_player']
-
-    def make_dm(self, request, queryset):
-        for user in queryset:
-            user.profile.role = ROLE_DM
-            user.profile.save(update_fields=['role'])
-        self.message_user(request, _("{} successfully changed roles to DM.").format(queryset.count()))
-
-    make_dm.short_description = _('Change role to DM')
-
-    def make_player(self, request, queryset):
-        for user in queryset:
-            user.profile.role = ROLE_PLAYER
-            user.profile.save(update_fields=['role'])
-        self.message_user(request, _("{} successfully changed roles to Player.").format(queryset.count()))
-
-    make_player.short_description = _('Change role to Player')
 
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ['__str__', 'role', 'dci']
+    actions = ['make_dm', 'make_player']
+
+    def make_dm(self, request, queryset):
+        updated = queryset.update(role=ROLE_DM)
+        self.message_user(request, _("{} successfully changed roles to DM.").format(updated))
+    make_dm.short_description = _('Change role to DM')
+
+    def make_player(self, request, queryset):
+        updated = queryset.update(role=ROLE_PLAYER)
+        self.message_user(request, _("{} successfully changed roles to Player.").format(updated))
+    make_player.short_description = _('Change role to Player')
 
 
 admin.site.register(CharacterClass)
