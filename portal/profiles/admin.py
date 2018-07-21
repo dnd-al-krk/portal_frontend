@@ -6,7 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 
 # Define an inline admin descriptor for Employee model
 # which acts a bit like a singleton
-from .models import Profile
+from .constants import ROLE_DM, ROLE_PLAYER
+from .models import Profile, CharacterFaction, CharacterRace, CharacterClass, PlayerCharacter, DMNote
 
 
 class ProfileInline(admin.StackedInline):
@@ -23,3 +24,37 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ['__str__', 'role', 'dci']
+    actions = ['make_dm', 'make_player']
+
+    def make_dm(self, request, queryset):
+        updated = queryset.update(role=ROLE_DM)
+        self.message_user(request, _("{} successfully changed roles to DM.").format(updated))
+    make_dm.short_description = _('Change role to DM')
+
+    def make_player(self, request, queryset):
+        updated = queryset.update(role=ROLE_PLAYER)
+        self.message_user(request, _("{} successfully changed roles to Player.").format(updated))
+    make_player.short_description = _('Change role to Player')
+
+
+admin.site.register(CharacterClass)
+admin.site.register(CharacterRace)
+admin.site.register(CharacterFaction)
+
+
+@admin.register(PlayerCharacter)
+class PlayerCharacterAdmin(admin.ModelAdmin):
+    list_display = ['name', 'level', 'race', 'pc_class', 'faction']
+    search_fields = ['name', ]
+    list_filter = ['level', 'race', 'pc_class', 'faction']
+
+
+@admin.register(DMNote)
+class DMNoteAdmin(admin.ModelAdmin):
+    list_display = ['__str__', 'dm', 'player', 'created']
+    list_filter = ['created']
