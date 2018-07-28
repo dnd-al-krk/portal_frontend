@@ -123,3 +123,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTHENTICATION_BACKENDS = ['profiles.backends.EmailBackend']
+
+TEST_RUNNER = 'portal.runners.PytestTestRunner'
