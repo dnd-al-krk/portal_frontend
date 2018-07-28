@@ -17,21 +17,21 @@ The steps are:
 1. Install requirements `pip install -r requirements.txt`
 1. Create file `fabric_config.py` with contents (adjust if something is different in your config):
 
-```
-import os
+    ```
+    import os
 
-from fabric.utils import _AttributeDict
+    from fabric.utils import _AttributeDict
 
-class DevelConfig(_AttributeDict):
-    def __init__(self):
-        self.local = True
-        self.environment = 'devel'
-        self.domain = 'localhost'
-        self.env_path = '~/.virtualenvs/portal'
+    class DevelConfig(_AttributeDict):
+        def __init__(self):
+            self.local = True
+            self.environment = 'devel'
+            self.domain = 'localhost'
+            self.env_path = '~/.virtualenvs/portal'
 
-        self.project_root = os.path.dirname(os.path.abspath(__file__))
-        self.DJANGO_SETTINGS_MODULE = 'settings.{environment}'.format(**self)
-```
+            self.project_root = os.path.dirname(os.path.abspath(__file__))
+            self.DJANGO_SETTINGS_MODULE = 'settings.{environment}'.format(**self)
+    ```
 
 1. Bootstrap app with `fab devel bootstrap`
 1. Run server with `fab devel runserver`
