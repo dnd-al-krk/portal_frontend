@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "react-app-rewired build && cp build/index.html ../templates/index.html && cp -rf build/static ../static",
     "test": "react-app-rewired test --env=jsdom"
   }
 }
