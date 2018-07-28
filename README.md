@@ -45,6 +45,11 @@ The steps are:
 1. Run server with `fab devel runserver`
 1. Open in the browser `localhost:8000`
 
+### Testing
+
+You can run pytest tests with:
+
+`fab devel test` or simply `pytest` as well.
 
 ## Frontend
 
