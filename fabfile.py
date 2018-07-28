@@ -117,6 +117,7 @@ def deploy():
     with virtualenv():
         run('pip install -r requirements/{}.txt'.format(env.environment))
 
+    manage('migrate')
     manage('collectstatic')
     remove_pyc()
     restart()
