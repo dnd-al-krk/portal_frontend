@@ -32,3 +32,4 @@ EMAIL_HOST_PASSWORD = read_env('PORTAL_PROD_EMAIL_PASSWORD')
 ROOT_URL = 'http://alkrk.toady.org'
 
 STATIC_ROOT = BASE_DIR + '/public/static/'
+STATIC_URL = '/static/'
