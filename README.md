@@ -17,11 +17,12 @@ The steps are:
 1. Install requirements `pip install -r requirements.txt`
 1. Create file `fabric_config.py` with contents (adjust if something is different in your config):
 
-    ```
+    ```python
     import os
     
     from fabric.decorators import task
     from fabric.utils import _AttributeDict
+
 
     class DevelConfig(_AttributeDict):
         def __init__(self):
