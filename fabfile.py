@@ -87,7 +87,7 @@ def test():
     """
     Runs local tests
     """
-    manage('test --keepdb')
+    manage('test')
 
 
 @task
