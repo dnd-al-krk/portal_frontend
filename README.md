@@ -12,13 +12,29 @@ This project is developed for Python 3.5.3 (or newer).
 The steps are:
 
 1. Clone this repo
-1. cd to repo and then into the `portal` dir (with `manage.py` file)
+1. cd to repo (with `manage.py` file)
 1. Create virtualenv with virtualenvwrapper: `mkvirtualenv portal`
 1. Install requirements `pip install -r requirements.txt`
-1. Set your env variable with settings `export DJANGO_SETTINGS_MODULE=settings.devel`
-1. Run migrations with `python manage.py migrate`
-1. Create superuser with `python manage.py createsuperuser`
-1. Run server with `python manage.py runserver`
+1. Create file `fabric_config.py` with contents (adjust if something is different in your config):
+
+```
+import os
+
+from fabric.utils import _AttributeDict
+
+class DevelConfig(_AttributeDict):
+    def __init__(self):
+        self.local = True
+        self.environment = 'devel'
+        self.domain = 'localhost'
+        self.env_path = '~/.virtualenvs/portal'
+
+        self.project_root = os.path.dirname(os.path.abspath(__file__))
+        self.DJANGO_SETTINGS_MODULE = 'settings.{environment}'.format(**self)
+```
+
+1. Bootstrap app with `fab devel bootstrap`
+1. Run server with `fab devel runserver`
 1. Open in the browser `localhost:8000`
 
 
