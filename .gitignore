@@ -108,3 +108,5 @@ venv.bak/
 db.sqlite3
 
 fabric_config.py
+
+package-lock.json
