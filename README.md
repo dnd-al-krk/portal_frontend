@@ -19,7 +19,8 @@ The steps are:
 
     ```
     import os
-
+    
+    from fabric.decorators import task
     from fabric.utils import _AttributeDict
 
     class DevelConfig(_AttributeDict):
@@ -31,6 +32,12 @@ The steps are:
 
             self.project_root = os.path.dirname(os.path.abspath(__file__))
             self.DJANGO_SETTINGS_MODULE = 'settings.{environment}'.format(**self)
+    
+            
+    @task
+    def devel():
+        env.update(DevelConfig())
+
     ```
 
 1. Bootstrap app with `fab devel bootstrap`

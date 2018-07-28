@@ -1,38 +1,12 @@
-import os
-import sys
-
 from contextlib import contextmanager
 
 from fabric.colors import magenta
 from fabric.context_managers import prefix, cd, lcd
 from fabric.contrib.console import confirm
-from fabric.decorators import task
 from fabric.operations import local, run
-from fabric.utils import _AttributeDict
 
 # add local configs
-try:
-    from fabric_config import *
-except ImportError:
-    pass
-
-# == CONFIGS ==
-
-
-class DevelConfig(_AttributeDict):
-    def __init__(self):
-        self.local = True
-        self.environment = 'devel'
-        self.domain = 'localhost'
-        self.env_path = '~/.virtualenvs/portal'
-
-        self.project_root = os.path.dirname(os.path.abspath(__file__))
-        self.DJANGO_SETTINGS_MODULE = 'settings.{environment}'.format(**self)
-
-
-@task
-def devel():
-    env.update(DevelConfig())
+from fabric_config import *
 
 
 @contextmanager
