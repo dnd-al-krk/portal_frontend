@@ -1,6 +1,7 @@
 import {observable, action} from 'mobx';
 import axios from 'axios';
 import Cookie from 'js-cookie';
+import {hostname} from "./config";
 
 
 const csrftoken = Cookie.get('csrftoken');
@@ -31,7 +32,7 @@ export class UserStore {
   @action.bound
   fetchData(){
     return new Promise((resolve, reject) => {
-      axios.get("http://localhost:8000/api/current_user/")
+      axios.get(`http://${hostname}/api/current_user/`)
         .then((response) => {
           const data = response.data;
           console.log(data);
@@ -52,7 +53,7 @@ export class UserStore {
   @action.bound
   saveData(){
     return new Promise((resolve, reject) => {
-      axiosInstance.put(`http://localhost:8000/api/profiles/${this.profile_id}/`,
+      axiosInstance.put(`http://${hostname}/api/profiles/${this.profile_id}/`,
         {
           'id': this.profile_id,
           'user': {
