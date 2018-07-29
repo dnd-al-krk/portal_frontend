@@ -58,3 +58,5 @@ You can run pytest tests with:
 1. Run `npm install`
 1. Run `npm run start`
 1. The browser will start page automatically (`localhost:3000`)
+
+Build with `npm run build` - it will move static and template files to proper directories.

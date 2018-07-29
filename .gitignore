@@ -110,3 +110,5 @@ db.sqlite3
 fabric_config.py
 
 package-lock.json
+
+.DS_Store

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import {NavigationStore, PortalStore} from './store';
+import {NavigationStore, PortalStore, UserStore} from './store';
 import {observer, Provider} from 'mobx-react';
 import {
   BrowserRouter as Router,
@@ -18,9 +18,10 @@ import styled from 'styled-components';
 
 const portalStore = new PortalStore();
 const navigationStore = new NavigationStore();
+const userStore = new UserStore();
 
 const PushedDiv = styled.div`
-  padding-top: 50px;
+  padding-top: 80px;
 `;
 
 @observer
@@ -28,7 +29,9 @@ class App extends Component {
   render() {
     return (
       <Provider portalStore={portalStore}
-                navigationStore={navigationStore}>
+                navigationStore={navigationStore}
+                userStore={userStore}
+      >
         <Router>
           <div>
             <TopAppBar />
