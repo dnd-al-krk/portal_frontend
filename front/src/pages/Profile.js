@@ -28,7 +28,7 @@ const styles = theme => ({
 
 
 @withStyles(styles, { withTheme: true })
-@inject('userStore') @observer
+@inject('portalStore') @observer
 class Profile extends React.Component {
 
   SAVE_TEXT = 'Save';
@@ -43,11 +43,11 @@ class Profile extends React.Component {
   };
 
   componentDidMount(){
-    this.props.userStore.fetchData().then(() => { this.setStateFromStore() });
+    this.setStateFromStore();
   }
 
   setStateFromStore = () => {
-    const store = this.props.userStore;
+    const store = this.props.portalStore.currentUser;
     let new_state = {
       first_name: store.first_name,
       last_name: store.last_name,
@@ -65,12 +65,12 @@ class Profile extends React.Component {
       save_text: 'Saving...'
     });
 
-    this.props.userStore.first_name = this.state.first_name;
-    this.props.userStore.last_name = this.state.last_name;
-    this.props.userStore.nickname = this.state.nickname;
-    this.props.userStore.dci = this.state.dci;
+    this.props.portalStore.currentUser.first_name = this.state.first_name;
+    this.props.portalStore.currentUser.last_name = this.state.last_name;
+    this.props.portalStore.currentUser.nickname = this.state.nickname;
+    this.props.portalStore.currentUser.dci = this.state.dci;
 
-    this.props.userStore.saveData().then((response) => {
+    this.props.portalStore.currentUser.saveData().then((response) => {
       this.setState({
         is_saving: false,
         save_text: this.SAVE_TEXT

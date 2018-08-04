@@ -34,7 +34,6 @@ const StyledLink = styled(Link)`
 `;
 
 
-
 function SidebarNavigationList(props) {
   const { classes } = props;
   return (
@@ -45,7 +44,7 @@ function SidebarNavigationList(props) {
             <ListItemIcon>
               <Settings />
             </ListItemIcon>
-            <ListItemText primary="Profile" >
+            <ListItemText primary="Profile Settings" >
             </ListItemText>
           </ListItem>
         </StyledLink>

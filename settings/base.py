@@ -125,3 +125,14 @@ STATIC_URL = '/static/'
 AUTHENTICATION_BACKENDS = ['profiles.backends.EmailBackend']
 
 TEST_RUNNER = 'portal.runners.PytestTestRunner'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
