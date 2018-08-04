@@ -69,6 +69,6 @@ export class UserStore {
         .catch((err) => {
           reject(err);
         });
-    })
+    });
   }
 }
