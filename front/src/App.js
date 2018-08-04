@@ -17,6 +17,7 @@ import TopAppBar from "./common/TopAppBar";
 import styled from 'styled-components';
 import RouteRequiresLogin from "./common/RouteRequiresLogin";
 import Login from "./common/Login";
+import Loader from "./common/Loader";
 
 
 const portalStore = new PortalStore();
@@ -27,38 +28,7 @@ const PushedDiv = styled.div`
 `;
 
 
-@inject('portalStore') @observer
-class Loader extends Component {
 
-  state = {
-    loading: true,
-  };
-
-  componentDidMount = () => {
-    if(!this.props.portalStore.currentUser)
-      this.props.portalStore.autologin()
-        .then(
-          () => { this.removeLoader() },
-          () => { this.removeLoader() });
-  };
-
-  removeLoader = () => {
-    this.setState({
-      loading: false,
-    });
-  };
-
-  render() {
-    if (this.state.loading) { return (<div>Loading...</div>) }
-    else {
-      return (
-        <div>
-          { this.props.children }
-        </div>
-      )
-    }
-  }
-}
 
 @observer
 class App extends Component {
