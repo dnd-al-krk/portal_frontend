@@ -54,12 +54,10 @@ class Profile extends React.Component {
       nickname: store.nickname,
       dci: store.dci,
     };
-    console.log(new_state);
     this.setState(new_state);
   };
 
   saveData = () => {
-    console.log(this.state);
     this.setState({
       is_saving: true,
       save_text: 'Saving...'
