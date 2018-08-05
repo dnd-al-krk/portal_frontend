@@ -42,7 +42,7 @@ class App extends Component {
               <TopAppBar/>
               <PushedDiv>
                 <Route exact path="/" component={Home}/>
-                <Route exact path="/profiles" component={Profiles}/>
+                <RouteRequiresLogin exact path="/profiles" component={Profiles}/>
                 <Route path="/characters" component={Characters}/>
                 <RouteRequiresLogin path="/account" component={Account}/>
                 <Route exact path="/login" component={Login}/>

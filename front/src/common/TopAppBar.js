@@ -59,9 +59,7 @@ const styles = (theme) => ({
 @inject('portalStore') @observer
 class TopAppBar extends React.Component {
   state = {
-    auth: true,
     accountAnchorEl: null,
-    anonymousAnchorEl: null,
     drawerMenu: true,
   };
 
@@ -88,6 +86,9 @@ class TopAppBar extends React.Component {
   };
 
   gotoLogin = () => {
+    this.setState({
+      accountAnchorEl: null,
+    });
     this.props.history.push('/login')
   };
 
@@ -101,7 +102,6 @@ class TopAppBar extends React.Component {
     );
 
     const accountOpen = Boolean(this.state.accountAnchorEl);
-    const anonymousOpen = Boolean(this.state.anonymousAnchorEl);
 
     return (
       <div className={classes.root}>
