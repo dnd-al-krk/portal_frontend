@@ -29,7 +29,7 @@ const styles = theme => ({
 
 @withStyles(styles, { withTheme: true })
 @inject('portalStore') @observer
-class Profile extends React.Component {
+class Account extends React.Component {
 
   SAVE_TEXT = 'Save';
 
@@ -86,7 +86,7 @@ class Profile extends React.Component {
           <Paper className={classes.paperContainer}>
             <Grid container spacing={24}>
               <Grid item xs={12}>
-                <h1>Change profile settings</h1>
+                <h1>Change account settings</h1>
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -145,4 +145,4 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+export default Account;

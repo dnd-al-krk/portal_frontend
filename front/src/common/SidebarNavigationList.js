@@ -5,13 +5,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import Notifications from "@material-ui/icons/Notifications";
 import Settings from "@material-ui/icons/Settings";
 import PermIdentity from "@material-ui/icons/PermIdentity";
-import ScreenShare from "@material-ui/icons/ScreenShare";
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import UndecoratedLink from "./UndecoratedLink";
 
 
 const styles = theme => ({
@@ -24,31 +20,30 @@ const styles = theme => ({
   }
 });
 
-
-const StyledLink = styled(Link)`
-    text-decoration: none;
-
-    &:focus, &:hover, &:visited, &:link, &:active {
-        text-decoration: none;
-    }
-`;
-
-
 function SidebarNavigationList(props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
       <List component="nav">
-        <StyledLink to="/profile">
+        <UndecoratedLink to="/profile">
           <ListItem button>
             <ListItemIcon>
               <Settings />
             </ListItemIcon>
-            <ListItemText primary="Profile Settings" >
+            <ListItemText primary="Your profile" >
             </ListItemText>
           </ListItem>
-        </StyledLink>
-        <StyledLink to="/characters">
+        </UndecoratedLink>
+        <UndecoratedLink to="/profiles">
+          <ListItem button>
+            <ListItemIcon>
+              <Settings />
+            </ListItemIcon>
+            <ListItemText primary="AL Players" >
+            </ListItemText>
+          </ListItem>
+        </UndecoratedLink>
+        <UndecoratedLink to="/characters">
           <ListItem button>
             <ListItemIcon>
               <PermIdentity />
@@ -56,7 +51,7 @@ function SidebarNavigationList(props) {
             <ListItemText primary="Characters" >
             </ListItemText>
           </ListItem>
-        </StyledLink>
+        </UndecoratedLink>
       </List>
     </div>
   );

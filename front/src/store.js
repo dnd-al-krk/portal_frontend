@@ -24,19 +24,11 @@ export function getAxiosInstance(token){
   })
 }
 
-export class NavigationStore {
-  @observable drawerStatus = false;
-
-  @action.bound
-  toggleDrawer(){
-    this.drawerStatus = !this.drawerStatus;
-  }
-}
-
 export class PortalStore {
   @observable currentUser = null;
   @observable userToken = null;
   @observable authenticated = false;
+  @observable navigationStore = new NavigationStore(this);
 
   @action.bound
   autologin(){
@@ -90,6 +82,21 @@ export class PortalStore {
   signOut(){
     this.userToken = null;
     Cookies.remove(JWT_TOKEN);
+  }
+}
+
+
+export class NavigationStore {
+  @observable rootStore;
+  @observable drawerStatus = false;
+
+  constructor(rootStore) {
+    this.rootStore = rootStore;
+  }
+
+  @action.bound
+  toggleDrawer(){
+    this.drawerStatus = !this.drawerStatus;
   }
 }
 
