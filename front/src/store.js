@@ -1,7 +1,8 @@
 import {observable, action} from 'mobx';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import {hostname} from "./config";
+import {API_HOSTNAME, HOSTNAME} from "./config";
+import {JWT_TOKEN} from "./constants";
 
 
 const csrftoken = Cookies.get('csrftoken');
@@ -39,10 +40,11 @@ export class PortalStore {
 
   @action.bound
   autologin(){
-    const token = Cookies.get('jwt-token');
+    const token = Cookies.get(JWT_TOKEN);
     return new Promise((resolve, reject) => {
       if(token){
         this.userToken = token;
+        // refresh token
         this.currentUser = new UserStore(this);
         this.currentUser.fetchData()
           .then(() => resolve(), () => { reject() })
@@ -66,14 +68,14 @@ export class PortalStore {
   }
 
   @action.bound
-  login(user='ivellios.mirimafea@gmail.com', password='qwer4321'){
+  login(user, password){
     return new Promise((resolve, reject) => {
-      axiosInstance.post(`http://${hostname}/api-token-auth/`, {
+      axiosInstance.post(`${API_HOSTNAME}/token/auth/`, {
         'username': user,
         'password': password,
       }).then((response) => {
         this.userToken = response.data.token;
-        Cookies.set('jwt-token', this.userToken);
+        Cookies.set(JWT_TOKEN, this.userToken);
         this.currentUser = new UserStore(this);
         this.currentUser.fetchData()
           .then(() => resolve(), () => reject())
@@ -87,7 +89,7 @@ export class PortalStore {
   @action.bound
   signOut(){
     this.userToken = null;
-    Cookies.remove('jwt-token');
+    Cookies.remove(JWT_TOKEN);
   }
 }
 
@@ -113,7 +115,7 @@ export class UserStore {
   @action.bound
   fetchData(){
     return new Promise((resolve, reject) => {
-      getAxiosInstance(this.getToken()).get(`http://${hostname}/api/current_user/`)
+      getAxiosInstance(this.getToken()).get(`${API_HOSTNAME}/current_user/`)
         .then((response) => {
           const data = response.data;
           this.profile_id = data.id;
@@ -134,7 +136,7 @@ export class UserStore {
   @action.bound
   saveData(){
     return new Promise((resolve, reject) => {
-      getAxiosInstance(this.getToken()).put(`http://${hostname}/api/profiles/${this.profile_id}/`,
+      getAxiosInstance(this.getToken()).put(`${API_HOSTNAME}/profiles/${this.profile_id}/`,
         {
           'id': this.profile_id,
           'user': {

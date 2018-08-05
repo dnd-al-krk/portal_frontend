@@ -114,7 +114,7 @@ def deploy():
 
     with cd('front'):
         run('npm install')
-        run('npm run build')
+        run('npm run build_prod')
 
     with cd_project():
         run('cp -r static/ public/static/')

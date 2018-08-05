@@ -21,8 +21,9 @@
     "typeface-roboto": "0.0.54"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build && cp build/index.html ../templates/index.html && cp -rf build/static/ ../static/",
+    "start": "REACT_APP_BACKEND_HOST=http://localhost:8000 react-app-rewired start",
+    "build": "REACT_APP_BACKEND_HOST=http://localhost:8000 react-app-rewired build && cp build/index.html ../templates/index.html && cp -rf build/static/ ../static/",
+    "build_prod": "REACT_APP_BACKEND_HOST=http://alkrk.toady.org react-app-rewired build && cp build/index.html ../templates/index.html && cp -rf build/static/ ../static/",
     "test": "react-app-rewired test --env=jsdom"
   }
 }
