@@ -5,6 +5,16 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from "@material-ui/core/Paper/Paper";
 import Button from "@material-ui/core/Button/Button";
 import {inject, observer} from "mobx-react/index";
+import List from "@material-ui/core/List/List";
+import ListItem from "@material-ui/core/ListItem/ListItem";
+import Avatar from "@material-ui/core/Avatar/Avatar";
+import Person from "@material-ui/icons/Person";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction";
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import { ClipLoader } from 'react-spinners';
+import LoadingDiv from "../common/LoadingDiv";
 
 const styles = theme => ({
   root: {
@@ -29,11 +39,10 @@ const styles = theme => ({
 
 @withStyles(styles, { withTheme: true })
 @inject('portalStore') @observer
-class Account extends React.Component {
-
-  SAVE_TEXT = 'Save';
+class Profiles extends React.Component {
 
   state = {
+    profiles: [],
     loading: true,
   };
 
@@ -43,35 +52,46 @@ class Account extends React.Component {
 
   setStateFromStore = () => {
     this.props.portalStore.fetch_profiles().then(
-      () => {
-
+      (data) => {
+        this.setState({
+          profiles: data,
+          loading: false,
+        });
       },
       () => {
-
+        this.setState({
+          profiles: [],
+          loading: false,
+        })
       }
     );
-
-    this.setState(new_state);
   };
 
-  saveData = () => {
-    this.setState({
-      is_saving: true,
-      save_text: 'Saving...'
-    });
 
-    this.props.portalStore.currentUser.first_name = this.state.first_name;
-    this.props.portalStore.currentUser.last_name = this.state.last_name;
-    this.props.portalStore.currentUser.nickname = this.state.nickname;
-    this.props.portalStore.currentUser.dci = this.state.dci;
+  profiles_list() {
+    if(this.state.profiles){
+      return this.state.profiles.map(profile => {
+                return (
+                  <ListItem key={profile.id}>
+                    <Avatar>
+                      <Person />
+                    </Avatar>
+                    <ListItemText primary={`${profile.user.first_name} ${profile.user.last_name} (${profile.nickname})`}
+                                  secondary="
+                                  0 characters |
+                                  5 games played |
+                                  Dungeon Master" />
+                    <ListItemSecondaryAction>
+                      <IconButton aria-label="See profile">
+                        <ChevronRightIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                )
+              })
+    }
+  }
 
-    this.props.portalStore.currentUser.saveData().then((response) => {
-      this.setState({
-        is_saving: false,
-        save_text: this.SAVE_TEXT
-      })
-    });
-  };
 
   render() {
 
@@ -82,7 +102,16 @@ class Account extends React.Component {
         <form className={classes.container} noValidate autoComplete="off">
             <Grid container spacing={24}>
               <Grid item xs={12}>
-                List goes here
+                {this.state.loading && (
+                  <LoadingDiv>
+                    <ClipLoader color={'#FFDE00'} loading={this.state.loading}  />
+                  </LoadingDiv>
+                )}
+                {!this.state.loading && (
+                  <List>
+                    { this.profiles_list() }
+                  </List>
+                )}
               </Grid>
             </Grid>
         </form>
@@ -91,4 +120,4 @@ class Account extends React.Component {
   }
 }
 
-export default Account;
+export default Profiles;

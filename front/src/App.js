@@ -18,6 +18,7 @@ import styled from 'styled-components';
 import RouteRequiresLogin from "./common/RouteRequiresLogin";
 import Login from "./common/Login";
 import Loader from "./common/Loader";
+import Profiles from "./pages/Profiles";
 
 
 const portalStore = new PortalStore();
@@ -41,6 +42,7 @@ class App extends Component {
               <TopAppBar/>
               <PushedDiv>
                 <Route exact path="/" component={Home}/>
+                <Route exact path="/profiles" component={Profiles}/>
                 <Route path="/characters" component={Characters}/>
                 <RouteRequiresLogin path="/account" component={Account}/>
                 <Route exact path="/login" component={Login}/>

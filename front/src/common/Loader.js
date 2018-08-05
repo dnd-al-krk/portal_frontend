@@ -2,19 +2,7 @@ import {inject, observer} from "mobx-react";
 import {Component} from "react";
 import React from "react";
 import styled from 'styled-components';
-
-const LoadingDiv = styled.div`
-  position:fixed;
-  top: 50%;
-  left: 50%;
-  width: 4em;
-  height: 2em;
-  margin-left: -1em;
-  margin-top: -2em;
-  text-align: center;
-  color: #888;
-  font-size: 2em;
-`;
+import LoadingDiv from "./LoadingDiv";
 
 
 @inject('portalStore') @observer
