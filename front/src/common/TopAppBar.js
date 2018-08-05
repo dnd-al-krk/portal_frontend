@@ -76,7 +76,9 @@ class TopAppBar extends React.Component {
   };
 
   logout = () => {
-    this.handleClose();
+    this.setState({
+      accountAnchorEl: null,
+    });
     this.props.portalStore.signOut();
     this.props.history.push('/');
   };
