@@ -1,7 +1,7 @@
 import {observable, action} from 'mobx';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import {API_HOSTNAME, HOSTNAME} from "./config";
+import {API_HOSTNAME} from "./config";
 import {JWT_TOKEN} from "./constants";
 
 
