@@ -83,6 +83,20 @@ export class PortalStore {
     this.userToken = null;
     Cookies.remove(JWT_TOKEN);
   }
+
+  @action.bound
+  fetch_profiles() {
+    return new Promise((resolve, reject) => {
+      axiosInstance.get(`${API_HOSTNAME}/profiles/`).then(
+        (response) => {
+          // map data
+          response.data;
+        }
+      ).catch((err) => {
+        reject(err)
+      });
+    });
+  }
 }
 
 
