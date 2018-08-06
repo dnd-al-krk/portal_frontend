@@ -115,11 +115,12 @@ class TopAppBar extends React.Component {
               <MenuIcon />
             </IconButton>
 
-            <Link to="/" className={ classes.link }>
-              <Typography variant="title" color="inherit">
+
+            <Typography variant="title" color="inherit">
+              <Link to="/" className={ classes.link }>
                 <img src={ al_krakow_logo } className={classes.logo} alt="logo" />
-              </Typography>
-            </Link>
+              </Link>
+            </Typography>
 
 
             {!this.isAuthenticated() && (
