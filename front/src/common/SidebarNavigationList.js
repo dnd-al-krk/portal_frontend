@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -8,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Settings from "@material-ui/icons/Settings";
 import PermIdentity from "@material-ui/icons/PermIdentity";
 import UndecoratedLink from "./UndecoratedLink";
+import {inject, observer} from "mobx-react";
 
 
 const styles = theme => ({
@@ -20,45 +20,54 @@ const styles = theme => ({
   }
 });
 
-function SidebarNavigationList(props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <List component="nav">
-        <UndecoratedLink to="/profile">
-          <ListItem button>
-            <ListItemIcon>
-              <Settings />
-            </ListItemIcon>
-            <ListItemText primary="Your profile" >
-            </ListItemText>
-          </ListItem>
-        </UndecoratedLink>
-        <UndecoratedLink to="/profiles">
-          <ListItem button>
-            <ListItemIcon>
-              <Settings />
-            </ListItemIcon>
-            <ListItemText primary="AL Players" >
-            </ListItemText>
-          </ListItem>
-        </UndecoratedLink>
-        <UndecoratedLink to="/characters">
-          <ListItem button>
-            <ListItemIcon>
-              <PermIdentity />
-            </ListItemIcon>
-            <ListItemText primary="Characters" >
-            </ListItemText>
-          </ListItem>
-        </UndecoratedLink>
-      </List>
-    </div>
-  );
+@withStyles(styles, {withTheme: true})
+@inject('portalStore') @observer
+export default class SidebarNavigationList extends React.Component{
+
+  constructor(props){
+    super(props);
+    this.props.portalStore.fetchCurrentUser();
+  }
+
+  currentProfile(){
+    return this.props.portalStore.currentUser;
+  }
+
+  render() {
+    const {classes} = this.props;
+
+    return (
+      <div className={classes.root}>
+        <List component="nav">
+          <UndecoratedLink to={`/profiles/${this.currentProfile().profileID}`}>
+            <ListItem button>
+              <ListItemIcon>
+                <Settings/>
+              </ListItemIcon>
+              <ListItemText primary="Your profile">
+              </ListItemText>
+            </ListItem>
+          </UndecoratedLink>
+          <UndecoratedLink to="/profiles">
+            <ListItem button>
+              <ListItemIcon>
+                <Settings/>
+              </ListItemIcon>
+              <ListItemText primary="AL Players">
+              </ListItemText>
+            </ListItem>
+          </UndecoratedLink>
+          <UndecoratedLink to="/characters">
+            <ListItem button>
+              <ListItemIcon>
+                <PermIdentity/>
+              </ListItemIcon>
+              <ListItemText primary="Characters">
+              </ListItemText>
+            </ListItem>
+          </UndecoratedLink>
+        </List>
+      </div>
+    );
+  }
 }
-
-SidebarNavigationList.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(SidebarNavigationList);

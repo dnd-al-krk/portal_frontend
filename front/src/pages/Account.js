@@ -2,16 +2,12 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Paper from "@material-ui/core/Paper/Paper";
 import Button from "@material-ui/core/Button/Button";
 import {inject, observer} from "mobx-react/index";
-import Typography from "../../node_modules/@material-ui/core/Typography/Typography";
+import Typography from "@material-ui/core/Typography/Typography";
+import {NarrowContent} from "../common/Content";
 
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    padding: '0px 50px',
-  },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
@@ -82,7 +78,7 @@ class Account extends React.Component {
     const {classes} = this.props;
 
     return (
-      <div className={classes.root}>
+      <NarrowContent>
         <form className={classes.container} noValidate autoComplete="off">
           <div className={classes.paperContainer}>
             <Grid container spacing={24}>
@@ -141,7 +137,7 @@ class Account extends React.Component {
             </Grid>
           </div>
         </form>
-      </div>
+      </NarrowContent>
     );
   }
 }

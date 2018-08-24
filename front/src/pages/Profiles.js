@@ -1,9 +1,6 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Paper from "@material-ui/core/Paper/Paper";
-import Button from "@material-ui/core/Button/Button";
 import {inject, observer} from "mobx-react/index";
 import List from "@material-ui/core/List/List";
 import ListItem from "@material-ui/core/ListItem/ListItem";
@@ -15,7 +12,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction/L
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import { ClipLoader } from 'react-spinners';
 import LoadingDiv from "../common/LoadingDiv";
-import Typography from "../../node_modules/@material-ui/core/Typography/Typography";
+import Typography from "@material-ui/core/Typography/Typography";
 import {NarrowContent} from "../common/Content";
 
 const styles = theme => ({

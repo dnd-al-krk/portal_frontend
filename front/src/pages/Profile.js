@@ -1,16 +1,13 @@
-import withStyles from "../../node_modules/@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import {inject, observer} from "mobx-react";
 import React from "react";
-import Person from "../../node_modules/@material-ui/icons/Person";
-import Avatar from "../../node_modules/@material-ui/core/Avatar/Avatar";
-import Typography from "../../node_modules/@material-ui/core/Typography/Typography";
-import Grid from "../../node_modules/@material-ui/core/Grid/Grid";
+import Person from "@material-ui/icons/Person";
+import Avatar from "@material-ui/core/Avatar/Avatar";
+import Typography from "@material-ui/core/Typography/Typography";
+import Grid from "@material-ui/core/Grid/Grid";
 import LoadingDiv from "../common/LoadingDiv";
 import {ClipLoader} from "react-spinners";
 import {NarrowContent} from "../common/Content";
-import ChevronRightIcon from "../../node_modules/@material-ui/icons/ChevronRight";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import IconButton from "../../node_modules/@material-ui/core/IconButton/IconButton";
 
 
 const styles = theme => ({
