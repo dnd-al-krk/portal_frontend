@@ -56,25 +56,36 @@ export default class Profile extends React.Component {
   }
 
   componentDidMount(){
-    this.setStateFromStore();
-  }
+    this.props.portalStore.getProfile(this.state.id)
+      .then(
+        (data) => {
+          this.setState({
+            profile: data,
+          });
+        },
+        () => {
+          this.setState({
+            profile: null,
+          })
 
-  setStateFromStore(){
-    this.props.portalStore.getProfile(this.state.id).then(
-      (data) => {
-        this.setState({
-          profile: data,
-          loading: false,
-        });
-      },
-      () => {
-        this.setState({
-          profile: null,
-          loading: false,
-        })
-
-      }
-    );
+        }
+      )
+      .then(
+        () => this.props.portalStore.fetchProfileCharacters(this.state.id).then(
+          (characters) => {
+            this.setState({
+              characters: characters,
+            })
+          }
+        )
+      )
+      .then(
+        () => {
+          this.setState({
+            loading: false,
+          })
+        }
+      );
   }
 
   render() {
@@ -106,7 +117,11 @@ export default class Profile extends React.Component {
               <Typography variant="headline">
                 Characters
               </Typography>
-              TODO: Here be characters list...
+              {this.state.characters.map(character => (
+                <div key={`player-character-${character.id}`}>
+                  {character.name}
+                </div>
+              ))}
             </Grid>
           </Grid>
           )}

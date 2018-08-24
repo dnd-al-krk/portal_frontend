@@ -129,6 +129,16 @@ export class PortalStore {
   fetchFactions(){
     return this.fetchData('factions');
   }
+
+  @action.bound
+  fetchCharacters(){
+    return this.fetchData('characters');
+  }
+
+  @action.bound
+  fetchProfileCharacters(owner){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/characters/?owner=${owner}`).then(response => response.data);
+  }
 }
 
 
