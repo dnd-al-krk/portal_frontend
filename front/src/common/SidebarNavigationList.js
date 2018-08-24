@@ -1,17 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import Notifications from "@material-ui/icons/Notifications";
 import Settings from "@material-ui/icons/Settings";
 import PermIdentity from "@material-ui/icons/PermIdentity";
-import ScreenShare from "@material-ui/icons/ScreenShare";
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import UndecoratedLink from "./UndecoratedLink";
+import {inject, observer} from "mobx-react";
 
 
 const styles = theme => ({
@@ -24,47 +20,58 @@ const styles = theme => ({
   }
 });
 
+@withStyles(styles, {withTheme: true})
+@inject('portalStore') @observer
+export default class SidebarNavigationList extends React.Component{
 
-const StyledLink = styled(Link)`
-    text-decoration: none;
+  constructor(props){
+    super(props);
+    this.props.portalStore.fetchCurrentUser();
+  }
 
-    &:focus, &:hover, &:visited, &:link, &:active {
-        text-decoration: none;
-    }
-`;
+  currentProfile(){
+    return this.props.portalStore.currentUser;
+  }
 
+  isAuth(){
+    return this.props.portalStore.isAuthenticated();
+  }
 
+  render() {
+    const {classes} = this.props;
 
-function SidebarNavigationList(props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <List component="nav">
-        <StyledLink to="/profile">
-          <ListItem button>
-            <ListItemIcon>
-              <Settings />
-            </ListItemIcon>
-            <ListItemText primary="Profile" >
-            </ListItemText>
-          </ListItem>
-        </StyledLink>
-        <StyledLink to="/characters">
-          <ListItem button>
-            <ListItemIcon>
-              <PermIdentity />
-            </ListItemIcon>
-            <ListItemText primary="Characters" >
-            </ListItemText>
-          </ListItem>
-        </StyledLink>
-      </List>
-    </div>
-  );
+    return (
+      <div className={classes.root}>
+        <List component="nav">
+          {this.isAuth() && (<UndecoratedLink to={`/profiles/${this.currentProfile().profileID}`}>
+            <ListItem button>
+              <ListItemIcon>
+                <Settings/>
+              </ListItemIcon>
+              <ListItemText primary="Your profile">
+              </ListItemText>
+            </ListItem>
+          </UndecoratedLink>)}
+          <UndecoratedLink to="/profiles">
+            <ListItem button>
+              <ListItemIcon>
+                <Settings/>
+              </ListItemIcon>
+              <ListItemText primary="AL Players">
+              </ListItemText>
+            </ListItem>
+          </UndecoratedLink>
+          <UndecoratedLink to="/characters">
+            <ListItem button>
+              <ListItemIcon>
+                <PermIdentity/>
+              </ListItemIcon>
+              <ListItemText primary="Characters">
+              </ListItemText>
+            </ListItem>
+          </UndecoratedLink>
+        </List>
+      </div>
+    );
+  }
 }
-
-SidebarNavigationList.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(SidebarNavigationList);

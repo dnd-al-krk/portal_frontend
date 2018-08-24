@@ -1,15 +1,25 @@
-import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Paper from "@material-ui/core/Paper/Paper";
-import Button from "@material-ui/core/Button/Button";
-import {inject, observer} from "mobx-react/index";
+import withStyles from "@material-ui/core/styles/withStyles";
+import {inject, observer} from "mobx-react";
+import React from "react";
+import Person from "@material-ui/icons/Person";
+import Avatar from "@material-ui/core/Avatar/Avatar";
+import Typography from "@material-ui/core/Typography/Typography";
+import Grid from "@material-ui/core/Grid/Grid";
+import LoadingDiv from "../common/LoadingDiv";
+import {ClipLoader} from "react-spinners";
+import {NarrowContent} from "../common/Content";
+
 
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    padding: '0px 50px',
+  avatar: {
+    float: 'left',
+    marginRight: 10,
+    width: 60,
+    height: 60,
+  },
+  avatarIcon: {
+    width: 50,
+    height: 50,
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -24,127 +34,83 @@ const styles = theme => ({
   submitRow: {
     textAlign: 'right',
   },
+  profileHeader: {
+    marginBottom: 30,
+  },
+  charactersList: {
+  },
 });
 
 
 @withStyles(styles, { withTheme: true })
-@inject('userStore') @observer
-class Profile extends React.Component {
+@inject('portalStore') @observer
+export default class Profile extends React.Component {
 
-  SAVE_TEXT = 'Save';
-
-  state = {
-    first_name: '',
-    last_name: '',
-    nickname: '',
-    dci: '',
-    is_saving: false,
-    save_text: this.SAVE_TEXT,
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      id: this.props.match.params.id,
+      profile: null,
+      loading: true,
+    }
+  }
 
   componentDidMount(){
-    this.props.userStore.fetchData().then(() => { this.setStateFromStore() });
+    this.setStateFromStore();
   }
 
-  setStateFromStore = () => {
-    const store = this.props.userStore;
-    let new_state = {
-      first_name: store.first_name,
-      last_name: store.last_name,
-      nickname: store.nickname,
-      dci: store.dci,
-    };
-    console.log(new_state);
-    this.setState(new_state);
-  };
+  setStateFromStore(){
+    this.props.portalStore.get_profile(this.state.id).then(
+      (data) => {
+        this.setState({
+          profile: data,
+          loading: false,
+        });
+      },
+      () => {
+        this.setState({
+          profile: null,
+          loading: false,
+        })
 
-  saveData = () => {
-    console.log(this.state);
-    this.setState({
-      is_saving: true,
-      save_text: 'Saving...'
-    });
-
-    this.props.userStore.first_name = this.state.first_name;
-    this.props.userStore.last_name = this.state.last_name;
-    this.props.userStore.nickname = this.state.nickname;
-    this.props.userStore.dci = this.state.dci;
-
-    this.props.userStore.saveData().then((response) => {
-      this.setState({
-        is_saving: false,
-        save_text: this.SAVE_TEXT
-      })
-    });
-  };
-
-  render() {
-
-    const {classes} = this.props;
-
-    return (
-      <div className={classes.root}>
-        <form className={classes.container} noValidate autoComplete="off">
-          <Paper className={classes.paperContainer}>
-            <Grid container spacing={24}>
-              <Grid item xs={12}>
-                <h1>Change profile settings</h1>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  id="name"
-                  label="First Name"
-                  className={classes.textField}
-                  value={this.state.first_name}
-                  onChange={(event) => this.setState({first_name: event.target.value})}
-                  margin="normal"
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  id="name"
-                  label="Last Name"
-                  className={classes.textField}
-                  value={this.state.last_name}
-                  onChange={(event) => this.setState({last_name: event.target.value})}
-                  margin="normal"
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  id="name"
-                  label="Nickname"
-                  className={classes.textField}
-                  value={this.state.nickname}
-                  onChange={(event) => this.setState({nickname: event.target.value})}
-                  margin="normal"
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  id="name"
-                  label="DCI"
-                  className={classes.textField}
-                  value={this.state.dci}
-                  onChange={(event) => this.setState({dci: event.target.value})}
-                  margin="normal"
-                />
-              </Grid>
-              <Grid item xs={12} className={classes.submitRow}>
-                <Button variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        disabled={this.state.is_saving}
-                        onClick={(event) => this.saveData()}>
-                  { this.state.save_text }
-                </Button>
-              </Grid>
-            </Grid>
-          </Paper>
-        </form>
-      </div>
+      }
     );
   }
-}
 
-export default Profile;
+  render() {
+    const {classes} = this.props;
+
+    const profile = this.state.profile;
+
+    return (
+      <NarrowContent>
+        {this.state.loading ? (
+          <LoadingDiv>
+            <ClipLoader color={'#FFDE00'} loading={this.state.loading}  />
+          </LoadingDiv>
+          )
+          : (
+          <Grid container spacing={8}>
+            <Grid item xs={12} className={classes.profileHeader}>
+              <Avatar className={classes.avatar}>
+                <Person className={classes.avatarIcon} />
+              </Avatar>
+              <Typography variant="headline">
+                {profile.user.first_name} {profile.user.last_name} ({profile.nickname})
+              </Typography>
+              <Typography variant="body1">
+                {profile.role} | DCI: {profile.dci}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} className={classes.charactersList}>
+              <Typography variant="headline">
+                Characters
+              </Typography>
+              TODO: Here be characters list...
+            </Grid>
+          </Grid>
+          )}
+      </NarrowContent>
+    )
+  }
+}

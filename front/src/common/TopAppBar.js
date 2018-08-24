@@ -11,21 +11,23 @@ import { Link } from 'react-router-dom';
 
 import Drawer from '@material-ui/core/Drawer';
 
-import dnd_logo_wide from '../images/dnd_logo_wide.png';
+import al_krakow_logo from '../images/al_krakow_logo.png';
 
 import SidebarNavigationList from "./SidebarNavigationList";
+import Menu from "@material-ui/core/Menu/Menu";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
+import UndecoratedLink from "./UndecoratedLink";
+import {withRouter} from "react-router";
+import Button from "@material-ui/core/Button/Button";
 
 
-const styles = {
+const styles = (theme) => ({
   root: {
     flexGrow: 1,
   },
-  flex: {
-    flex: 1,
-  },
   menuButton: {
-    position: 'absolute',
-    left: '-5px',
+
   },
   toolbar: {
     padding: 0,
@@ -40,37 +42,57 @@ const styles = {
   link: {
     color: 'white',
     textDecoration: 'none',
+    flexGrow: 1,
   },
   logo: {
-    height: '50px',
+    height: '45px',
+    marginTop: '7px',
   },
-};
+  rightNav: {
+    position: 'absolute',
+    right: '15px',
+  }
+});
 
 
-@inject('navigationStore') @observer
+@withRouter
+@inject('portalStore') @observer
 class TopAppBar extends React.Component {
   state = {
-    auth: true,
-    anchorEl: null,
+    accountAnchorEl: null,
     drawerMenu: true,
   };
 
-  handleChange = (event, checked) => {
-    this.setState({ auth: checked });
+  handleMenu = element => event => {
+    this.setState({ [element]: event.currentTarget });
   };
 
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
+  handleClose = element => () => {
+    this.setState({ [element]: null });
   };
 
   toggleDrawer = () => {
-    this.props.navigationStore.toggleDrawer();
+    this.props.portalStore.navigationStore.toggleDrawer();
   };
 
+  logout = () => {
+    this.setState({
+      accountAnchorEl: null,
+    });
+    this.props.portalStore.signOut();
+    this.props.history.push('/');
+  };
+
+  isAuthenticated = () => {
+    return this.props.portalStore.isAuthenticated();
+  };
+
+  gotoLogin = () => {
+    this.setState({
+      accountAnchorEl: null,
+    });
+    this.props.history.push('/login')
+  };
 
   render() {
     const { classes } = this.props;
@@ -81,54 +103,71 @@ class TopAppBar extends React.Component {
       </div>
     );
 
+    const accountOpen = Boolean(this.state.accountAnchorEl);
+
     return (
-      <div>
+      <div className={classes.root}>
         <AppBar className={ classes.appBar }>
           <Toolbar className={ classes.toolbar }>
-            <Link to="/" className={ classes.link }>
-            <Typography variant="title" color="inherit">
-              <img src={ dnd_logo_wide } className={classes.logo} alt="logo" />
-            </Typography>
-            </Link>
 
             <IconButton color="inherit" className={ classes.menuButton } aria-label="Menu"
             onClick={this.toggleDrawer}>
               <MenuIcon />
             </IconButton>
 
-            {/*{auth && (*/}
-              {/*<div style={{ position: 'absolute', right: '15px' }}>*/}
-                {/*<IconButton*/}
-                  {/*aria-owns={open ? 'menu-appbar' : null}*/}
-                  {/*aria-haspopup="true"*/}
-                  {/*onClick={this.handleMenu}*/}
-                  {/*color="inherit"*/}
-                {/*>*/}
-                  {/*<AccountCircle />*/}
-                {/*</IconButton>*/}
-                {/*<Menu*/}
-                  {/*id="menu-appbar"*/}
-                  {/*anchorEl={anchorEl}*/}
-                  {/*anchorOrigin={{*/}
-                    {/*vertical: 'top',*/}
-                    {/*horizontal: 'right',*/}
-                  {/*}}*/}
-                  {/*transformOrigin={{*/}
-                    {/*vertical: 'top',*/}
-                    {/*horizontal: 'right',*/}
-                  {/*}}*/}
-                  {/*open={open}*/}
-                  {/*onClose={this.handleClose}*/}
-                {/*>*/}
-                  {/*<MenuItem onClick={this.handleClose}>Account settings</MenuItem>*/}
-                  {/*<MenuItem onClick={this.handleClose}>Logout</MenuItem>*/}
-                {/*</Menu>*/}
-              {/*</div>*/}
-            {/*)}*/}
+
+            <Typography variant="title" color="inherit">
+              <Link to="/" className={ classes.link }>
+                <img src={ al_krakow_logo } className={classes.logo} alt="logo" />
+              </Link>
+            </Typography>
+
+
+            {!this.isAuthenticated() && (
+              <div className={classes.rightNav}>
+                <Button color="inherit" onClick={this.gotoLogin}>Login</Button>
+                {/* TODO: Add once signup form is ready*/}
+                {/*<Button color="inherit">Sign up</Button>*/}
+              </div>
+            )}
+
+            {this.isAuthenticated() && (
+              <div className={classes.rightNav}>
+                <IconButton
+                  aria-owns={accountOpen ? 'menu-appbar' : null}
+                  aria-haspopup="true"
+                  onClick={this.handleMenu('accountAnchorEl')}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={this.state.accountAnchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={accountOpen}
+                  onClose={this.handleClose('accountAnchorEl')}
+                >
+                  <UndecoratedLink to='/account' className={classes.routeLink}>
+                    <MenuItem onClick={this.handleClose('accountAnchorEl')}>
+                      Account settings
+                    </MenuItem>
+                  </UndecoratedLink>
+                  <MenuItem onClick={this.logout}>Logout</MenuItem>
+                </Menu>
+              </div>
+            )}
           </Toolbar>
         </AppBar>
 
-        <Drawer open={this.props.navigationStore.drawerStatus} onClose={this.toggleDrawer}>
+        <Drawer open={this.props.portalStore.navigationStore.drawerStatus} onClose={this.toggleDrawer}>
           <div
             tabIndex={0}
             role="button"

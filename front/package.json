@@ -17,12 +17,14 @@
     "react-dom": "^16.3.2",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
+    "react-spinners": "^0.3.3",
     "styled-components": "^3.3.3",
     "typeface-roboto": "0.0.54"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build && cp build/index.html ../templates/index.html && cp -rf build/static/ ../static/",
+    "start": "REACT_APP_BACKEND_HOST=http://localhost:8000 react-app-rewired start",
+    "build": "REACT_APP_BACKEND_HOST=http://localhost:8000 react-app-rewired build && cp build/index.html ../templates/index.html && cp -rf build/static/ ../static/",
+    "build_prod": "REACT_APP_BACKEND_HOST=http://alkrk.toady.org react-app-rewired build && cp build/index.html ../templates/index.html && cp -rf build/static/ ../static/",
     "test": "react-app-rewired test --env=jsdom"
   }
 }
