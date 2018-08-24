@@ -139,6 +139,11 @@ export class PortalStore {
   fetchProfileCharacters(owner){
     return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/characters/?owner=${owner}`).then(response => response.data);
   }
+
+  @action.bound
+  searchCharacters(search_term){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/characters/?search=${search_term}`).then(response => response.data);
+  }
 }
 
 

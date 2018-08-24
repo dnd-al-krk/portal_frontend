@@ -33,6 +33,7 @@ export default class Characters extends React.Component{
     loading: true,
     characters: [],
     search: '',
+    searched: false,
   };
 
   componentDidMount(){
@@ -55,7 +56,17 @@ export default class Characters extends React.Component{
   }
 
   search(){
-
+    this.setState({
+      loading: true,
+      searched: true,
+    });
+    this.props.portalStore.searchCharacters(this.state.search)
+      .then((data) => {
+        this.setState({
+          characters: data,
+          loading: false,
+        })
+      })
   }
 
   render() {
@@ -71,7 +82,7 @@ export default class Characters extends React.Component{
               <Typography variant="title">
                 League players
               </Typography>
-              <Grid container spacing={8}>
+              <Grid container spacing={8} style={{margin: '20px 0'}}>
                 <Grid item xs={12} sm={9}>
                   <FormControl
                       style={{width: '100%'}}>
@@ -80,7 +91,14 @@ export default class Characters extends React.Component{
                       style={{width: '100%'}}
                       id="signIn-email"
                       type="text"
+                      autoFocus={this.state.searched}
                       value={this.state.search}
+                      onKeyPress={(e) => {
+                        if(e.charCode === 13){
+                          this.setState({search: e.target.value});
+                          this.search();
+                        }
+                      }}
                       onChange={(e) => { this.setState({search: e.target.value })}}
                     />
                   </FormControl>
