@@ -4,22 +4,22 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import LoadingDiv from "../common/LoadingDiv";
 import {ClipLoader} from "react-spinners";
 import {NarrowContent} from "../common/Content";
-import Typography from "fetchData@material-ui/core/Typography/Typography";
-import List from "fetchData@material-ui/core/List/List";
-import ListItem from "fetchData@material-ui/core/ListItem/ListItem";
-import Avatar from "fetchData@material-ui/core/Avatar/Avatar";
-import Person from "fetchData@material-ui/icons/Person";
-import ListItemText from "fetchData@material-ui/core/ListItemText/ListItemText";
+import Typography from "@material-ui/core/Typography/Typography";
+import List from "@material-ui/core/List/List";
+import ListItem from "@material-ui/core/ListItem/ListItem";
+import Avatar from "@material-ui/core/Avatar/Avatar";
+import Person from "@material-ui/icons/Person";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import ListItemSecondaryAction
-  from "fetchData@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction";
-import IconButton from "fetchData@material-ui/core/IconButton/IconButton";
-import ChevronRightIcon from "fetchData@material-ui/icons/ChevronRight";
+  from "@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction";
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import UndecoratedLink from "../common/UndecoratedLink";
-import Grid from "fetchData@material-ui/core/Grid/Grid";
-import InputLabel from "fetchData@material-ui/core/InputLabel/InputLabel";
-import Input from "fetchData@material-ui/core/Input/Input";
-import FormControl from "fetchData@material-ui/core/FormControl/FormControl";
-import Button from "fetchData@material-ui/core/Button/Button";
+import Grid from "@material-ui/core/Grid/Grid";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import Input from "@material-ui/core/Input/Input";
+import FormControl from "@material-ui/core/FormControl/FormControl";
+import Button from "@material-ui/core/Button/Button";
 
 const styles = (theme) => {
 
