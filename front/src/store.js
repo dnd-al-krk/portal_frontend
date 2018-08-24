@@ -11,7 +11,6 @@ const csrftoken = Cookies.get('csrftoken');
 export const axiosInstance = axios.create({
   headers: {
     'X-CSRFToken': csrftoken,
-    'Authorization': `JWT $token`
   }
 });
 
@@ -29,6 +28,15 @@ export class PortalStore {
   @observable userToken = null;
   @observable authenticated = false;
   @observable navigationStore = new NavigationStore(this);
+
+  @action.bound
+  fetchCurrentUser(){
+    if(this.isAuthenticated()){
+      console.log('fetching user data')
+      this.currentUser = new UserStore(this);
+      this.currentUser.fetchData();
+    }
+  }
 
   @action.bound
   autologin(){
@@ -61,27 +69,31 @@ export class PortalStore {
 
   @action.bound
   login(user, password){
-    return new Promise((resolve, reject) => {
-      axiosInstance.post(`${API_HOSTNAME}/token/auth/`, {
-        'username': user,
-        'password': password,
-      }).then((response) => {
-        this.userToken = response.data.token;
-        Cookies.set(JWT_TOKEN, this.userToken);
-        this.currentUser = new UserStore(this);
-        this.currentUser.fetchData()
-          .then(() => resolve(), () => reject())
-          .catch((err) => reject(err));
-      }).catch((err) => {
-        reject(err);
-      })
-    })
+    return axiosInstance.post(`${API_HOSTNAME}/token/auth/`, {
+      'username': user,
+      'password': password,
+    }).then((response) => {
+      this.userToken = response.data.token;
+      Cookies.set(JWT_TOKEN, this.userToken);
+      this.currentUser = new UserStore(this);
+      this.currentUser.fetchData();
+    });
   }
 
   @action.bound
   signOut(){
     this.userToken = null;
     Cookies.remove(JWT_TOKEN);
+  }
+
+  @action.bound
+  fetch_profiles() {
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/profiles/`).then(response => response.data);
+  }
+
+  @action.bound
+  get_profile(id){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/profiles/${id}/`).then(response => response.data);
   }
 }
 
@@ -103,8 +115,8 @@ export class NavigationStore {
 
 export class UserStore {
   @observable rootStore;
-  @observable profile_id;
-  @observable user_id;
+  @observable profileID;
+  @observable userID;
   @observable first_name;
   @observable last_name;
   @observable nickname;
@@ -121,45 +133,35 @@ export class UserStore {
 
   @action.bound
   fetchData(){
-    return new Promise((resolve, reject) => {
-      getAxiosInstance(this.getToken()).get(`${API_HOSTNAME}/current_user/`)
-        .then((response) => {
-          const data = response.data;
-          this.profile_id = data.id;
-          this.user_id = data.user.id;
-          this.first_name = data.user.first_name;
-          this.last_name = data.user.last_name;
-          this.nickname = data.nickname;
-          this.dci = data.dci;
-          resolve(response.data);
-        })
-        .catch((err) => {
-          this.rootStore.signOut();
-          reject(err);
-        });
-    });
+    return getAxiosInstance(this.getToken()).get(`${API_HOSTNAME}/current_user/`)
+      .then((response) => {
+        const data = response.data;
+        this.profileID = data.id;
+        this.userID = data.user.id;
+        this.first_name = data.user.first_name;
+        this.last_name = data.user.last_name;
+        this.nickname = data.nickname;
+        this.dci = data.dci;
+      })
+      .catch((err) => {
+        this.rootStore.signOut();
+      });
   }
 
   @action.bound
   saveData(){
-    return new Promise((resolve, reject) => {
-      getAxiosInstance(this.getToken()).put(`${API_HOSTNAME}/profiles/${this.profile_id}/`,
-        {
-          'id': this.profile_id,
-          'user': {
-            'id': this.user_id,
-            'first_name': this.first_name,
-            'last_name': this.last_name,
-          },
-          'nickname': this.nickname,
-          'dci': this.dci,
-        }).then((response) => {
-          resolve(response.data);
-      })
-        .catch((err) => {
-          this.rootStore.signOut();
-          reject(err);
-        });
+    return getAxiosInstance(this.getToken()).put(`${API_HOSTNAME}/profiles/${this.profile_id}/`,
+      {
+        'id': this.profile_id,
+        'user': {
+          'id': this.user_id,
+          'first_name': this.first_name,
+          'last_name': this.last_name,
+        },
+        'nickname': this.nickname,
+        'dci': this.dci,
+    }).catch((err) => {
+      this.rootStore.signOut();
     });
   }
 }

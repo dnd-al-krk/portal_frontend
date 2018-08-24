@@ -1,10 +1,7 @@
 import logging
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
-from django.contrib.auth.validators import UnicodeUsernameValidator
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
 
 from ..models import PlayerCharacter, DMNote, Profile
 
@@ -33,10 +30,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=True)
+    role = serializers.SerializerMethodField()
+    characters_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
-        fields = ('id', 'user', 'nickname', 'dci')
+        fields = ('id', 'user', 'nickname', 'dci', 'role', 'characters_count')
 
     def update(self, instance, validated_data):
         try:
@@ -51,3 +50,9 @@ class ProfileSerializer(serializers.ModelSerializer):
             UserSerializer().update(instance=instance.user, validated_data=user_data)
 
         return instance
+
+    def get_role(self, obj):
+        return obj.get_role_display()
+
+    def get_characters_count(self, obj):
+        return obj.characters.all().count()

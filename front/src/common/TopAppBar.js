@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 import Drawer from '@material-ui/core/Drawer';
 
-import dnd_logo_wide from '../images/dnd_logo_wide.png';
+import al_krakow_logo from '../images/al_krakow_logo.png';
 
 import SidebarNavigationList from "./SidebarNavigationList";
 import Menu from "@material-ui/core/Menu/Menu";
@@ -27,8 +27,7 @@ const styles = (theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    position: 'absolute',
-    left: '-5px',
+
   },
   toolbar: {
     padding: 0,
@@ -46,7 +45,8 @@ const styles = (theme) => ({
     flexGrow: 1,
   },
   logo: {
-    height: '50px',
+    height: '45px',
+    marginTop: '7px',
   },
   rightNav: {
     position: 'absolute',
@@ -59,9 +59,7 @@ const styles = (theme) => ({
 @inject('portalStore') @observer
 class TopAppBar extends React.Component {
   state = {
-    auth: true,
     accountAnchorEl: null,
-    anonymousAnchorEl: null,
     drawerMenu: true,
   };
 
@@ -78,7 +76,9 @@ class TopAppBar extends React.Component {
   };
 
   logout = () => {
-    this.handleClose();
+    this.setState({
+      accountAnchorEl: null,
+    });
     this.props.portalStore.signOut();
     this.props.history.push('/');
   };
@@ -88,6 +88,9 @@ class TopAppBar extends React.Component {
   };
 
   gotoLogin = () => {
+    this.setState({
+      accountAnchorEl: null,
+    });
     this.props.history.push('/login')
   };
 
@@ -101,22 +104,24 @@ class TopAppBar extends React.Component {
     );
 
     const accountOpen = Boolean(this.state.accountAnchorEl);
-    const anonymousOpen = Boolean(this.state.anonymousAnchorEl);
 
     return (
       <div className={classes.root}>
         <AppBar className={ classes.appBar }>
           <Toolbar className={ classes.toolbar }>
-            <Link to="/" className={ classes.link }>
-            <Typography variant="title" color="inherit">
-              <img src={ dnd_logo_wide } className={classes.logo} alt="logo" />
-            </Typography>
-            </Link>
 
             <IconButton color="inherit" className={ classes.menuButton } aria-label="Menu"
             onClick={this.toggleDrawer}>
               <MenuIcon />
             </IconButton>
+
+
+            <Typography variant="title" color="inherit">
+              <Link to="/" className={ classes.link }>
+                <img src={ al_krakow_logo } className={classes.logo} alt="logo" />
+              </Link>
+            </Typography>
+
 
             {!this.isAuthenticated() && (
               <div className={classes.rightNav}>
