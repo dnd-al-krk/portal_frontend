@@ -5,6 +5,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from "@material-ui/core/Paper/Paper";
 import Button from "@material-ui/core/Button/Button";
 import {inject, observer} from "mobx-react/index";
+import Typography from "../../node_modules/@material-ui/core/Typography/Typography";
 
 const styles = theme => ({
   root: {
@@ -83,10 +84,10 @@ class Account extends React.Component {
     return (
       <div className={classes.root}>
         <form className={classes.container} noValidate autoComplete="off">
-          <Paper className={classes.paperContainer}>
+          <div className={classes.paperContainer}>
             <Grid container spacing={24}>
               <Grid item xs={12}>
-                <h1>Change account settings</h1>
+                <Typography variant="title">Change account settings</Typography>
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -138,7 +139,7 @@ class Account extends React.Component {
                 </Button>
               </Grid>
             </Grid>
-          </Paper>
+          </div>
         </form>
       </div>
     );

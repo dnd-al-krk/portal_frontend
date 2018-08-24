@@ -85,15 +85,12 @@ export class PortalStore {
 
   @action.bound
   fetch_profiles() {
-    return new Promise((resolve, reject) => {
-      getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/profiles/`).then(
-        (response) => {
-          resolve(response.data);
-        }
-      ).catch((err) => {
-        reject(err)
-      });
-    });
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/profiles/`).then(response => response.data);
+  }
+
+  @action.bound
+  get_profile(id){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/profiles/${id}/`).then(response => response.data);
   }
 }
 

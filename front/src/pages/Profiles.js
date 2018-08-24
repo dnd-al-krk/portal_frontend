@@ -15,12 +15,10 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction/L
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import { ClipLoader } from 'react-spinners';
 import LoadingDiv from "../common/LoadingDiv";
+import Typography from "../../node_modules/@material-ui/core/Typography/Typography";
+import {NarrowContent} from "../common/Content";
 
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    padding: '0px 50px',
-  },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
@@ -68,22 +66,26 @@ class Profiles extends React.Component {
     );
   };
 
+  gotoProfile = (id) => {
+    this.props.history.push(`/profiles/${id}`);
+  };
+
 
   profiles_list() {
     if(this.state.profiles){
       return this.state.profiles.map(profile => {
                 return (
-                  <ListItem key={profile.id}>
+                  <ListItem key={profile.id} button onClick={() => this.gotoProfile(profile.id)}>
                     <Avatar>
                       <Person />
                     </Avatar>
                     <ListItemText primary={`${profile.user.first_name} ${profile.user.last_name} (${profile.nickname})`}
-                                  secondary="
-                                  0 characters |
-                                  5 games played |
-                                  Dungeon Master" />
+                                  secondary={`
+                                  ${profile.role} | ${profile.characters_count} characters
+
+                                  `} />
                     <ListItemSecondaryAction>
-                      <IconButton aria-label="See profile">
+                      <IconButton aria-label="See profile" onClick={() => this.gotoProfile(profile.id)}>
                         <ChevronRightIcon />
                       </IconButton>
                     </ListItemSecondaryAction>
@@ -99,16 +101,19 @@ class Profiles extends React.Component {
     const {classes} = this.props;
 
     return (
-      <div className={classes.root}>
+      <NarrowContent>
         <form className={classes.container} noValidate autoComplete="off">
             <Grid container spacing={24}>
               <Grid item xs={12}>
-                {this.state.loading && (
+                <Typography variant="title">
+                  League players
+                </Typography>
+                {this.state.loading ? (
                   <LoadingDiv>
                     <ClipLoader color={'#FFDE00'} loading={this.state.loading}  />
                   </LoadingDiv>
-                )}
-                {!this.state.loading && (
+                )
+                : (
                   <List>
                     { this.profiles_list() }
                   </List>
@@ -116,7 +121,7 @@ class Profiles extends React.Component {
               </Grid>
             </Grid>
         </form>
-      </div>
+      </NarrowContent>
     );
   }
 }
