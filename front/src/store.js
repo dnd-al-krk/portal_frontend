@@ -82,7 +82,10 @@ export class PortalStore {
       this.userToken = response.data.token;
       Cookies.set(JWT_TOKEN, this.userToken);
       this.currentUser = new UserStore(this);
-      this.currentUser.fetchData();
+      this.currentUser.fetchData()
+        .then(() => this.fetchClasses().then(data => this.classes = data))
+        .then(() => this.fetchRaces().then(data => this.classes = data))
+        .then(() => this.fetchFactions().then(data => this.classes = data));
     });
   }
 

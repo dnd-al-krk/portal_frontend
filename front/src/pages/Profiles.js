@@ -78,7 +78,7 @@ class Profiles extends React.Component {
                     </Avatar>
                     <ListItemText primary={`${profile.user.first_name} ${profile.user.last_name} (${profile.nickname})`}
                                   secondary={`
-                                  ${profile.role} | ${profile.characters_count} characters
+                                  ${profile.role} | ${profile.characters_count} character${profile.characters_count !== 1 ? 's' : ''}
 
                                   `} />
                     <ListItemSecondaryAction>
