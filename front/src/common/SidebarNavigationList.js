@@ -24,11 +24,6 @@ const styles = theme => ({
 @inject('portalStore') @observer
 export default class SidebarNavigationList extends React.Component{
 
-  constructor(props){
-    super(props);
-    this.props.portalStore.fetchCurrentUser();
-  }
-
   currentProfile(){
     return this.props.portalStore.currentUser;
   }

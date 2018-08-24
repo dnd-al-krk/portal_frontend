@@ -14,10 +14,7 @@ export default class Loader extends Component {
 
   componentDidMount() {
     if(!this.props.portalStore.currentUser)
-      this.props.portalStore.autologin()
-        .then(
-          () => { this.removeLoader() },
-          () => { this.removeLoader() });
+      this.props.portalStore.autologin().then(() => { this.removeLoader() });
   };
 
   removeLoader = () => {

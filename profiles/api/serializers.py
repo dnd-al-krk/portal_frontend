@@ -3,16 +3,57 @@ import logging
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from ..models import PlayerCharacter, DMNote, Profile
-
+from ..models import PlayerCharacter, DMNote, Profile, CharacterClass, CharacterRace, CharacterFaction
 
 logger = logging.getLogger(__name__)
 
 
+class CharacterClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CharacterClass
+        fields = ('id', 'name')
+
+
+class CharacterRaceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CharacterRace
+        fields = ('id', 'name')
+
+
+class CharacterFactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CharacterFaction
+        fields = ('id', 'name')
+
+
 class PlayerCharacterSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = PlayerCharacter
-        fields = ('id', 'name', 'pc_class', 'race', 'faction', 'level', )
+        fields = ('id', 'name', 'pc_class', 'race', 'faction', 'level', 'created', 'modified', )
+
+
+class PlayerCharacterListSerializer(serializers.ModelSerializer):
+    pc_class = serializers.SerializerMethodField()
+    race = serializers.SerializerMethodField()
+    faction = serializers.SerializerMethodField()
+    owner_name = serializers.SerializerMethodField()
+
+    def get_owner_name(self, obj):
+        return str(obj.owner)
+
+    def get_pc_class(self, obj):
+        return str(obj.pc_class)
+
+    def get_race(self, obj):
+        return str(obj.race)
+
+    def get_faction(self, obj):
+        return str(obj.faction)
+
+    class Meta:
+        model = PlayerCharacter
+        fields = ('id', 'owner', 'owner_name', 'name', 'pc_class', 'race', 'faction', 'level', 'created', 'modified', )
 
 
 class DMNoteSerializer(serializers.ModelSerializer):

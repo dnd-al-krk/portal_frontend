@@ -46,7 +46,7 @@ class Profiles extends React.Component {
   }
 
   setStateFromStore = () => {
-    this.props.portalStore.fetch_profiles().then(
+    this.props.portalStore.fetchProfiles().then(
       (data) => {
         this.setState({
           profiles: data,

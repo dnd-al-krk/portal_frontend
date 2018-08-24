@@ -8,6 +8,9 @@ router = DefaultRouter()
 router.register(r'characters', profiles_views.PlayerCharacterViewSet)
 router.register(r'notes', profiles_views.DMNoteViewSet)
 router.register(r'profiles', profiles_views.ProfileViewSet)
+router.register(r'classes', profiles_views.CharacterClassListView)
+router.register(r'races', profiles_views.CharacterRaceListView)
+router.register(r'factions', profiles_views.CharacterFactionListView)
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [

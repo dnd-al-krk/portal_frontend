@@ -28,11 +28,14 @@ export class PortalStore {
   @observable userToken = null;
   @observable authenticated = false;
   @observable navigationStore = new NavigationStore(this);
+  @observable classes = [];
+  @observable races = [];
+  @observable factions = [];
 
   @action.bound
   fetchCurrentUser(){
     if(this.isAuthenticated()){
-      console.log('fetching user data')
+      console.log('fetching user data');
       this.currentUser = new UserStore(this);
       this.currentUser.fetchData();
     }
@@ -47,6 +50,9 @@ export class PortalStore {
         // refresh token
         this.currentUser = new UserStore(this);
         this.currentUser.fetchData()
+          .then(() => this.fetchClasses().then(data => this.classes = data))
+          .then(() => this.fetchRaces().then(data => this.classes = data))
+          .then(() => this.fetchFactions().then(data => this.classes = data))
           .then(() => resolve(), () => { reject() })
           .catch((err) => { reject(err); });
       }
@@ -87,13 +93,38 @@ export class PortalStore {
   }
 
   @action.bound
-  fetch_profiles() {
-    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/profiles/`).then(response => response.data);
+  fetchData(name){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/${name}/`).then(response => response.data);
   }
 
   @action.bound
-  get_profile(id){
-    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/profiles/${id}/`).then(response => response.data);
+  getData(name, id){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/${name}/${id}/`).then(response => response.data);
+  }
+
+  @action.bound
+  fetchProfiles() {
+    return this.fetchData('profiles')
+  }
+
+  @action.bound
+  getProfile(id){
+    return this.getData('profiles', id);
+  }
+
+  @action.bound
+  fetchClasses(){
+    return this.fetchData('classes');
+  }
+
+  @action.bound
+  fetchRaces(){
+    return this.fetchData('races');
+  }
+
+  @action.bound
+  fetchFactions(){
+    return this.fetchData('factions');
   }
 }
 

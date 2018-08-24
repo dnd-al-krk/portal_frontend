@@ -60,7 +60,7 @@ export default class Profile extends React.Component {
   }
 
   setStateFromStore(){
-    this.props.portalStore.get_profile(this.state.id).then(
+    this.props.portalStore.getProfile(this.state.id).then(
       (data) => {
         this.setState({
           profile: data,
