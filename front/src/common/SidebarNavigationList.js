@@ -33,13 +33,17 @@ export default class SidebarNavigationList extends React.Component{
     return this.props.portalStore.currentUser;
   }
 
+  isAuth(){
+    return this.props.portalStore.isAuthenticated();
+  }
+
   render() {
     const {classes} = this.props;
 
     return (
       <div className={classes.root}>
         <List component="nav">
-          <UndecoratedLink to={`/profiles/${this.currentProfile().profileID}`}>
+          {this.isAuth() && (<UndecoratedLink to={`/profiles/${this.currentProfile().profileID}`}>
             <ListItem button>
               <ListItemIcon>
                 <Settings/>
@@ -47,7 +51,7 @@ export default class SidebarNavigationList extends React.Component{
               <ListItemText primary="Your profile">
               </ListItemText>
             </ListItem>
-          </UndecoratedLink>
+          </UndecoratedLink>)}
           <UndecoratedLink to="/profiles">
             <ListItem button>
               <ListItemIcon>
