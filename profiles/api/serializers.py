@@ -1,8 +1,12 @@
-from django.contrib.auth.models import User
+import logging
+
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
 
 from ..models import PlayerCharacter, DMNote, Profile
+
+
+logger = logging.getLogger(__name__)
 
 
 class PlayerCharacterSerializer(serializers.ModelSerializer):
@@ -18,20 +22,20 @@ class DMNoteSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    nickname = serializers.CharField(source='username',
-                                     validators=[UniqueValidator(queryset=User.objects.all())])
 
     class Meta:
-        model = User
-        fields = ('id', 'first_name', 'last_name', 'nickname', )
+        model = get_user_model()
+        fields = ('id', 'first_name', 'last_name', )
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=True)
+    role = serializers.SerializerMethodField()
+    characters_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
-        fields = ('id', 'user', 'dci')
+        fields = ('id', 'user', 'nickname', 'dci', 'role', 'characters_count')
 
     def update(self, instance, validated_data):
         try:
@@ -40,8 +44,15 @@ class ProfileSerializer(serializers.ModelSerializer):
             pass
         else:
             instance.dci = validated_data.get('dci', instance.dci)
+            instance.nickname = validated_data.get('nickname', instance.nickname)
             instance.save()
 
-            UserSerializer().update(instance.user, user_data)
+            UserSerializer().update(instance=instance.user, validated_data=user_data)
 
         return instance
+
+    def get_role(self, obj):
+        return obj.get_role_display()
+
+    def get_characters_count(self, obj):
+        return obj.characters.all().count()

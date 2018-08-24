@@ -17,8 +17,9 @@ class Profile(models.Model):
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    nickname = models.CharField(_('Nickname'), max_length=255, blank=True, null=True)
     dci = models.IntegerField(_('DCI'), blank=True, null=True)
-    role = models.CharField(_('Role'), max_length=20, default=ROLE_PLAYER)
+    role = models.CharField(_('Role'), max_length=20, default=ROLE_PLAYER, choices=USER_TYPE)
 
     def __str__(self):
         return '{} {}'.format(self.user.first_name, self.user.last_name)
@@ -49,7 +50,7 @@ class CharacterFaction(UUIDModel):
 
 
 class PlayerCharacter(UUIDModel):
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='characters')
     name = models.CharField(_('Character name'), max_length=255)
     pc_class = models.ForeignKey(CharacterClass, on_delete=models.CASCADE)
     race = models.ForeignKey(CharacterRace, on_delete=models.CASCADE)

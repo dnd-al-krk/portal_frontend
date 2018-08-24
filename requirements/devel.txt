@@ -1,4 +1,6 @@
 -r base.txt
 
 fabric3==1.13.1.post1
+pytest==3.6.3
 pytest-django==3.3.3
+django-cors-headers==2.4.0

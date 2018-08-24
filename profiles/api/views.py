@@ -1,5 +1,7 @@
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .permissions import IsOwnerOrReadOnly, IsDMOwnerOrReadOnly, OnlyDMCanRead, IsProfileOwnerOrReadOnly
 from .serializers import PlayerCharacterSerializer, DMNoteSerializer, ProfileSerializer
@@ -38,3 +40,9 @@ class ProfileViewSet(mixins.UpdateModelMixin,
     queryset = Profile.objects.all()
     permission_classes = [IsAuthenticated,
                           IsProfileOwnerOrReadOnly]
+
+
+class CurrentUserView(APIView):
+    def get(self, request):
+        serializer = ProfileSerializer(request.user.profile)
+        return Response(serializer.data)

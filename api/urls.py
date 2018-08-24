@@ -11,5 +11,6 @@ router.register(r'profiles', profiles_views.ProfileViewSet)
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
-    url(r'^', include(router.urls))
+    url(r'^', include(router.urls)),
+    url(r'^current_user/?$', profiles_views.CurrentUserView.as_view()),
 ]

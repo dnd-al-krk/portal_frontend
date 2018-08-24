@@ -111,6 +111,15 @@ def deploy():
 
     fetch()
     pull()
+
+    with cd('front'):
+        run('npm install')
+        run('npm run build_prod')
+
+    with cd_project():
+        run('cp -r static/ public/static/')
+        run('rm -r static')
+
     with virtualenv():
         run('pip install -r requirements/{}.txt'.format(env.environment))
 
