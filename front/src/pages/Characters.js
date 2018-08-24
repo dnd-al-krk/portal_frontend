@@ -4,22 +4,22 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import LoadingDiv from "../common/LoadingDiv";
 import {ClipLoader} from "react-spinners";
 import {NarrowContent} from "../common/Content";
-import Typography from "../../node_modules/@material-ui/core/Typography/Typography";
-import List from "../../node_modules/@material-ui/core/List/List";
-import ListItem from "../../node_modules/@material-ui/core/ListItem/ListItem";
-import Avatar from "../../node_modules/@material-ui/core/Avatar/Avatar";
-import Person from "../../node_modules/@material-ui/icons/Person";
-import ListItemText from "../../node_modules/@material-ui/core/ListItemText/ListItemText";
+import Typography from "fetchData@material-ui/core/Typography/Typography";
+import List from "fetchData@material-ui/core/List/List";
+import ListItem from "fetchData@material-ui/core/ListItem/ListItem";
+import Avatar from "fetchData@material-ui/core/Avatar/Avatar";
+import Person from "fetchData@material-ui/icons/Person";
+import ListItemText from "fetchData@material-ui/core/ListItemText/ListItemText";
 import ListItemSecondaryAction
-  from "../../node_modules/@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction";
-import IconButton from "../../node_modules/@material-ui/core/IconButton/IconButton";
-import ChevronRightIcon from "../../node_modules/@material-ui/icons/ChevronRight";
+  from "fetchData@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction";
+import IconButton from "fetchData@material-ui/core/IconButton/IconButton";
+import ChevronRightIcon from "fetchData@material-ui/icons/ChevronRight";
 import UndecoratedLink from "../common/UndecoratedLink";
-import Grid from "../../node_modules/@material-ui/core/Grid/Grid";
-import InputLabel from "../../node_modules/@material-ui/core/InputLabel/InputLabel";
-import Input from "../../node_modules/@material-ui/core/Input/Input";
-import FormControl from "../../node_modules/@material-ui/core/FormControl/FormControl";
-import Button from "../../node_modules/@material-ui/core/Button/Button";
+import Grid from "fetchData@material-ui/core/Grid/Grid";
+import InputLabel from "fetchData@material-ui/core/InputLabel/InputLabel";
+import Input from "fetchData@material-ui/core/Input/Input";
+import FormControl from "fetchData@material-ui/core/FormControl/FormControl";
+import Button from "fetchData@material-ui/core/Button/Button";
 
 const styles = (theme) => {
 
