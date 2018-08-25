@@ -20,6 +20,7 @@ import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import Input from "@material-ui/core/Input/Input";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import Button from "@material-ui/core/Button/Button";
+import CharactersList from "../common/CharactersList";
 
 const styles = (theme) => {
 
@@ -80,7 +81,7 @@ export default class Characters extends React.Component{
           : (
             <div>
               <Typography variant="title">
-                League players
+                League characters
               </Typography>
               <Grid container spacing={8} style={{margin: '20px 0'}}>
                 <Grid item xs={12} sm={9}>
@@ -107,29 +108,7 @@ export default class Characters extends React.Component{
                   <Button variant={'contained'} onClick={() => this.search()}>Search</Button>
                 </Grid>
               </Grid>
-              <List>
-              {this.state.characters.map(character =>
-                (<div key={`player-character-${character.id}`}>
-                  <ListItem key={character.id}>
-                    <Avatar>
-                      <Person />
-                    </Avatar>
-                    <ListItemText primary={character.name}
-                                  secondary={(
-                                    <span>
-                                      Played by <UndecoratedLink to={`/profiles/${character.owner}/`}>{character.owner_name}</UndecoratedLink> in 4 adventures | {character.faction}
-                                    </span>
-                                  )}>
-                    </ListItemText>
-                    <ListItemSecondaryAction>
-                      <IconButton aria-label="See character">
-                        <ChevronRightIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </div>)
-              )}
-              </List>
+              <CharactersList characters={this.state.characters}/>
             </div>
           )
         }

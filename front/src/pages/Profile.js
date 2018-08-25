@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid/Grid";
 import LoadingDiv from "../common/LoadingDiv";
 import {ClipLoader} from "react-spinners";
 import {NarrowContent} from "../common/Content";
+import CharactersList from "../common/CharactersList";
 
 
 const styles = theme => ({
@@ -117,11 +118,7 @@ export default class Profile extends React.Component {
               <Typography variant="headline">
                 Characters
               </Typography>
-              {this.state.characters.map(character => (
-                <div key={`player-character-${character.id}`}>
-                  {character.name}
-                </div>
-              ))}
+              <CharactersList characters={this.state.characters} use_by={false}/>
             </Grid>
           </Grid>
           )}
