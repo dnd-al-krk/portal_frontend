@@ -1,14 +1,14 @@
 import React from 'react';
-import withStyles from "../../node_modules/@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import {NarrowContent} from "../common/Content";
-import Typography from "../../node_modules/@material-ui/core/Typography/Typography";
-import Grid from "../../node_modules/@material-ui/core/Grid/Grid";
-import InputLabel from "../../node_modules/@material-ui/core/InputLabel/InputLabel";
-import Input from "../../node_modules/@material-ui/core/Input/Input";
-import FormControl from "../../node_modules/@material-ui/core/FormControl/FormControl";
+import Typography from "@material-ui/core/Typography/Typography";
+import Grid from "@material-ui/core/Grid/Grid";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import Input from "@material-ui/core/Input/Input";
+import FormControl from "@material-ui/core/FormControl/FormControl";
 import classNames from 'classnames';
-import MenuItem from "../../node_modules/@material-ui/core/MenuItem/MenuItem";
-import Select from "../../node_modules/@material-ui/core/Select/Select";
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
+import Select from "@material-ui/core/Select/Select";
 import {inject, observer} from "mobx-react";
 
 const styles = (theme) => ({
