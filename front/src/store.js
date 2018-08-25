@@ -51,8 +51,8 @@ export class PortalStore {
         this.currentUser = new UserStore(this);
         this.currentUser.fetchData()
           .then(() => this.fetchClasses().then(data => this.classes = data))
-          .then(() => this.fetchRaces().then(data => this.classes = data))
-          .then(() => this.fetchFactions().then(data => this.classes = data))
+          .then(() => this.fetchRaces().then(data => this.races = data))
+          .then(() => this.fetchFactions().then(data => this.factions = data))
           .then(() => resolve(), () => { reject() })
           .catch((err) => { reject(err); });
       }
@@ -84,8 +84,8 @@ export class PortalStore {
       this.currentUser = new UserStore(this);
       this.currentUser.fetchData()
         .then(() => this.fetchClasses().then(data => this.classes = data))
-        .then(() => this.fetchRaces().then(data => this.classes = data))
-        .then(() => this.fetchFactions().then(data => this.classes = data));
+        .then(() => this.fetchRaces().then(data => this.races = data))
+        .then(() => this.fetchFactions().then(data => this.factions = data));
     });
   }
 

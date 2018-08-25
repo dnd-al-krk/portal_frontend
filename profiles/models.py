@@ -54,7 +54,7 @@ class PlayerCharacter(UUIDModel):
     name = models.CharField(_('Character name'), max_length=255)
     pc_class = models.ForeignKey(CharacterClass, on_delete=models.CASCADE)
     race = models.ForeignKey(CharacterRace, on_delete=models.CASCADE)
-    faction = models.ForeignKey(CharacterFaction, on_delete=models.CASCADE)
+    faction = models.ForeignKey(CharacterFaction, on_delete=models.CASCADE, blank=True, null=True)
     level = models.PositiveIntegerField(_('Level'), default=1)
     created = models.DateTimeField(_('Created'), auto_now_add=True)
     modified = models.DateTimeField(_('Modified'), auto_now=True)

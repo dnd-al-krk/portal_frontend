@@ -20,6 +20,7 @@ import Login from "./common/Login";
 import Loader from "./common/Loader";
 import Profiles from "./pages/Profiles";
 import Profile from "./pages/Profile";
+import CharacterCreate from "./pages/CharacterCreate";
 
 
 const portalStore = new PortalStore();
@@ -45,7 +46,8 @@ class App extends Component {
                 <Route exact path="/" component={Home}/>
                 <RouteRequiresLogin exact path="/profiles" component={Profiles}/>
                 <RouteRequiresLogin exact path="/profiles/:id" component={Profile}/>
-                <RouteRequiresLogin path="/characters" component={Characters}/>
+                <RouteRequiresLogin exact path="/characters" component={Characters}/>
+                <RouteRequiresLogin exact path="/characters/create" component={CharacterCreate}/>
                 <RouteRequiresLogin path="/account" component={Account}/>
                 <Route exact path="/login" component={Login}/>
               </PushedDiv>

@@ -5,16 +5,6 @@ import LoadingDiv from "../common/LoadingDiv";
 import {ClipLoader} from "react-spinners";
 import {NarrowContent} from "../common/Content";
 import Typography from "@material-ui/core/Typography/Typography";
-import List from "@material-ui/core/List/List";
-import ListItem from "@material-ui/core/ListItem/ListItem";
-import Avatar from "@material-ui/core/Avatar/Avatar";
-import Person from "@material-ui/icons/Person";
-import ListItemText from "@material-ui/core/ListItemText/ListItemText";
-import ListItemSecondaryAction
-  from "@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import UndecoratedLink from "../common/UndecoratedLink";
 import Grid from "@material-ui/core/Grid/Grid";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import Input from "@material-ui/core/Input/Input";
