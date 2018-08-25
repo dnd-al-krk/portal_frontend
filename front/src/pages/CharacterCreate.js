@@ -68,7 +68,7 @@ export class SelectField extends React.Component {
             <MenuItem value=''>None</MenuItem>
           )}
           {options.map(option => (
-            <MenuItem key={`select-${name}-{$option-id}`} value={option.id}>{option.name}</MenuItem>
+            <MenuItem key={`select-${name}-${option.id}`} value={option.id}>{option.name}</MenuItem>
           ))}
         </Select>
       </FormControl>
