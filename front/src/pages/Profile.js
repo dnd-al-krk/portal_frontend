@@ -9,6 +9,7 @@ import LoadingDiv from "../common/LoadingDiv";
 import {ClipLoader} from "react-spinners";
 import {NarrowContent} from "../common/Content";
 import CharactersList from "../common/CharactersList";
+import Button from "@material-ui/core/Button/Button";
 
 
 const styles = theme => ({
@@ -89,6 +90,10 @@ export default class Profile extends React.Component {
       );
   }
 
+  gotoCharacterCreate = () => {
+    this.props.history.push('/characters/create');
+  };
+
   render() {
     const {classes} = this.props;
 
@@ -119,6 +124,7 @@ export default class Profile extends React.Component {
                 Characters
               </Typography>
               <CharactersList characters={this.state.characters} use_by={false}/>
+              <Button variant={'contained'} onClick={this.gotoCharacterCreate}>Add new character</Button>
             </Grid>
           </Grid>
           )}

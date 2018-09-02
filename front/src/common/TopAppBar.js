@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import {observer, inject} from 'mobx-react';
 import { Link } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import UndecoratedLink from "./UndecoratedLink";
 import {withRouter} from "react-router";
 import Button from "@material-ui/core/Button/Button";
+import Hidden from "@material-ui/core/Hidden/Hidden";
 
 
 const styles = (theme) => ({
@@ -133,6 +135,14 @@ class TopAppBar extends React.Component {
 
             {this.isAuthenticated() && (
               <div className={classes.rightNav}>
+                <Hidden xsDown>
+                  <IconButton
+                    onClick={() => this.props.history.push('/characters/create')}
+                    color="inherit"
+                  >
+                    <PersonAddIcon />
+                  </IconButton>
+                </Hidden>
                 <IconButton
                   aria-owns={accountOpen ? 'menu-appbar' : null}
                   aria-haspopup="true"

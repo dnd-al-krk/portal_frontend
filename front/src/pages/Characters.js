@@ -98,6 +98,7 @@ export default class Characters extends React.Component{
                   <Button variant={'contained'} onClick={() => this.search()}>Search</Button>
                 </Grid>
               </Grid>
+              <Button variant={'contained'} onClick={this.gotoCharacterCreate}>Add new character</Button>
               <CharactersList characters={this.state.characters}/>
             </div>
           )
