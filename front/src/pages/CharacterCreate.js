@@ -3,78 +3,18 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import {NarrowContent} from "../common/Content";
 import Typography from "@material-ui/core/Typography/Typography";
 import Grid from "@material-ui/core/Grid/Grid";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import Input from "@material-ui/core/Input/Input";
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import classNames from 'classnames';
-import MenuItem from "@material-ui/core/MenuItem/MenuItem";
-import Select from "@material-ui/core/Select/Select";
 import {inject, observer} from "mobx-react";
+import Button from "@material-ui/core/Button/Button";
+import Snackbar from "@material-ui/core/Snackbar/Snackbar";
+import {InputField, SelectField} from "../common/Fields";
 
 const styles = (theme) => ({
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: '100%',
-  },
-  margin: {
-    margin: theme.spacing.unit,
-  },
-
-  formControl: {
-    margin: theme.spacing.unit,
-    minWidth: 120,
-  },
+  addButton: {
+    marginTop: 20,
+    float: 'right',
+  }
 });
 
-@withStyles(styles, {withTheme: true})
-export  class InputField extends React.Component {
-  render(){
-
-    const {classes, name, label, onChange, value, type} = this.props;
-
-    return (
-      <FormControl className={classNames(classes.margin, classes.textField)}>
-        <InputLabel htmlFor={`character-create-${name}`}>{label}</InputLabel>
-        <Input
-          id={`character-create-${name}`}
-          value={value}
-          onChange={onChange}
-          type={type !== undefined ? type : 'text'}
-        />
-      </FormControl>
-    )
-  }
-}
-
-@withStyles(styles, {withTheme: true})
-export class SelectField extends React.Component {
-  render() {
-
-    const {classes, name, label, value, onChange, options, blank} = this.props;
-
-    return (
-      <FormControl className={classNames(classes.margin, classes.textField)}>
-        <InputLabel htmlFor={`${name}-select`}>{label}</InputLabel>
-        <Select
-          value={value}
-          onChange={onChange}
-          inputProps={{
-            name: `${name}`,
-            id: `${name}-select`,
-          }}
-        >
-          {(blank !== undefined && blank === true) && (
-            <MenuItem value=''>None</MenuItem>
-          )}
-          {options.map(option => (
-            <MenuItem key={`select-${name}-${option.id}`} value={option.id}>{option.name}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    )
-  }
-}
 
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
@@ -85,12 +25,63 @@ export default class CharacterCreate extends React.Component {
     level: 1,
     race_pick: '',
     class_pick: '',
+    race_pick_error: '',
+    class_pick_error: '',
     faction_pick: '',
+    buttonDisabled: false,
+    buttonText: 'Add character',
+    snackbarOpen: false,
   };
 
 
   handleChange = prop => event => {
     this.setState({ [prop]: event.target.value });
+  };
+
+  isFormValid = () => {
+    const s = this.state;
+    if(s.race_pick.length < 1) { this.setState({race_pick_error: 'No race selected'}); return false; }
+    if(s.class_pick.length < 1) return false;
+    if(s.level > 20 || s.level < 1) return false;
+    return s.name.length > 0;
+  };
+
+  addCharacter = () => {
+    const s = this.state;
+    if(this.isFormValid()) {
+      this.setState({
+        buttonDisabled: true,
+        buttonText: 'Adding...',
+      });
+      this.props.portalStore.createCharacter({
+        name: s.name,
+        level: s.level,
+        race: s.race_pick,
+        pc_class: s.class_pick,
+        faction: s.faction_pick,
+      }).then(response => {
+        this.setState({
+          buttonDisabled: false,
+          buttonText: 'Add character',
+        });
+        this.props.history.push('/profiles/' + this.props.portalStore.currentUser.profileID);
+      });
+    }
+    else {
+      this.setState({
+        snackbarOpen: true,
+      });
+    }
+  };
+
+  handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({
+        snackbarOpen: false,
+      });
   };
 
   render() {
@@ -120,12 +111,14 @@ export default class CharacterCreate extends React.Component {
                          value={this.state.race_pick}
                          onChange={this.handleChange('race_pick')}
                          options={character_races}
+                         required={true} error={this.state.race_pick_error}
             />
 
             <SelectField name={'class_pick'} label={'Character Class'}
                          value={this.state.class_pick}
                          onChange={this.handleChange('class_pick')}
                          options={character_classes}
+                         required={true} error={this.state.class_pick_error}
             />
 
             <SelectField name={'faction_pick'} label={'Character Faction'}
@@ -133,6 +126,25 @@ export default class CharacterCreate extends React.Component {
                          onChange={this.handleChange('faction_pick')}
                          options={character_factions}
                          blank={true}
+            />
+
+            <Button variant={'contained'} className={classes.addButton} onClick={this.addCharacter}
+                    disabled={this.state.buttonDisabled}>
+              {this.state.buttonText}
+            </Button>
+
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              open={this.state.snackbarOpen}
+              onClose={this.handleSnackbarClose}
+              autoHideDuration={6000}
+              ContentProps={{
+                'aria-describedby': 'message-id',
+              }}
+              message={<span id="message-id">Cannot add new character. Fill in all required fields and check their values!</span>}
             />
 
           </Grid>

@@ -30,7 +30,8 @@ class PlayerCharacterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PlayerCharacter
-        fields = ('id', 'name', 'pc_class', 'race', 'faction', 'level', 'created', 'modified', )
+        fields = ('id', 'owner', 'name', 'pc_class', 'race', 'faction', 'level', 'created', 'modified', )
+        read_only_fields = ('created', 'modified', 'owner')
 
 
 class PlayerCharacterListSerializer(serializers.ModelSerializer):
@@ -49,7 +50,7 @@ class PlayerCharacterListSerializer(serializers.ModelSerializer):
         return str(obj.race)
 
     def get_faction(self, obj):
-        return str(obj.faction)
+        return str(obj.faction) if obj.faction else None
 
     class Meta:
         model = PlayerCharacter

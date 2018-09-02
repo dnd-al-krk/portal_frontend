@@ -37,15 +37,19 @@ export default class CharactersList extends React.Component {
                                   <span>
                                     Played by <UndecoratedLink to={`/profiles/${character.owner}/`}>{character.owner_name}</UndecoratedLink> |&nbsp;
                                   </span>)}
-                                    {character.faction}
+                                {character.race} {character.pc_class} {character.level} {character.faction !== null ? '|' : ''} {character.faction}
                               </span>
                             )}>
               </ListItemText>
-              <ListItemSecondaryAction>
-                <IconButton aria-label="See character">
-                  <ChevronRightIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
+              {character.owner === this.props.portalStore.currentUser.profileID && (
+                <ListItemSecondaryAction>
+                  <UndecoratedLink to={`/characters/${character.id}/edit`}>
+                    <IconButton aria-label="See character">
+                      <ChevronRightIcon />
+                    </IconButton>
+                  </UndecoratedLink>
+                </ListItemSecondaryAction>
+              )}
             </ListItem>
           </div>)
         )}

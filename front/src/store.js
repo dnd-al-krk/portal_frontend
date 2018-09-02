@@ -17,7 +17,7 @@ export const axiosInstance = axios.create({
 export function getAxiosInstance(token){
   return axios.create({
     headers: {
-      'X-CSRFToken': csrftoken,
+      'X-CSRFToken': Cookies.get('csrftoken'),
       'Authorization': `JWT ${token}`
     }
   })
@@ -141,8 +141,23 @@ export class PortalStore {
   }
 
   @action.bound
+  getCharacter(id){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/characters/${id}/`).then(response => response.data);
+  }
+
+  @action.bound
   searchCharacters(search_term){
     return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/characters/?search=${search_term}`).then(response => response.data);
+  }
+
+  @action.bound
+  createCharacter(data){
+    return getAxiosInstance(this.userToken).post(`${API_HOSTNAME}/characters/`, data)
+  }
+
+  @action.bound
+  saveCharacter(id, data){
+    return getAxiosInstance(this.userToken).put(`${API_HOSTNAME}/characters/${id}/`, data)
   }
 }
 

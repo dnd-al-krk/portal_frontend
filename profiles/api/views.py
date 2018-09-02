@@ -22,9 +22,9 @@ class PlayerCharacterViewSet(viewsets.ModelViewSet):
     search_fields = ('name', 'owner__nickname')
     ordering_fields = ('name', 'level', 'created', 'modified')
     ordering = '-created'
-
-    def get_queryset(self):
-        return PlayerCharacter.objects.filter(owner=self.request.user.profile)
+    #
+    # def get_queryset(self):
+    #     return PlayerCharacter.objects.filter(owner=self.request.user.profile)
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -32,6 +32,9 @@ class PlayerCharacterViewSet(viewsets.ModelViewSet):
         return PlayerCharacterSerializer
 
     def perform_create(self, serializer):
+        serializer.save(owner=self.request.user.profile)
+
+    def perform_update(self, serializer):
         serializer.save(owner=self.request.user.profile)
 
 
