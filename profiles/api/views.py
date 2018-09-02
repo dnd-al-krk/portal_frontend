@@ -19,12 +19,9 @@ class PlayerCharacterViewSet(viewsets.ModelViewSet):
                           IsOwnerOrReadOnly]
     filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)
     filter_class = PlayerCharacterFilter
-    search_fields = ('name', 'owner__nickname')
+    search_fields = ('name', 'owner__nickname', 'owner__user__first_name', 'owner__user__last_name')
     ordering_fields = ('name', 'level', 'created', 'modified')
     ordering = '-created'
-    #
-    # def get_queryset(self):
-    #     return PlayerCharacter.objects.filter(owner=self.request.user.profile)
 
     def get_serializer_class(self):
         if self.action == 'list':
