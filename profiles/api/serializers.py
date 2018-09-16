@@ -115,6 +115,11 @@ class RegisterUserSerializer(serializers.ModelSerializer):
             'last_name': REQUIRED,
         }
 
+    def validate_password(self, password):
+        if len(password) < 8:
+            raise serializers.ValidationError("Password length should be at least 8 characters")
+        return password
+
 
 class RegisterProfileSerializer(serializers.ModelSerializer):
     user = RegisterUserSerializer(required=True)

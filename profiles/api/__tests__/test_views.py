@@ -13,7 +13,7 @@ class TestRegistrationView:
             'user': {
                 'first_name': 'Testing',
                 'last_name': 'Registration',
-                'password': 'qwe321',
+                'password': 'qwer4321',
                 'email': 'user@email.com',
             },
             'dci': '321321321',

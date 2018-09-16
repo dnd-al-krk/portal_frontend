@@ -1,4 +1,4 @@
-from ..serializers import RegisterProfileSerializer
+from ..serializers import RegisterProfileSerializer, RegisterUserSerializer
 
 
 class TestRegistrationSerializer:
@@ -8,7 +8,7 @@ class TestRegistrationSerializer:
             'user': {
                 'first_name': 'Testing',
                 'last_name': 'Registration',
-                'password': 'qwe321',
+                'password': 'qwer4321',
                 'email': 'user@email.com',
             },
             'dci': '321321321',
@@ -24,7 +24,7 @@ class TestRegistrationSerializer:
             'user': {
                 'first_name': 'Testing',
                 'last_name': 'Registration',
-                'password': 'qwe321',
+                'password': 'qwer4321',
                 'email': 'useremail.com',
             },
             'dci': '321321321',
@@ -40,7 +40,7 @@ class TestRegistrationSerializer:
             'user': {
                 'first_name': 'Testing',
                 'last_name': 'Registration',
-                'password': 'qwe321',
+                'password': 'qwer4321',
                 'email': '',
             },
             'dci': '321321321',
@@ -56,7 +56,7 @@ class TestRegistrationSerializer:
             'user': {
                 'first_name': '',
                 'last_name': 'Registration',
-                'password': 'qwe321',
+                'password': 'qwer4321',
                 'email': 'email@email.com',
             },
             'dci': '321321321',
@@ -72,7 +72,7 @@ class TestRegistrationSerializer:
             'user': {
                 'first_name': 'Some',
                 'last_name': '',
-                'password': 'qwe321',
+                'password': 'qwer4321',
                 'email': 'email@email.com',
             },
             'dci': '321321321',
@@ -104,7 +104,7 @@ class TestRegistrationSerializer:
             'user': {
                 'first_name': 'Some',
                 'last_name': 'Last Name',
-                'password': 'qwe321',
+                'password': 'qwer4321',
                 'email': 'email@email.com',
             },
             'dci': None,
@@ -114,3 +114,19 @@ class TestRegistrationSerializer:
         serializer = RegisterProfileSerializer(data=data)
 
         assert serializer.is_valid()
+
+
+class TestRegistrationUserSerializer:
+
+    def test_password_length_check(self):
+
+        data = {
+            'first_name': 'Some',
+            'last_name': 'Person',
+            'password': 'short',
+            'email': 'some@email.com',
+        }
+
+        serializer = RegisterUserSerializer(data=data)
+
+        assert not serializer.is_valid()
