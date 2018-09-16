@@ -43,6 +43,7 @@ export default class Register extends React.Component {
   state = {
     redirectToReferrer: false,
     isSigning: false,
+    isDone: false,
     email: '',
     password: '',
     passwordConfirm: '',
@@ -77,10 +78,10 @@ export default class Register extends React.Component {
       })
         .then(() => {
           this.setState(() => ({
-            redirectToReferrer: true,
             email: '',
             password: '',
-            isSigning: false
+            isSigning: false,
+            isDone: true,
           }))
         }).catch((error => {
         const new_state = {
@@ -126,150 +127,155 @@ export default class Register extends React.Component {
 
   render() {
     const { from } = this.props.location.state || { from: { pathname: '/' } };
-    const { redirectToReferrer } = this.state;
-
-    if (redirectToReferrer === true) {
-      return <Redirect to={from} />
-    }
 
     const {classes} = this.props;
 
     return (
       <NarrowContent>
-        <form className={classes.container} noValidate autoComplete="off">
+        {!this.state.isDone && (
+          <form className={classes.container} noValidate autoComplete="off">
+            <Grid container spacing={24}>
+              <Grid item xs={12}>
+                <h1>Sign up</h1>
+                <p>Register in order to access D&D Adventurers League Krakow system and start playing.</p>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                  <InputLabel htmlFor="signUp-email">E-mail</InputLabel>
+                  <Input
+                    id="signUp-email"
+                    type="text"
+                    error={!!this.state.emailErrors}
+                    aria-describedby="email-error-text"
+                    value={this.state.email}
+                    onChange={this.handleChange('email')}
+                  />
+                  {this.state.emailErrors && (<FormHelperText id="email-error-text">{this.state.emailErrors}</FormHelperText>)}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                  <InputLabel htmlFor="signUp-password">Password</InputLabel>
+                  <Input
+                    id="signUp-password"
+                    type={this.state.showPassword ? 'text' : 'password'}
+                    value={this.state.password}
+                    error={!!this.state.passwordErrors}
+                    aria-describedby="password-error-text"
+                    onChange={this.handleChange('password')}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="Toggle password visibility"
+                          onClick={this.handleClickShowPassword}
+                          onMouseDown={this.handleMouseDownPassword}
+                        >
+                          {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                 {this.state.passwordErrors && (<FormHelperText id="password-error-text">{this.state.passwordErrors}</FormHelperText>)}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                  <InputLabel htmlFor="signUp-password-confirm">Repeat Password</InputLabel>
+                  <Input
+                    id="signUp-password-confirm"
+                    type={this.state.showPassword ? 'text' : 'password'}
+                    value={this.state.passwordConfirm}
+                    onChange={this.handleChange('passwordConfirm')}
+                    error={this.diffPasswords()}
+                    aria-describedby="first-name-error-text"
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="Toggle password visibility"
+                          onClick={this.handleClickShowPassword}
+                          onMouseDown={this.handleMouseDownPassword}
+                        >
+                          {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                   {this.diffPasswords() && (<FormHelperText id="first-name-error-text">Passwords don't match!</FormHelperText>)}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                  <InputLabel htmlFor="signUp-first-name">First name</InputLabel>
+                  <Input
+                    id="signUp-first-name"
+                    type="text"
+                    error={!!this.state.first_nameErrors}
+                    aria-describedby="last-name-error-text"
+                    value={this.state.first_name}
+                    onChange={this.handleChange('first_name')}
+                  />
+                 {this.state.first_nameErrors && (<FormHelperText id="last-name-error-text">{this.state.first_nameErrors}</FormHelperText>)}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                  <InputLabel htmlFor="signUp-last-name">Last name</InputLabel>
+                  <Input
+                    id="signUp-last-name"
+                    type="text"
+                    error={!!this.state.last_nameErrors}
+                    aria-describedby="name-error-text"
+                    value={this.state.last_name}
+                    onChange={this.handleChange('last_name')}
+                  />
+                 {this.state.last_nameErrors && (<FormHelperText id="name-error-text">{this.state.last_nameErrors}</FormHelperText>)}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                  <InputLabel htmlFor="signUp-nickname">Nickname</InputLabel>
+                  <Input
+                    id="signUp-nickname"
+                    type="text"
+                    value={this.state.nickname}
+                    onChange={this.handleChange('nickname')}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                  <InputLabel htmlFor="signUp-dci">Your DCI</InputLabel>
+                  <Input
+                    id="signUp-dci"
+                    type="text"
+                    value={this.state.dci}
+                    onChange={this.handleChange('dci')}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} className={classes.submitRow}>
+                <Button variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        disabled={this.state.isSigning}
+                        onClick={this.signup}>
+                  { this.state.signupText }
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                Already registered? <Link to="/login">Sign in</Link>
+              </Grid>
+            </Grid>
+          </form>
+        )}
+        {this.state.isDone && (
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <h1>Sign up</h1>
-              <p>Register in order to access D&D Adventurers League Krakow system and start playing.</p>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                <InputLabel htmlFor="signUp-email">E-mail</InputLabel>
-                <Input
-                  id="signUp-email"
-                  type="text"
-                  error={!!this.state.emailErrors}
-                  aria-describedby="email-error-text"
-                  value={this.state.email}
-                  onChange={this.handleChange('email')}
-                />
-                {this.state.emailErrors && (<FormHelperText id="email-error-text">{this.state.emailErrors}</FormHelperText>)}
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
-               <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                <InputLabel htmlFor="signUp-password">Password</InputLabel>
-                <Input
-                  id="signUp-password"
-                  type={this.state.showPassword ? 'text' : 'password'}
-                  value={this.state.password}
-                  error={!!this.state.passwordErrors}
-                  aria-describedby="password-error-text"
-                  onChange={this.handleChange('password')}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="Toggle password visibility"
-                        onClick={this.handleClickShowPassword}
-                        onMouseDown={this.handleMouseDownPassword}
-                      >
-                        {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-               {this.state.passwordErrors && (<FormHelperText id="password-error-text">{this.state.passwordErrors}</FormHelperText>)}
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
-               <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                <InputLabel htmlFor="signUp-password-confirm">Repeat Password</InputLabel>
-                <Input
-                  id="signUp-password-confirm"
-                  type={this.state.showPassword ? 'text' : 'password'}
-                  value={this.state.passwordConfirm}
-                  onChange={this.handleChange('passwordConfirm')}
-                  error={this.diffPasswords()}
-                  aria-describedby="first-name-error-text"
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="Toggle password visibility"
-                        onClick={this.handleClickShowPassword}
-                        onMouseDown={this.handleMouseDownPassword}
-                      >
-                        {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-                 {this.diffPasswords() && (<FormHelperText id="first-name-error-text">Passwords don't match!</FormHelperText>)}
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
-               <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                <InputLabel htmlFor="signUp-first-name">First name</InputLabel>
-                <Input
-                  id="signUp-first-name"
-                  type="text"
-                  error={!!this.state.first_nameErrors}
-                  aria-describedby="last-name-error-text"
-                  value={this.state.first_name}
-                  onChange={this.handleChange('first_name')}
-                />
-               {this.state.first_nameErrors && (<FormHelperText id="last-name-error-text">{this.state.first_nameErrors}</FormHelperText>)}
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
-               <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                <InputLabel htmlFor="signUp-last-name">Last name</InputLabel>
-                <Input
-                  id="signUp-last-name"
-                  type="text"
-                  error={!!this.state.last_nameErrors}
-                  aria-describedby="name-error-text"
-                  value={this.state.last_name}
-                  onChange={this.handleChange('last_name')}
-                />
-               {this.state.last_nameErrors && (<FormHelperText id="name-error-text">{this.state.last_nameErrors}</FormHelperText>)}
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
-               <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                <InputLabel htmlFor="signUp-nickname">Nickname</InputLabel>
-                <Input
-                  id="signUp-nickname"
-                  type="text"
-                  value={this.state.nickname}
-                  onChange={this.handleChange('nickname')}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
-               <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                <InputLabel htmlFor="signUp-dci">Your DCI</InputLabel>
-                <Input
-                  id="signUp-dci"
-                  type="text"
-                  value={this.state.dci}
-                  onChange={this.handleChange('dci')}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} className={classes.submitRow}>
-              <Button variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      disabled={this.state.isSigning}
-                      onClick={this.signup}>
-                { this.state.signupText }
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              Already registered? <Link to="/login">Sign in</Link>
+              <p>All set! We have sent you activation e-mail. You won't be able to login until you click the link it contains.</p>
             </Grid>
           </Grid>
-        </form>
+        )}
       </NarrowContent>
     )
   }
