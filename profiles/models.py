@@ -1,10 +1,15 @@
 import uuid
 
+from django.core.mail import send_mail, EmailMessage
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 from django.utils.translation import ugettext_lazy as _
 
+from .utils import account_activation_token
 from utils.models import UUIDModel
 from .constants import ROLE_DM, ROLE_PLAYER
 
@@ -26,6 +31,26 @@ class Profile(models.Model):
 
     def is_dm(self):
         return self.role == ROLE_DM
+
+    def save(self, *args, **kwargs):
+        created = False if self.pk else True
+        super().save(*args, **kwargs)
+        if created:
+            self.send_verification_email()
+
+    def send_verification_email(self):
+        mail_subject = 'Activate your portAL account.'
+        message = render_to_string('emails/account_activate_email.html', {
+            'user': self.user,
+            'profile': self,
+            'uid': urlsafe_base64_encode(force_bytes(self.user.pk)).decode(),
+            'token': account_activation_token.make_token(self.user),
+        })
+        to_email = self.user.email
+        email = EmailMessage(
+            mail_subject, message, to=[to_email]
+        )
+        email.send()
 
 
 class CharacterClass(UUIDModel):

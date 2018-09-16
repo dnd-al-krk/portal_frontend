@@ -130,6 +130,7 @@ class RegisterProfileSerializer(serializers.ModelSerializer):
             password=validated_data['user']['password'],
             first_name=validated_data['user']['first_name'],
             last_name=validated_data['user']['last_name'],
+            is_active=False,
         )
 
         return Profile.objects.create(
