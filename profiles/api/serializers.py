@@ -1,6 +1,7 @@
 import logging
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from ..models import PlayerCharacter, DMNote, Profile, CharacterClass, CharacterRace, CharacterFaction
@@ -98,3 +99,46 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_characters_count(self, obj):
         return obj.characters.all().count()
+
+
+REQUIRED = {'allow_null': False, 'allow_blank': False, 'required': True}
+
+
+class RegisterUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'password',)
+        extra_kwargs = {
+            'email': REQUIRED,
+            'first_name': REQUIRED,
+            'last_name': REQUIRED,
+        }
+
+
+class RegisterProfileSerializer(serializers.ModelSerializer):
+    user = RegisterUserSerializer(required=True)
+
+    class Meta:
+        model = Profile
+        fields = ('nickname', 'dci', 'user')
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['user']['email'],
+            email=validated_data['user']['email'],
+            password=validated_data['user']['password'],
+            first_name=validated_data['user']['first_name'],
+            last_name=validated_data['user']['last_name'],
+        )
+
+        return Profile.objects.create(
+            user=user,
+            nickname=validated_data['nickname'],
+            dci=validated_data['dci'],
+        )
+
+    def validate(self, data):
+        if not ((data['user']['first_name'] and data['user']['last_name']) or data['nickname']):
+            raise serializers.ValidationError("You mast provide either First and Last name or Nickname")
+        return data

@@ -13,7 +13,7 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import { ClipLoader } from 'react-spinners';
 import LoadingDiv from "../common/LoadingDiv";
 import Typography from "@material-ui/core/Typography/Typography";
-import {NarrowContent} from "../common/Content";
+import {NarrowContent, WideContent} from "../common/Content";
 
 const styles = theme => ({
   textField: {
@@ -67,6 +67,12 @@ class Profiles extends React.Component {
     this.props.history.push(`/profiles/${id}`);
   };
 
+  getName = (profile) => {
+    const names = `${profile.user.first_name} ${profile.user.last_name}`;
+    const nickname = profile.nickname ? ` (${profile.nickname})` : '';
+    return names+nickname
+  };
+
 
   profiles_list() {
     if(this.state.profiles){
@@ -76,7 +82,7 @@ class Profiles extends React.Component {
                     <Avatar>
                       <Person />
                     </Avatar>
-                    <ListItemText primary={`${profile.user.first_name} ${profile.user.last_name} (${profile.nickname})`}
+                    <ListItemText primary={this.getName(profile)}
                                   secondary={`
                                   ${profile.role} | ${profile.characters_count} character${profile.characters_count !== 1 ? 's' : ''}
 
@@ -98,7 +104,7 @@ class Profiles extends React.Component {
     const {classes} = this.props;
 
     return (
-      <NarrowContent>
+      <WideContent>
         <form className={classes.container} noValidate autoComplete="off">
             <Grid container spacing={24}>
               <Grid item xs={12}>
@@ -118,7 +124,7 @@ class Profiles extends React.Component {
               </Grid>
             </Grid>
         </form>
-      </NarrowContent>
+      </WideContent>
     );
   }
 }

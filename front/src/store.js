@@ -79,14 +79,21 @@ export class PortalStore {
       'username': user,
       'password': password,
     }).then((response) => {
-      this.userToken = response.data.token;
-      Cookies.set(JWT_TOKEN, this.userToken);
-      this.currentUser = new UserStore(this);
-      this.currentUser.fetchData()
-        .then(() => this.fetchClasses().then(data => this.classes = data))
-        .then(() => this.fetchRaces().then(data => this.races = data))
-        .then(() => this.fetchFactions().then(data => this.factions = data));
+      if(response.status === 200){
+        this.userToken = response.data.token;
+        Cookies.set(JWT_TOKEN, this.userToken);
+        this.currentUser = new UserStore(this);
+        this.currentUser.fetchData()
+          .then(() => this.fetchClasses().then(data => this.classes = data))
+          .then(() => this.fetchRaces().then(data => this.races = data))
+          .then(() => this.fetchFactions().then(data => this.factions = data));
+      }
     });
+  }
+
+  @action.bound
+  register(data){
+    return axiosInstance.post(`${API_HOSTNAME}/api/register/`, data)
   }
 
   @action.bound
@@ -214,7 +221,7 @@ export class UserStore {
 
   @action.bound
   saveData(){
-    return getAxiosInstance(this.getToken()).put(`${API_HOSTNAME}/profiles/${this.profile_id}/`,
+    return getAxiosInstance(this.getToken()).put(`${API_HOSTNAME}/profiles/${this.profileID}/`,
       {
         'id': this.profile_id,
         'user': {

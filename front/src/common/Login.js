@@ -14,13 +14,14 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {NarrowContent} from "./Content";
+import Link from "react-router-dom/es/Link";
 
 
 const styles = (theme) => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: '90%',
+    width: '100%',
   },
   paperContainer: {
     maxWidth: '800px',
@@ -30,8 +31,8 @@ const styles = (theme) => ({
   submitRow: {
     textAlign: 'right',
   },
-  margin: {
-    margin: theme.spacing.unit,
+  inputMargin: {
+    margin: `0`,
   },
 });
 
@@ -46,6 +47,7 @@ class Login extends React.Component {
     password: '',
     signinText: 'Sign in',
     showPassword: false,
+    errors: null,
   };
 
   login = () => {
@@ -60,7 +62,14 @@ class Login extends React.Component {
           password: '',
           isSigning: false
         }))
-      });
+      }).catch((error) => {
+        if(error.response.status === 400){
+          this.setState({
+            errors: error.response.data.non_field_errors.join(),
+            isSigning: false,
+          })
+        }
+    });
   };
 
   handleChange = prop => event => {
@@ -91,10 +100,10 @@ class Login extends React.Component {
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <h1>Sign in</h1>
-              <p>You must log in to view the page</p>
+              <p>Sign in to access your profile and available games.</p>
             </Grid>
             <Grid item xs={12} md={6}>
-              <FormControl className={classNames(classes.margin, classes.textField)}>
+              <FormControl className={classNames(classes.inputMargin, classes.textField)}>
                 <InputLabel htmlFor="signIn-email">E-mail</InputLabel>
                 <Input
                   id="signIn-email"
@@ -105,7 +114,7 @@ class Login extends React.Component {
               </FormControl>
             </Grid>
             <Grid item xs={12} md={6}>
-               <FormControl className={classNames(classes.margin, classes.textField)}>
+               <FormControl className={classNames(classes.inputMargin, classes.textField)}>
                 <InputLabel htmlFor="signIn-password">Password</InputLabel>
                 <Input
                   id="signIn-password"
@@ -126,6 +135,9 @@ class Login extends React.Component {
                 />
               </FormControl>
             </Grid>
+            <Grid item xs={12} className={classes.errors}>
+              {this.state.errors}
+            </Grid>
             <Grid item xs={12} className={classes.submitRow}>
               <Button variant="contained"
                       color="primary"
@@ -135,8 +147,12 @@ class Login extends React.Component {
                 { this.state.signinText }
               </Button>
             </Grid>
+            <Grid item xs={12}>
+              No account yet? <Link to='/register'>Sign up!</Link>
+            </Grid>
           </Grid>
         </form>
+        {this.state.additionalComponent}
       </NarrowContent>
     )
   }

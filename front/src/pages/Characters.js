@@ -3,7 +3,7 @@ import {inject, observer} from "mobx-react";
 import withStyles from '@material-ui/core/styles/withStyles';
 import LoadingDiv from "../common/LoadingDiv";
 import {ClipLoader} from "react-spinners";
-import {NarrowContent} from "../common/Content";
+import {NarrowContent, WideContent} from "../common/Content";
 import Typography from "@material-ui/core/Typography/Typography";
 import Grid from "@material-ui/core/Grid/Grid";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
@@ -60,9 +60,13 @@ export default class Characters extends React.Component{
       })
   }
 
+  gotoCharacterCreate = () => {
+    this.props.history.push('/characters/create');
+  };
+
   render() {
     return (
-      <NarrowContent>
+      <WideContent>
         {this.state.loading ? (
             <LoadingDiv>
               <ClipLoader color={'#FFDE00'} loading={this.state.loading}/>
@@ -103,7 +107,7 @@ export default class Characters extends React.Component{
             </div>
           )
         }
-      </NarrowContent>
+      </WideContent>
     );
   }
 }

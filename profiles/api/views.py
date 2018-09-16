@@ -1,6 +1,7 @@
-from rest_framework import viewsets, mixins
+from django.contrib.auth.models import User
+from rest_framework import viewsets, mixins, status, generics
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django_filters import rest_framework as filters
@@ -8,7 +9,8 @@ from django_filters import rest_framework as filters
 from .filters import PlayerCharacterFilter
 from .permissions import IsOwnerOrReadOnly, IsDMOwnerOrReadOnly, OnlyDMCanRead, IsProfileOwnerOrReadOnly
 from .serializers import (PlayerCharacterSerializer, DMNoteSerializer, ProfileSerializer, CharacterClassSerializer,
-                          CharacterRaceSerializer, CharacterFactionSerializer, PlayerCharacterListSerializer)
+                          CharacterRaceSerializer, CharacterFactionSerializer, PlayerCharacterListSerializer,
+                          RegisterProfileSerializer)
 from ..models import PlayerCharacter, DMNote, Profile, CharacterClass, CharacterRace, CharacterFaction
 
 
@@ -81,3 +83,16 @@ class CharacterFactionListView(mixins.ListModelMixin,
     serializer_class = CharacterFactionSerializer
     queryset = CharacterFaction.objects.all()
     permission_classes = [IsAuthenticated]
+
+
+class RegistrationView(APIView):
+    permission_classes = [AllowAny]
+    serializer_class = RegisterProfileSerializer
+    model = Profile.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        serializer = RegisterProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

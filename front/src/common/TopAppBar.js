@@ -96,6 +96,13 @@ class TopAppBar extends React.Component {
     this.props.history.push('/login')
   };
 
+  gotoRegister = () => {
+    this.setState({
+      accountAnchorEl: null,
+    });
+    this.props.history.push('/register')
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -127,6 +134,7 @@ class TopAppBar extends React.Component {
 
             {!this.isAuthenticated() && (
               <div className={classes.rightNav}>
+                <Button color="inherit" onClick={this.gotoRegister}>Register</Button>
                 <Button color="inherit" onClick={this.gotoLogin}>Login</Button>
                 {/* TODO: Add once signup form is ready*/}
                 {/*<Button color="inherit">Sign up</Button>*/}

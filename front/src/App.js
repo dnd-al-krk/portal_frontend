@@ -22,6 +22,7 @@ import Profiles from "./pages/Profiles";
 import Profile from "./pages/Profile";
 import CharacterCreate from "./pages/CharacterCreate";
 import CharacterEdit from "./pages/CharacterEdit";
+import Register from "./common/Register";
 
 
 const portalStore = new PortalStore();
@@ -52,6 +53,7 @@ class App extends Component {
                 <RouteRequiresLogin exact path="/characters/:id/edit" component={CharacterEdit}/>
                 <RouteRequiresLogin path="/account" component={Account}/>
                 <Route exact path="/login" component={Login}/>
+                <Route exact path="/register" component={Register}/>
               </PushedDiv>
             </div>
           </Router>
