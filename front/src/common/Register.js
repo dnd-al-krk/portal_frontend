@@ -63,6 +63,10 @@ export default class Register extends React.Component {
 
   signup = () => {
     if(this.state.password === this.state.passwordConfirm) {
+      if(this.state.password.length < 8){
+        this.setState({passwordErrors: 'The password should have at least 8 characters.'});
+        return;
+      }
       this.setState({
         isSigning: true
       });
@@ -106,6 +110,9 @@ export default class Register extends React.Component {
         new_state.isSigning = false;
         this.setState(new_state);
       }));
+    }
+    else {
+      this.setState({passwordErrors: "Passwords don't match"});
     }
   };
 
