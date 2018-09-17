@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import {observer, inject} from 'mobx-react';
 import { Link } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import UndecoratedLink from "./UndecoratedLink";
 import {withRouter} from "react-router";
 import Button from "@material-ui/core/Button/Button";
+import Hidden from "@material-ui/core/Hidden/Hidden";
 
 
 const styles = (theme) => ({
@@ -94,6 +96,13 @@ class TopAppBar extends React.Component {
     this.props.history.push('/login')
   };
 
+  gotoRegister = () => {
+    this.setState({
+      accountAnchorEl: null,
+    });
+    this.props.history.push('/register')
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -125,6 +134,7 @@ class TopAppBar extends React.Component {
 
             {!this.isAuthenticated() && (
               <div className={classes.rightNav}>
+                <Button color="inherit" onClick={this.gotoRegister}>Register</Button>
                 <Button color="inherit" onClick={this.gotoLogin}>Login</Button>
                 {/* TODO: Add once signup form is ready*/}
                 {/*<Button color="inherit">Sign up</Button>*/}
@@ -133,6 +143,14 @@ class TopAppBar extends React.Component {
 
             {this.isAuthenticated() && (
               <div className={classes.rightNav}>
+                <Hidden xsDown>
+                  <IconButton
+                    onClick={() => this.props.history.push('/characters/create')}
+                    color="inherit"
+                  >
+                    <PersonAddIcon />
+                  </IconButton>
+                </Hidden>
                 <IconButton
                   aria-owns={accountOpen ? 'menu-appbar' : null}
                   aria-haspopup="true"

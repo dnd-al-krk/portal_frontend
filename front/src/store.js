@@ -17,7 +17,7 @@ export const axiosInstance = axios.create({
 export function getAxiosInstance(token){
   return axios.create({
     headers: {
-      'X-CSRFToken': csrftoken,
+      'X-CSRFToken': Cookies.get('csrftoken'),
       'Authorization': `JWT ${token}`
     }
   })
@@ -28,11 +28,14 @@ export class PortalStore {
   @observable userToken = null;
   @observable authenticated = false;
   @observable navigationStore = new NavigationStore(this);
+  @observable classes = [];
+  @observable races = [];
+  @observable factions = [];
 
   @action.bound
   fetchCurrentUser(){
     if(this.isAuthenticated()){
-      console.log('fetching user data')
+      console.log('fetching user data');
       this.currentUser = new UserStore(this);
       this.currentUser.fetchData();
     }
@@ -47,6 +50,9 @@ export class PortalStore {
         // refresh token
         this.currentUser = new UserStore(this);
         this.currentUser.fetchData()
+          .then(() => this.fetchClasses().then(data => this.classes = data))
+          .then(() => this.fetchRaces().then(data => this.races = data))
+          .then(() => this.fetchFactions().then(data => this.factions = data))
           .then(() => resolve(), () => { reject() })
           .catch((err) => { reject(err); });
       }
@@ -73,11 +79,21 @@ export class PortalStore {
       'username': user,
       'password': password,
     }).then((response) => {
-      this.userToken = response.data.token;
-      Cookies.set(JWT_TOKEN, this.userToken);
-      this.currentUser = new UserStore(this);
-      this.currentUser.fetchData();
+      if(response.status === 200){
+        this.userToken = response.data.token;
+        Cookies.set(JWT_TOKEN, this.userToken);
+        this.currentUser = new UserStore(this);
+        this.currentUser.fetchData()
+          .then(() => this.fetchClasses().then(data => this.classes = data))
+          .then(() => this.fetchRaces().then(data => this.races = data))
+          .then(() => this.fetchFactions().then(data => this.factions = data));
+      }
     });
+  }
+
+  @action.bound
+  register(data){
+    return axiosInstance.post(`${API_HOSTNAME}/api/register/`, data)
   }
 
   @action.bound
@@ -87,13 +103,68 @@ export class PortalStore {
   }
 
   @action.bound
-  fetch_profiles() {
-    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/profiles/`).then(response => response.data);
+  fetchData(name){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/${name}/`).then(response => response.data);
   }
 
   @action.bound
-  get_profile(id){
-    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/profiles/${id}/`).then(response => response.data);
+  getData(name, id){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/${name}/${id}/`).then(response => response.data);
+  }
+
+  @action.bound
+  fetchProfiles() {
+    return this.fetchData('profiles')
+  }
+
+  @action.bound
+  getProfile(id){
+    return this.getData('profiles', id);
+  }
+
+  @action.bound
+  fetchClasses(){
+    return this.fetchData('classes');
+  }
+
+  @action.bound
+  fetchRaces(){
+    return this.fetchData('races');
+  }
+
+  @action.bound
+  fetchFactions(){
+    return this.fetchData('factions');
+  }
+
+  @action.bound
+  fetchCharacters(){
+    return this.fetchData('characters');
+  }
+
+  @action.bound
+  fetchProfileCharacters(owner){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/characters/?owner=${owner}`).then(response => response.data);
+  }
+
+  @action.bound
+  getCharacter(id){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/characters/${id}/`).then(response => response.data);
+  }
+
+  @action.bound
+  searchCharacters(search_term){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/characters/?search=${search_term}`).then(response => response.data);
+  }
+
+  @action.bound
+  createCharacter(data){
+    return getAxiosInstance(this.userToken).post(`${API_HOSTNAME}/characters/`, data)
+  }
+
+  @action.bound
+  saveCharacter(id, data){
+    return getAxiosInstance(this.userToken).put(`${API_HOSTNAME}/characters/${id}/`, data)
   }
 }
 
@@ -150,7 +221,7 @@ export class UserStore {
 
   @action.bound
   saveData(){
-    return getAxiosInstance(this.getToken()).put(`${API_HOSTNAME}/profiles/${this.profile_id}/`,
+    return getAxiosInstance(this.getToken()).put(`${API_HOSTNAME}/profiles/${this.profileID}/`,
       {
         'id': this.profile_id,
         'user': {

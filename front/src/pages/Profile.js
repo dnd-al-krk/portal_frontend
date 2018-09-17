@@ -1,6 +1,6 @@
 import withStyles from "@material-ui/core/styles/withStyles";
 import {inject, observer} from "mobx-react";
-import React from "react";
+import React, {Fragment} from "react";
 import Person from "@material-ui/icons/Person";
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import Typography from "@material-ui/core/Typography/Typography";
@@ -8,6 +8,9 @@ import Grid from "@material-ui/core/Grid/Grid";
 import LoadingDiv from "../common/LoadingDiv";
 import {ClipLoader} from "react-spinners";
 import {NarrowContent} from "../common/Content";
+import CharactersList from "../common/CharactersList";
+import Button from "@material-ui/core/Button/Button";
+import Divider from "../../node_modules/@material-ui/core/Divider/Divider";
 
 
 const styles = theme => ({
@@ -39,6 +42,9 @@ const styles = theme => ({
   },
   charactersList: {
   },
+  divider: {
+    marginBottom: 20
+  }
 });
 
 
@@ -56,26 +62,41 @@ export default class Profile extends React.Component {
   }
 
   componentDidMount(){
-    this.setStateFromStore();
+    this.props.portalStore.getProfile(this.state.id)
+      .then(
+        (data) => {
+          this.setState({
+            profile: data,
+          });
+        },
+        () => {
+          this.setState({
+            profile: null,
+          })
+
+        }
+      )
+      .then(
+        () => this.props.portalStore.fetchProfileCharacters(this.state.id).then(
+          (characters) => {
+            this.setState({
+              characters: characters,
+            })
+          }
+        )
+      )
+      .then(
+        () => {
+          this.setState({
+            loading: false,
+          })
+        }
+      );
   }
 
-  setStateFromStore(){
-    this.props.portalStore.get_profile(this.state.id).then(
-      (data) => {
-        this.setState({
-          profile: data,
-          loading: false,
-        });
-      },
-      () => {
-        this.setState({
-          profile: null,
-          loading: false,
-        })
-
-      }
-    );
-  }
+  gotoCharacterCreate = () => {
+    this.props.history.push('/characters/create');
+  };
 
   render() {
     const {classes} = this.props;
@@ -83,7 +104,7 @@ export default class Profile extends React.Component {
     const profile = this.state.profile;
 
     return (
-      <NarrowContent>
+      <NarrowContent className={classes.root}>
         {this.state.loading ? (
           <LoadingDiv>
             <ClipLoader color={'#FFDE00'} loading={this.state.loading}  />
@@ -103,10 +124,20 @@ export default class Profile extends React.Component {
               </Typography>
             </Grid>
             <Grid item xs={12} className={classes.charactersList}>
-              <Typography variant="headline">
-                Characters
-              </Typography>
-              TODO: Here be characters list...
+              {this.state.characters.length > 0 && (
+                <Fragment>
+                  <Typography variant="headline">
+                    Characters
+                  </Typography>
+                  <CharactersList characters={this.state.characters} use_by={false}/>
+                </Fragment>
+              )}
+              {this.props.portalStore.currentUser.profileID === profile.id && (
+                <Fragment>
+                  <Divider className={classes.divider}/>
+                  <Button variant='contained' color='secondary' onClick={this.gotoCharacterCreate}>Add new character</Button>
+                </Fragment>
+              )}
             </Grid>
           </Grid>
           )}

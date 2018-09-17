@@ -13,13 +13,15 @@ import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import {NarrowContent} from "./Content";
+import Link from "react-router-dom/es/Link";
 
 
 const styles = (theme) => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: '90%',
+    width: '100%',
   },
   paperContainer: {
     maxWidth: '800px',
@@ -29,8 +31,8 @@ const styles = (theme) => ({
   submitRow: {
     textAlign: 'right',
   },
-  margin: {
-    margin: theme.spacing.unit,
+  inputMargin: {
+    margin: `0`,
   },
 });
 
@@ -45,6 +47,7 @@ class Login extends React.Component {
     password: '',
     signinText: 'Sign in',
     showPassword: false,
+    errors: null,
   };
 
   login = () => {
@@ -59,7 +62,14 @@ class Login extends React.Component {
           password: '',
           isSigning: false
         }))
-      });
+      }).catch((error) => {
+        if(error.response.status === 400){
+          this.setState({
+            errors: error.response.data.non_field_errors.join(),
+            isSigning: false,
+          })
+        }
+    });
   };
 
   handleChange = prop => event => {
@@ -85,60 +95,65 @@ class Login extends React.Component {
     const {classes} = this.props;
 
     return (
-      <div className={classes.root}>
+      <NarrowContent>
         <form className={classes.container} noValidate autoComplete="off">
-          <Paper className={classes.paperContainer}>
-            <Grid container spacing={24}>
-              <Grid item xs={12}>
-                <h1>Sign in</h1>
-                <p>You must log in to view the page</p>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <FormControl className={classNames(classes.margin, classes.textField)}>
-                  <InputLabel htmlFor="signIn-email">E-mail</InputLabel>
-                  <Input
-                    id="signIn-email"
-                    type="text"
-                    value={this.state.email}
-                    onChange={this.handleChange('email')}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                 <FormControl className={classNames(classes.margin, classes.textField)}>
-                  <InputLabel htmlFor="signIn-password">Password</InputLabel>
-                  <Input
-                    id="signIn-password"
-                    type={this.state.showPassword ? 'text' : 'password'}
-                    value={this.state.password}
-                    onChange={this.handleChange('password')}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="Toggle password visibility"
-                          onClick={this.handleClickShowPassword}
-                          onMouseDown={this.handleMouseDownPassword}
-                        >
-                          {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} className={classes.submitRow}>
-                <Button variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        disabled={this.state.isSigning}
-                        onClick={this.login}>
-                  { this.state.signinText }
-                </Button>
-              </Grid>
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
+              <h1>Sign in</h1>
+              <p>Sign in to access your profile and available games.</p>
             </Grid>
-          </Paper>
+            <Grid item xs={12} md={6}>
+              <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                <InputLabel htmlFor="signIn-email">E-mail</InputLabel>
+                <Input
+                  id="signIn-email"
+                  type="text"
+                  value={this.state.email}
+                  onChange={this.handleChange('email')}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+               <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                <InputLabel htmlFor="signIn-password">Password</InputLabel>
+                <Input
+                  id="signIn-password"
+                  type={this.state.showPassword ? 'text' : 'password'}
+                  value={this.state.password}
+                  onChange={this.handleChange('password')}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="Toggle password visibility"
+                        onClick={this.handleClickShowPassword}
+                        onMouseDown={this.handleMouseDownPassword}
+                      >
+                        {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} className={classes.errors}>
+              {this.state.errors}
+            </Grid>
+            <Grid item xs={12} className={classes.submitRow}>
+              <Button variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      disabled={this.state.isSigning}
+                      onClick={this.login}>
+                { this.state.signinText }
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              No account yet? <Link to='/register'>Sign up!</Link>
+            </Grid>
+          </Grid>
         </form>
-      </div>
+        {this.state.additionalComponent}
+      </NarrowContent>
     )
   }
 }

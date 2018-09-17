@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
+from profiles import views as profile_views
 
 urlpatterns = [
+    path('activate/<slug:uidb64>/<slug:token>/', profile_views.activate, name='activate'),
     path('api/token/auth/', obtain_jwt_token),
     path('api/token/refresh/', refresh_jwt_token),
     path('api/', include(('api.urls', 'api'), namespace='api')),

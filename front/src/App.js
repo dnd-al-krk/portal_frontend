@@ -20,6 +20,9 @@ import Login from "./common/Login";
 import Loader from "./common/Loader";
 import Profiles from "./pages/Profiles";
 import Profile from "./pages/Profile";
+import CharacterCreate from "./pages/CharacterCreate";
+import CharacterEdit from "./pages/CharacterEdit";
+import Register from "./common/Register";
 
 
 const portalStore = new PortalStore();
@@ -45,9 +48,12 @@ class App extends Component {
                 <Route exact path="/" component={Home}/>
                 <RouteRequiresLogin exact path="/profiles" component={Profiles}/>
                 <RouteRequiresLogin exact path="/profiles/:id" component={Profile}/>
-                <Route path="/characters" component={Characters}/>
+                <RouteRequiresLogin exact path="/characters" component={Characters}/>
+                <RouteRequiresLogin exact path="/characters/create" component={CharacterCreate}/>
+                <RouteRequiresLogin exact path="/characters/:id/edit" component={CharacterEdit}/>
                 <RouteRequiresLogin path="/account" component={Account}/>
                 <Route exact path="/login" component={Login}/>
+                <Route exact path="/register" component={Register}/>
               </PushedDiv>
             </div>
           </Router>

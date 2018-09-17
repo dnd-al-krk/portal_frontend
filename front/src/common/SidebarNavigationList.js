@@ -5,9 +5,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Settings from "@material-ui/icons/Settings";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PermIdentity from "@material-ui/icons/PermIdentity";
 import UndecoratedLink from "./UndecoratedLink";
 import {inject, observer} from "mobx-react";
+import Hidden from "@material-ui/core/Hidden/Hidden";
+import Divider from "@material-ui/core/Divider/Divider";
 
 
 const styles = theme => ({
@@ -24,11 +28,6 @@ const styles = theme => ({
 @inject('portalStore') @observer
 export default class SidebarNavigationList extends React.Component{
 
-  constructor(props){
-    super(props);
-    this.props.portalStore.fetchCurrentUser();
-  }
-
   currentProfile(){
     return this.props.portalStore.currentUser;
   }
@@ -43,15 +42,31 @@ export default class SidebarNavigationList extends React.Component{
     return (
       <div className={classes.root}>
         <List component="nav">
-          {this.isAuth() && (<UndecoratedLink to={`/profiles/${this.currentProfile().profileID}`}>
-            <ListItem button>
-              <ListItemIcon>
-                <Settings/>
-              </ListItemIcon>
-              <ListItemText primary="Your profile">
-              </ListItemText>
-            </ListItem>
-          </UndecoratedLink>)}
+          {this.isAuth() && (
+            <div>
+              <UndecoratedLink to={`/profiles/${this.currentProfile().profileID}`}>
+                <ListItem button>
+                  <ListItemIcon>
+                    <AccountCircle/>
+                  </ListItemIcon>
+                  <ListItemText primary="Your profile">
+                  </ListItemText>
+                </ListItem>
+              </UndecoratedLink>
+              <Hidden smUp>
+                <UndecoratedLink to={`/characters/create`}>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <PersonAddIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Add new character">
+                    </ListItemText>
+                  </ListItem>
+                </UndecoratedLink>
+              </Hidden>
+              <Divider />
+            </div>
+          )}
           <UndecoratedLink to="/profiles">
             <ListItem button>
               <ListItemIcon>
