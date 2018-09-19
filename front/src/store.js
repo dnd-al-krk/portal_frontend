@@ -93,7 +93,7 @@ export class PortalStore {
 
   @action.bound
   register(data){
-    return axiosInstance.post(`${API_HOSTNAME}/api/register/`, data)
+    return axiosInstance.post(`${API_HOSTNAME}/register/`, data)
   }
 
   @action.bound

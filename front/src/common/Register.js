@@ -87,7 +87,7 @@ export default class Register extends React.Component {
             isSigning: false,
             isDone: true,
           }))
-        }).catch((error => {
+        }).catch(error => {
         const new_state = {
           emailErrors: null,
           passwordErrors: null,
@@ -109,7 +109,7 @@ export default class Register extends React.Component {
         });
         new_state.isSigning = false;
         this.setState(new_state);
-      }));
+      });
     }
     else {
       this.setState({passwordErrors: "Passwords don't match"});
