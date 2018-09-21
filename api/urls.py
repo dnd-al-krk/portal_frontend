@@ -6,13 +6,14 @@ from games.api import views as games_views
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'characters', profiles_views.PlayerCharacterViewSet)
-router.register(r'notes', profiles_views.DMNoteViewSet)
-router.register(r'profiles', profiles_views.ProfileViewSet)
-router.register(r'classes', profiles_views.CharacterClassListView)
-router.register(r'races', profiles_views.CharacterRaceListView)
-router.register(r'factions', profiles_views.CharacterFactionListView)
-router.register(r'adventures', games_views.AdventuresViewSet)
+router.register('characters', profiles_views.PlayerCharacterViewSet)
+router.register('notes', profiles_views.DMNoteViewSet)
+router.register('profiles', profiles_views.ProfileViewSet)
+router.register('classes', profiles_views.CharacterClassListView)
+router.register('races', profiles_views.CharacterRaceListView)
+router.register('factions', profiles_views.CharacterFactionListView)
+router.register('adventures', games_views.AdventuresViewSet)
+router.register('games', games_views.GameSessionViewSet)
 # router.register(r'register', profiles_views.RegistrationView)
 
 # The API URLs are now determined automatically by the router.

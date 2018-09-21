@@ -10,13 +10,19 @@ class AdventureSerializer(serializers.ModelSerializer):
 
 
 class GameSessionSerializer(serializers.ModelSerializer):
+    table_name = serializers.CharField(source='table.name', read_only=True)
+
     class Meta:
         model = GameSession
         fields = (
             'id',
             'date',
-            'table',
+            'table_name',
             'adventure',
+            'dm',
+            'time_start',
+            'notes',
+            'spots',
         )
 
 
