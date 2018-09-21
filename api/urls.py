@@ -2,6 +2,7 @@ from django.conf.urls import url, include
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 from profiles.api import views as profiles_views
+from games.api import views as games_views
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
@@ -11,6 +12,7 @@ router.register(r'profiles', profiles_views.ProfileViewSet)
 router.register(r'classes', profiles_views.CharacterClassListView)
 router.register(r'races', profiles_views.CharacterRaceListView)
 router.register(r'factions', profiles_views.CharacterFactionListView)
+router.register(r'adventures', games_views.AdventuresViewSet)
 # router.register(r'register', profiles_views.RegistrationView)
 
 # The API URLs are now determined automatically by the router.
