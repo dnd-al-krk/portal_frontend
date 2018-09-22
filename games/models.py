@@ -1,8 +1,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .constants import (ADVENTURE_TYPE_EXPEDITIONS, ADVENTURE_TYPE_ENCOUNTERS, ADVENTURE_TYPE_EPICS,
-                        ADVENTURE_TYPE_CCC, ADVENTURE_TYPE_OTHER)
+from .constants import (ADVENTURE_TYPE_EX, ADVENTURE_TYPE_EN, ADVENTURE_TYPE_EP, ADVENTURE_TYPE_HC, ADVENTURE_TYPE_IA,
+                        ADVENTURE_TYPE_LE, ADVENTURE_TYPE_CCC, ADVENTURE_TYPE_OTHER, ADVENTURE_TYPE_AO)
 from utils.models import UUIDModel
 
 
@@ -20,10 +20,14 @@ class Table(UUIDModel):
 
 
 ADVENTURE_TYPES = (
-    (ADVENTURE_TYPE_EXPEDITIONS, _('EX')),
-    (ADVENTURE_TYPE_ENCOUNTERS, _('EN')),
-    (ADVENTURE_TYPE_EPICS, _('EP')),
+    (ADVENTURE_TYPE_EN, _('EN')),
+    (ADVENTURE_TYPE_EP, _('EP')),
+    (ADVENTURE_TYPE_EX, _('EX')),
+    (ADVENTURE_TYPE_HC, _('HC')),
+    (ADVENTURE_TYPE_IA, _('IA')),
+    (ADVENTURE_TYPE_LE, _('LE')),
     (ADVENTURE_TYPE_CCC, _('CCC')),
+    (ADVENTURE_TYPE_AO, _('AO')),
     (ADVENTURE_TYPE_OTHER, _('Other')),
 )
 
@@ -32,7 +36,7 @@ class Adventure(UUIDModel):
     season = models.PositiveIntegerField(_('Season'), blank=True, null=True)
     number = models.PositiveIntegerField(_('Number'), blank=True, null=True)
     title = models.CharField(_('Title'), max_length=255)
-    type = models.IntegerField(_('Type'), choices=ADVENTURE_TYPES, default=ADVENTURE_TYPE_EXPEDITIONS)
+    type = models.IntegerField(_('Type'), choices=ADVENTURE_TYPES, default=ADVENTURE_TYPE_EX)
 
     class Meta:
         verbose_name = _('Adventure')
