@@ -1,15 +1,9 @@
-import factory
+from ..constants import ADVENTURE_TYPE_OTHER
+from .factories import AdventureFactory
+
 from pytest_factoryboy import register
 
-from ..constants import ADVENTURE_TYPE_OTHER
-from ..models import Adventure
-
-@register
-class AdventureFactory(factory.Factory):
-    class Meta:
-        model = Adventure
-
-    title = 'Super Adventure'
+register(AdventureFactory)
 
 
 def test_factory_fixture(adventure_factory):
