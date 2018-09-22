@@ -40,6 +40,9 @@ class Adventure(UUIDModel):
         ordering = ('season', 'number', 'title')
 
     def __str__(self):
+        if self.type == ADVENTURE_TYPE_OTHER:
+            return self.title
+
         return 'DD{type}{season}{number} - {title}'.format(
             type=self.get_type(),
             season=self.get_season(),
