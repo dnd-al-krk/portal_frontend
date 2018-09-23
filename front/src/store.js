@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import {API_HOSTNAME} from "./config";
 import {JWT_TOKEN} from "./constants";
+import GamesStore from "./stores/GamesStore";
 
 
 const csrftoken = Cookies.get('csrftoken');
@@ -31,6 +32,7 @@ export class PortalStore {
   @observable classes = [];
   @observable races = [];
   @observable factions = [];
+  @observable games = new GamesStore(this);
 
   @action.bound
   fetchCurrentUser(){
@@ -186,12 +188,13 @@ export class NavigationStore {
 
 export class UserStore {
   @observable rootStore;
-  @observable profileID;
-  @observable userID;
+  profileID;
+  userID;
   @observable first_name;
   @observable last_name;
   @observable nickname;
   @observable dci;
+  role;
 
   constructor(rootStore) {
     this.rootStore = rootStore;
@@ -213,6 +216,7 @@ export class UserStore {
         this.last_name = data.user.last_name;
         this.nickname = data.nickname;
         this.dci = data.dci;
+        this.role = data.role;
       })
       .catch((err) => {
         this.rootStore.signOut();

@@ -12,9 +12,9 @@ import FormControl from "@material-ui/core/FormControl/FormControl";
 import Button from "@material-ui/core/Button/Button";
 import CharactersList from "../common/CharactersList";
 
-const styles = (theme) => {
+const styles = (theme) => ({
 
-};
+});
 
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
