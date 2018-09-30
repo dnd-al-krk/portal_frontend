@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import {API_HOSTNAME} from "./config";
 import {JWT_TOKEN} from "./constants";
 import GamesStore from "./stores/GamesStore";
+import AdventuresStore from "./stores/AdventuresStore";
 
 
 const csrftoken = Cookies.get('csrftoken');
@@ -33,6 +34,7 @@ export class PortalStore {
   @observable races = [];
   @observable factions = [];
   @observable games = new GamesStore(this);
+  @observable adventures = new AdventuresStore(this);
 
   @action.bound
   fetchCurrentUser(){

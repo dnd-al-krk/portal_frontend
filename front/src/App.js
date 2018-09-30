@@ -24,6 +24,7 @@ import CharacterCreate from "./pages/CharacterCreate";
 import CharacterEdit from "./pages/CharacterEdit";
 import Register from "./common/Register";
 import Games from "./pages/Games";
+import GameBooking from "./pages/GameBooking";
 
 
 const portalStore = new PortalStore();
@@ -48,6 +49,7 @@ class App extends Component {
               <PushedDiv>
                 <Route exact path="/" component={Home}/>
                 <RouteRequiresLogin exact path="/games" component={Games}/>
+                <RouteRequiresLogin exact path="/games/:id" component={GameBooking}/>
                 <RouteRequiresLogin exact path="/profiles" component={Profiles}/>
                 <RouteRequiresLogin exact path="/profiles/:id" component={Profile}/>
                 <RouteRequiresLogin exact path="/characters" component={Characters}/>
