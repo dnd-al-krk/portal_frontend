@@ -35,4 +35,4 @@ class GameSessionViewSet(mixins.ListModelMixin,
         'adventure__title',
     )
     ordering_fields = ('date', )
-    ordering = '-date'
+    ordering = 'date'

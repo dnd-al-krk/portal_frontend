@@ -101,6 +101,19 @@ class ProfileSerializer(serializers.ModelSerializer):
         return obj.characters.all().count()
 
 
+class PublicProfileSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(source='user.first_name', read_only=True)
+    last_name = serializers.CharField(source='user.last_name', read_only=True)
+    characters_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Profile
+        fields = ('id', 'user', 'nickname', 'dci', 'role', 'characters_count', 'first_name', 'last_name')
+
+    def get_characters_count(self, obj):
+        return obj.characters.all().count()
+
+
 REQUIRED = {'allow_null': False, 'allow_blank': False, 'required': True}
 
 
