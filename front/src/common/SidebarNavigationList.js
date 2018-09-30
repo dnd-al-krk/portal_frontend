@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -43,7 +43,7 @@ export default class SidebarNavigationList extends React.Component{
       <div className={classes.root}>
         <List component="nav">
           {this.isAuth() && (
-            <div>
+            <Fragment>
               <UndecoratedLink to={`/profiles/${this.currentProfile().profileID}`}>
                 <ListItem button>
                   <ListItemIcon>
@@ -65,7 +65,7 @@ export default class SidebarNavigationList extends React.Component{
                 </UndecoratedLink>
               </Hidden>
               <Divider />
-            </div>
+            </Fragment>
           )}
           <UndecoratedLink to="/profiles">
             <ListItem button>
@@ -73,6 +73,15 @@ export default class SidebarNavigationList extends React.Component{
                 <Settings/>
               </ListItemIcon>
               <ListItemText primary="AL Players">
+              </ListItemText>
+            </ListItem>
+          </UndecoratedLink>
+          <UndecoratedLink to="/games">
+            <ListItem button>
+              <ListItemIcon>
+                <Settings/>
+              </ListItemIcon>
+              <ListItemText primary="Game sessions">
               </ListItemText>
             </ListItem>
           </UndecoratedLink>

@@ -14,7 +14,9 @@ import Avatar from "../../node_modules/@material-ui/core/Avatar/Avatar";
 import Chip from "../../node_modules/@material-ui/core/Chip/Chip";
 import CalendarIcon from "@material-ui/icons/Event";
 import RoomIcon from "@material-ui/icons/Room";
+import PersonIcon from "@material-ui/icons/Person";
 import Hidden from "../../node_modules/@material-ui/core/Hidden/Hidden";
+import UndecoratedLink from "../common/UndecoratedLink";
 
 const styles = theme => ({
   root: {
@@ -66,83 +68,77 @@ export default class Games extends React.Component {
     else
         return (
           <div className={classes.root}>
+            <List>
               {this.props.portalStore.games.items.map(game => (
-                <Hidden xsDown>
+                <ListItem key={`game-session-slot-${game.id}`} button>
                   {game.adventure && (
                     <Fragment>
-                      <List>
-                        <ListItem button>
-                          <ListItemIcon>
-                            <div style={{textAlign: 'center'}}>
-                              <Typography variant="title" style={{marginBottom: 0}}>
-                                <CalendarIcon/><br/>
-                                {game.getDateString()}
-                              </Typography>
-                              <Typography component='p'>
-                                {game.getWeekDay()}<br/>
-                                <strong>{game.timeStart}</strong>
-                              </Typography>
-                            </div>
-                          </ListItemIcon>
+                      <ListItemIcon>
+                        <div style={{textAlign: 'center'}}>
+                          <Typography variant="title" style={{marginBottom: 0}}>
+                            <CalendarIcon/><br/>
+                            {game.getDateString()}
+                          </Typography>
+                          <Typography component='p'>
+                            {game.getWeekDay()}<br/>
+                            <strong>{game.timeStart}</strong>
+                          </Typography>
+                        </div>
+                      </ListItemIcon>
 
-                          <ListItemText primary={
-                            <Typography variant='title' className={classes.title}>
-                              {game.adventure.title_display}
-                            </Typography>
-                          } secondary={
-                            <Fragment>
-                              <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.tableName} className={classes.chip} />
-                              <Link to={`/profiles/${game.dm.id}/`}>{game.getDMName()}</Link>
-                            </Fragment>
-                          } />
+                      <ListItemText primary={
+                        <Typography variant='title' className={classes.title}>
+                          {game.adventure.title_display}
+                        </Typography>
+                      } secondary={
+                        <Fragment>
+                          <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.tableName} className={classes.chip} />
+                          <Chip avatar={<Avatar><PersonIcon/></Avatar>} label={<UndecoratedLink to={`/profiles/${game.dm.id}/`}>{game.getDMName()}</UndecoratedLink>} className={classes.chip}/>
+                        </Fragment>
+                      } />
 
-                          <ListItemIcon>
-                            <Avatar>JK</Avatar>
-                          </ListItemIcon>
-                          <ListItemIcon>
-                            <Avatar>KS</Avatar>
-                          </ListItemIcon>
-                          <ListItemIcon>
-                            <Avatar>+{game.spots}</Avatar>
-                          </ListItemIcon>
-                        </ListItem>
-                      </List>
+                      <ListItemIcon>
+                        <Avatar>JK</Avatar>
+                      </ListItemIcon>
+                      <ListItemIcon>
+                        <Avatar>KS</Avatar>
+                      </ListItemIcon>
+                      <ListItemIcon>
+                        <Avatar>+{game.spots}</Avatar>
+                      </ListItemIcon>
                     </Fragment>
                   )}
                   {!game.adventure && (
                     <Fragment>
-                      <List>
-                        <ListItem button>
-                          <ListItemIcon>
-                            <div style={{textAlign: 'center'}}>
-                              <Typography variant="title" style={{marginBottom: 0}}>
-                                <CalendarIcon/><br/>
-                                {game.getDateString()}
-                              </Typography>
-                              <Typography component='p'>
-                                {game.getWeekDay()}<br/>
-                                <strong>{game.timeStart}</strong>
-                              </Typography>
-                            </div>
-                          </ListItemIcon>
-                          <ListItemText primary={
-                            <Typography variant='title' className={classes.title}>
-                              Empty Slot
-                            </Typography>
-                          } secondary={
-                            <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.tableName} className={classes.chip} />
-                          } />
-                          {this.props.portalStore.currentUser.role === 'Dungeon Master' && (
-                            <Button variant="outlined" size="small" color="primary">
-                              Run a game in this slot
-                            </Button>
-                          )}
-                        </ListItem>
-                      </List>
+                      <ListItemIcon>
+                        <div style={{textAlign: 'center'}}>
+                          <Typography variant="title" style={{marginBottom: 0}}>
+                            <CalendarIcon/><br/>
+                            {game.getDateString()}
+                          </Typography>
+                          <Typography component='p'>
+                            {game.getWeekDay()}<br/>
+                            <strong>{game.timeStart}</strong>
+                          </Typography>
+                        </div>
+                      </ListItemIcon>
+                      <ListItemText primary={
+                        <Typography variant='title' className={classes.title}>
+                          Empty Slot
+                        </Typography>
+                      } secondary={
+                        <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.tableName} className={classes.chip} />
+                      } />
+                      {this.props.portalStore.currentUser.role === 'Dungeon Master' && (
+                        <Button variant="outlined" size="small" color="primary">
+                          Run a game in this slot
+                        </Button>
+                      )}
                     </Fragment>
                   )}
-                </Hidden>
+                </ListItem>
               ))}
+            </List>
           </div>
         );
   }
