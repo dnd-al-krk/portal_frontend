@@ -23,6 +23,7 @@ class GameSessionSerializer(serializers.ModelSerializer):
     adventure = AdventureSerializer()
     time_start = serializers.SerializerMethodField()
     time_end = serializers.SerializerMethodField()
+    max_spots = serializers.IntegerField(source='table.max_spots', read_only=True)
 
     class Meta:
         model = GameSession
@@ -37,6 +38,7 @@ class GameSessionSerializer(serializers.ModelSerializer):
             'time_end',
             'notes',
             'spots',
+            'max_spots',
         )
 
     def get_time_start(self, game):

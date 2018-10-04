@@ -141,6 +141,12 @@ class GameBooking extends Component {
       })
   };
 
+  handleSpotsChange = event => {
+    const new_value = event.target.value;
+    if(new_value <= this.state.game.max_spots && new_value > 3)
+      this.handleChange('spots')(event);
+  };
+
   gameDate = () => {
     const date = new Date(this.state.game.date);
     const dateString = dateToString(date);
@@ -222,8 +228,9 @@ class GameBooking extends Component {
             <TextField
               id="spots"
               label="Maximum players spots"
-              onChange={this.handleChange('spots')}
+              onChange={this.handleSpotsChange}
               type="number"
+              helperText={`Maximum spots for the table: ${this.state.game.max_spots}`}
               value={this.state.spots}
               className={classes.textField}
               InputLabelProps={{
