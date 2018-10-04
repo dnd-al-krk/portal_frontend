@@ -5,7 +5,6 @@ import {inject, observer} from "mobx-react";
 import Typography from "../../node_modules/@material-ui/core/Typography/Typography";
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from "../../node_modules/@material-ui/core/Button/Button";
-import {Link} from "react-router-dom";
 import List from "../../node_modules/@material-ui/core/List/List";
 import ListItem from "../../node_modules/@material-ui/core/ListItem/ListItem";
 import ListItemIcon from "../../node_modules/@material-ui/core/ListItemIcon/ListItemIcon";
@@ -15,7 +14,6 @@ import Chip from "../../node_modules/@material-ui/core/Chip/Chip";
 import CalendarIcon from "@material-ui/icons/Event";
 import RoomIcon from "@material-ui/icons/Room";
 import PersonIcon from "@material-ui/icons/Person";
-import Hidden from "../../node_modules/@material-ui/core/Hidden/Hidden";
 import UndecoratedLink from "../common/UndecoratedLink";
 
 const styles = theme => ({
@@ -55,6 +53,11 @@ export default class Games extends React.Component {
       })
     })
   }
+
+  gotoGameBooking = (e, id) => {
+    e.stopPropagation();
+    this.props.history.push(`/games/${id}/book`);
+  };
 
   render() {
     const {classes} = this.props;
@@ -130,7 +133,7 @@ export default class Games extends React.Component {
                         <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.tableName} className={classes.chip} />
                       } />
                       {this.props.portalStore.currentUser.role === 'Dungeon Master' && (
-                        <Button variant="outlined" size="small" color="primary">
+                        <Button variant="outlined" size="small" color="primary" onClick={(e) => this.gotoGameBooking(e, game.id)}>
                           Run a game in this slot
                         </Button>
                       )}

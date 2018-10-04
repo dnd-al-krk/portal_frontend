@@ -1,4 +1,5 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
+from rest_framework.exceptions import APIException
 
 from profiles.api.serializers import PublicProfileSerializer
 from ..models import Adventure, GameSession
@@ -46,6 +47,7 @@ class GameSessionBookSerializer(serializers.ModelSerializer):
             'dm',
             'adventure',
             'time_start',
+            'time_end',
             'spots',
             'notes',
         )

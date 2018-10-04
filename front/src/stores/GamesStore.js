@@ -1,4 +1,5 @@
 import {observable, action} from 'mobx';
+import {dateToString, weekdayOf} from "../utils";
 
 export default class GamesStore {
   @observable root = null;
@@ -10,9 +11,17 @@ export default class GamesStore {
 
   fetch(){
     this.items = [];
-    return this.root.fetchData('games').then(data => data.map(game_data => {
+    return this.root.fetchData('games/list').then(data => data.map(game_data => {
       this.items.push(new Game(this, game_data));
     }));
+  }
+
+  get(id){
+    return this.root.getData('games/list', id);
+  }
+
+  book(id, data){
+    return this.root.putData('games/booking', id, data);
   }
 }
 
@@ -45,21 +54,14 @@ export class Game {
   }
 
   getWeekDay() {
-    const weekday = new Array(7);
-    weekday[0] =  "Sunday";
-    weekday[1] = "Monday";
-    weekday[2] = "Tuesday";
-    weekday[3] = "Wednesday";
-    weekday[4] = "Thursday";
-    weekday[5] = "Friday";
-    weekday[6] = "Saturday";
-    return weekday[new Date(this.date).getDay()];
+    const date = new Date(this.date);
+    return weekdayOf(date);
   }
 
   getDateString() {
     if(!this.date) return '';
-    const d = new Date(this.date);
-    return ("0" + d.getDate()).slice(-2) + '.' + ("0" + (d.getMonth()+1)).slice(-2);
+    const date = new Date(this.date);
+    return dateToString(date);
   }
 
 }

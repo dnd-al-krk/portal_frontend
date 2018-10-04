@@ -9,23 +9,40 @@ import FormControl from "@material-ui/core/FormControl/FormControl";
 import {SelectField} from "../common/Fields";
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
+import classNames from 'classnames';
+
+import TimeIcon from '@material-ui/icons/AccessTime';
+import LocationIcon from '@material-ui/icons/LocationOn';
+import CalendarIcon from '@material-ui/icons/CalendarToday';
+import {dateToString, weekdayOf} from "../utils";
 
 
 const styles = theme => ({
   header: {
     marginBottom: theme.spacing.unit,
   },
+  info: {
+    marginRight: 10
+  },
+  infoIcon: {
+    fontSize: 14,
+    marginRight: 5,
+  },
   formControl: {
     width: '100%',
   },
   textField: {
-    marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     width: '100%',
+  },
+  field: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
   },
   timeControl: {
     width: 200,
     marginBottom: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
   },
   notesControl: {
     width: '100%',
@@ -34,7 +51,13 @@ const styles = theme => ({
   button: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-  }
+  },
+  spotsControl: {
+    marginLeft: theme.spacing.unit,
+  },
+  endTimeControl: {
+    marginRight: theme.spacing.unit,
+  },
 });
 
 @withStyles(styles, {withTheme: true})
@@ -42,25 +65,70 @@ const styles = theme => ({
 class GameBooking extends Component {
 
   state = {
-    adventures: null,
+    adventures: [],
     adventure: '',
-    startTime: '17:00',
+    startTime: '',
+    endTime: '',
+    spots: 0,
+    gameID: null,
+    game: null,
     notes: '',
     loading: true,
     formValid: false,
+    gameAlreadyBooked: false,
   };
 
   componentDidMount(){
     this.setState({
       loading: true,
     });
-    this.props.portalStore.adventures.fetch().then((adventures) => {
+    Promise.all([this.getGame(), this.fetchAdventures()]).then((data) => {
       this.setState({
-        adventures: adventures,
         loading: false,
       })
-    })
+    });
   }
+
+  getGame = () => {
+    return this.props.portalStore.games.get(this.props.match.params.id).then(game => {
+      if(game.adventure !== null){
+        this.setState({
+          gameAlreadyBooked: true,
+        })
+      }
+      else {
+        this.setState({
+          startTime: game.time_start,
+          spots: game.spots,
+          gameID: this.props.match.params.id,
+          game: game,
+        })
+      }
+    })
+  };
+
+  bookGame = () => {
+    const data = {
+      time_start: this.state.startTime,
+      time_end: this.state.endTime ? this.state.endTime : null,
+      adventure: this.state.adventure,
+      notes: this.state.notes,
+      spots: this.state.spots,
+    };
+    this.props.portalStore.games.book(this.props.match.params.id, data).then(() => {
+      // TODO: Go to the booked game page, but for now simply return to the list
+      this.props.history.push('/games');
+    });
+  };
+
+  fetchAdventures = () => {
+    return this.props.portalStore.adventures.fetch().then((adventures) => {
+      this.setState({
+        adventures: adventures,
+      })
+    });
+  };
+
 
   handleChange = prop => event => {
     const value = event.target.value;
@@ -73,6 +141,13 @@ class GameBooking extends Component {
       })
   };
 
+  gameDate = () => {
+    const date = new Date(this.state.game.date);
+    const dateString = dateToString(date);
+    const day = weekdayOf(date);
+    return `${dateString}, ${day}`;
+  };
+
   render() {
     const {classes} = this.props;
 
@@ -83,10 +158,27 @@ class GameBooking extends Component {
           </LoadingDiv>
         );
     else
+      if(this.state.gameAlreadyBooked){
+        return (
+          <WideContent>
+            <Typography variant='display1' className={classes.header}>
+              This game is already booked. Sorry!
+            </Typography>
+          </WideContent>
+        )
+      }
       return (
         <WideContent>
           <Typography variant='display1' className={classes.header}>
             Booking slot for a game
+          </Typography>
+          <Typography variant="body1" className={classes.header}>
+            <span className={classes.info}>
+              <CalendarIcon className={classes.infoIcon}/>{this.gameDate()}
+            </span>
+            <span className={classes.info}>
+              <LocationIcon className={classes.infoIcon}/> {this.state.game.table_name}
+            </span>
           </Typography>
           <SelectField name={'adventure'} label={'Select Adventure'}
                        value={this.state.adventure}
@@ -94,7 +186,7 @@ class GameBooking extends Component {
                        options={this.state.adventures.map(adventure => ({id: adventure.id, name: adventure.title_display}))}
                        required={true}
           />
-          <FormControl className={classes.timeControl}>
+          <FormControl className={classNames([classes.field, classes.timeControl])}>
             <TextField
               id="startTime"
               label="Starting time"
@@ -110,7 +202,36 @@ class GameBooking extends Component {
               }}
             />
           </FormControl>
-          <FormControl className={classes.notesControl}>
+          <FormControl className={classNames([classes.field, classes.timeControl, classes.endTimeControl])}>
+            <TextField
+              id="endTime"
+              label="Estimated end time"
+              type="time"
+              onChange={this.handleChange('endTime')}
+              value={this.state.endTime}
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps={{
+                step: 900, // 15 min
+              }}
+            />
+          </FormControl>
+          <FormControl className={classNames([classes.field, classes.spotsControl])}>
+            <TextField
+              id="spots"
+              label="Maximum players spots"
+              onChange={this.handleChange('spots')}
+              type="number"
+              value={this.state.spots}
+              className={classes.textField}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </FormControl>
+          <FormControl className={classNames([classes.field, classes.notesControl])}>
             <TextField
               id="notes"
               label="Notes for players"

@@ -13,7 +13,8 @@ router.register('classes', profiles_views.CharacterClassListView)
 router.register('races', profiles_views.CharacterRaceListView)
 router.register('factions', profiles_views.CharacterFactionListView)
 router.register('adventures', games_views.AdventuresViewSet)
-router.register('games', games_views.GameSessionViewSet)
+router.register('games/list', games_views.GameSessionViewSet)
+router.register('games/booking', games_views.GameSessionBookViewSet)
 # router.register(r'register', profiles_views.RegistrationView)
 
 # The API URLs are now determined automatically by the router.

@@ -117,6 +117,11 @@ export class PortalStore {
   }
 
   @action.bound
+  putData(name, id, data){
+    return getAxiosInstance(this.userToken).put(`${API_HOSTNAME}/${name}/${id}/`, data);
+  }
+
+  @action.bound
   fetchProfiles() {
     return this.fetchData('profiles')
   }
