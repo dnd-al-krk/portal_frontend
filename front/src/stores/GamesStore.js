@@ -23,6 +23,14 @@ export default class GamesStore {
   book(id, data){
     return this.root.putData('games/booking', id, data);
   }
+
+  signUp(id){
+    return this.root.putData('games/list', `${id}/signUp`, {})
+  }
+
+  signOut(id){
+    return this.root.putData('games/list', `${id}/signOut`, {})
+  }
 }
 
 export class Game {

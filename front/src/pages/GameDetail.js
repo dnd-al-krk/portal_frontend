@@ -61,17 +61,13 @@ class GameDetail extends Component {
   };
 
   componentDidMount(){
-    this.setState({
-      loading: true,
-    });
-    this.getGame().then((data) => {
-      this.setState({
-        loading: false,
-      })
-    });
+    this.getGame();
   }
 
   getGame = () => {
+    this.setState({
+      loading: true,
+    });
     return this.props.portalStore.games.get(this.props.match.params.id).then(game => {
       this.setState({
         game: game,
@@ -100,8 +96,7 @@ class GameDetail extends Component {
 
   getUserListItem = (player) => {
     let action = null;
-    if(player.id !== this.props.portalStore.currentUser.id){
-      // FIXME: compare to myself
+    if(player.id === this.props.portalStore.currentUser.profileID){
       action = (
         <IconButton aria-label="See profile" onClick={() => this.signOut()}>
           <CancelIcon />
@@ -109,6 +104,25 @@ class GameDetail extends Component {
       )
     }
     return <ProfileListItem key={`signed-up-player-${player.id}`} profile={player} history={this.props.history} action={action}/>
+  };
+
+  canSignUp = () => {
+    const players = this.state.game.players.map(player => player.id);
+    const player = this.props.portalStore.currentUser.profileID;
+    const usersGameSlot = this.state.game.dm.id === player;
+    return players.indexOf(player) === -1 && !usersGameSlot;
+  };
+
+  signUp = () => {
+    this.props.portalStore.games.signUp(this.state.game.id).then(() => {
+      this.getGame();
+    });
+  };
+
+  signOut = () => {
+    this.props.portalStore.games.signOut(this.state.game.id).then(() => {
+      this.getGame();
+    });
   };
 
   render() {
@@ -161,10 +175,13 @@ class GameDetail extends Component {
             <List>
               {game.players.map(player => this.getUserListItem(player))}
             </List>
-            <Button variant="contained" color="secondary">
-              <PlusIcon/>
-              Join this game
-            </Button>
+            {this.canSignUp() && (
+              <Button variant="contained" color="secondary" onClick={() => this.signUp()}>
+                <PlusIcon/>
+                Join this game
+              </Button>
+            )}
+
           </Grid>
         </Grid>
       </div>

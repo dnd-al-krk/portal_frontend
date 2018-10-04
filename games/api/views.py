@@ -26,6 +26,7 @@ class AdventuresViewSet(mixins.ListModelMixin,
 
 class GameSessionViewSet(mixins.ListModelMixin,
                          mixins.RetrieveModelMixin,
+                         mixins.UpdateModelMixin,
                          viewsets.GenericViewSet):
     serializer_class = GameSessionSerializer
     queryset = GameSession.objects.all()
@@ -39,6 +40,28 @@ class GameSessionViewSet(mixins.ListModelMixin,
     )
     ordering_fields = ('date', )
     ordering = 'date'
+
+    @action(methods=['PUT'], detail=True)
+    def signUp(self, request, *args, **kwargs):
+        instance = self.get_object()
+        profile = request.user.profile
+
+        if profile in instance.players.all():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        instance.players.add(profile)
+        return Response()
+
+    @action(methods=['PUT'], detail=True)
+    def signOut(self, request, *args, **kwargs):
+        instance = self.get_object()
+        profile = request.user.profile
+
+        if profile not in instance.players.all():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        instance.players.remove(profile)
+        return Response()
 
 
 class GameSessionBookViewSet(mixins.UpdateModelMixin,
