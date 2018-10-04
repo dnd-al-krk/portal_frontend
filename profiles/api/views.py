@@ -10,7 +10,7 @@ from .filters import PlayerCharacterFilter
 from .permissions import IsOwnerOrReadOnly, IsDMOwnerOrReadOnly, OnlyDMCanRead, IsProfileOwnerOrReadOnly
 from .serializers import (PlayerCharacterSerializer, DMNoteSerializer, ProfileSerializer, CharacterClassSerializer,
                           CharacterRaceSerializer, CharacterFactionSerializer, PlayerCharacterListSerializer,
-                          RegisterProfileSerializer)
+                          RegisterProfileSerializer, PublicProfileSerializer)
 from ..models import PlayerCharacter, DMNote, Profile, CharacterClass, CharacterRace, CharacterFaction
 
 
@@ -52,7 +52,7 @@ class ProfileViewSet(mixins.UpdateModelMixin,
                      mixins.RetrieveModelMixin,
                      mixins.ListModelMixin,
                      viewsets.GenericViewSet):
-    serializer_class = ProfileSerializer
+    serializer_class = PublicProfileSerializer
     queryset = Profile.objects.all()
     permission_classes = [IsAuthenticated,
                           IsProfileOwnerOrReadOnly]

@@ -59,6 +59,10 @@ export default class Games extends React.Component {
     this.props.history.push(`/games/${id}/book`);
   };
 
+  gotoGame = (id) => {
+    this.props.history.push(`/games/${id}`);
+  };
+
   render() {
     const {classes} = this.props;
 
@@ -73,7 +77,7 @@ export default class Games extends React.Component {
           <div className={classes.root}>
             <List>
               {this.props.portalStore.games.items.map(game => (
-                <ListItem key={`game-session-slot-${game.id}`} button>
+                <ListItem key={`game-session-slot-${game.id}`} button onClick={() => this.gotoGame(game.id)}>
                   {game.adventure && (
                     <Fragment>
                       <ListItemIcon>

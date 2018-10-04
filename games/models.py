@@ -69,6 +69,7 @@ class GameSession(UUIDModel):
     table = models.ForeignKey(Table, related_name='game_sessions', on_delete=models.CASCADE)
     dm = models.ForeignKey('profiles.Profile', related_name='game_sessions', on_delete=models.SET_NULL, blank=True,
                            null=True)
+    players = models.ManyToManyField('profiles.Profile', related_name='played_sessions', blank=True)
     adventure = models.ForeignKey(Adventure, related_name='game_sessions', on_delete=models.SET_NULL, blank=True,
                                   null=True)
     spots = models.PositiveIntegerField(_('Number of spots'), default=5)

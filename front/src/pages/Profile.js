@@ -10,7 +10,7 @@ import {ClipLoader} from "react-spinners";
 import {NarrowContent} from "../common/Content";
 import CharactersList from "../common/CharactersList";
 import Button from "@material-ui/core/Button/Button";
-import Divider from "../../node_modules/@material-ui/core/Divider/Divider";
+import Divider from "@material-ui/core/Divider/Divider";
 
 
 const styles = theme => ({
@@ -117,7 +117,7 @@ export default class Profile extends React.Component {
                 <Person className={classes.avatarIcon} />
               </Avatar>
               <Typography variant="headline">
-                {profile.user.first_name} {profile.user.last_name} ({profile.nickname})
+                {profile.first_name} {profile.last_name} ({profile.nickname})
               </Typography>
               <Typography variant="body1">
                 {profile.role} | DCI: {profile.dci}
