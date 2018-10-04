@@ -1,3 +1,5 @@
+from profile import Profile
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -88,3 +90,11 @@ class GameSession(UUIDModel):
             table=self.table,
             adventure=str(self.adventure)
         )
+
+    def can_sign_up(self, profile: Profile):
+        # TODO: Add test to cover this logic
+        return self.players.count() < self.spots and profile not in self.players.all()
+
+    def can_sign_out(self, profile: Profile):
+        # TODO: Add  test to cover this logic
+        return profile in self.players.all()

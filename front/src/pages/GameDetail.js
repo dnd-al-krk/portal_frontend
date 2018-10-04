@@ -106,11 +106,20 @@ class GameDetail extends Component {
     return <ProfileListItem key={`signed-up-player-${player.id}`} profile={player} history={this.props.history} action={action}/>
   };
 
+  freeSpots = () => {
+    return this.state.game.spots - this.takenSpots();
+  };
+
+  takenSpots = () => {
+    return this.state.game.players.length;
+  };
+
   canSignUp = () => {
     const players = this.state.game.players.map(player => player.id);
     const player = this.props.portalStore.currentUser.profileID;
     const usersGameSlot = this.state.game.dm.id === player;
-    return players.indexOf(player) === -1 && !usersGameSlot;
+    const emptySpot = this.freeSpots() > 0;
+    return players.indexOf(player) === -1 && !usersGameSlot && emptySpot;
   };
 
   signUp = () => {
@@ -170,7 +179,7 @@ class GameDetail extends Component {
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="headline" className={classes.header}>
-                Signed up players
+                Signed up players ({this.takenSpots()}/{this.state.game.spots})
             </Typography>
             <List>
               {game.players.map(player => this.getUserListItem(player))}

@@ -43,10 +43,11 @@ class GameSessionViewSet(mixins.ListModelMixin,
 
     @action(methods=['PUT'], detail=True)
     def signUp(self, request, *args, **kwargs):
+
         instance = self.get_object()
         profile = request.user.profile
 
-        if profile in instance.players.all():
+        if not instance.can_sign_up(profile):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         instance.players.add(profile)
@@ -57,7 +58,7 @@ class GameSessionViewSet(mixins.ListModelMixin,
         instance = self.get_object()
         profile = request.user.profile
 
-        if profile not in instance.players.all():
+        if not instance.can_sign_out(profile):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         instance.players.remove(profile)
