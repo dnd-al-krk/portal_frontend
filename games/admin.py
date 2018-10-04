@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Table, Adventure, GameSession
+from .models import Table, Adventure, GameSession, GameSessionPlayerSignUp
 
 
 @admin.register(Table)
@@ -26,3 +26,10 @@ class GameSessionAdmin(admin.ModelAdmin):
 
     def max_spots(self, session):
         return session.table.max_spots
+
+
+@admin.register(GameSessionPlayerSignUp)
+class GameSessionPlayerSignUpAdmin(admin.ModelAdmin):
+    list_display = ['created', 'game', 'player']
+    list_filter = ['game__date', 'game__adventure__season', 'game__adventure__type', 'game__adventure__number',
+                   'game__spots']

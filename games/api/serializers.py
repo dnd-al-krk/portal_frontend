@@ -22,6 +22,7 @@ class GameSessionSerializer(serializers.ModelSerializer):
     players = PublicProfileSerializer(many=True, read_only=True)
     adventure = AdventureSerializer()
     time_start = serializers.SerializerMethodField()
+    time_end = serializers.SerializerMethodField()
 
     class Meta:
         model = GameSession
@@ -33,11 +34,15 @@ class GameSessionSerializer(serializers.ModelSerializer):
             'dm',
             'players',
             'time_start',
+            'time_end',
             'notes',
             'spots',
         )
 
     def get_time_start(self, game):
+        return game.time_start.strftime('%H:%M') if game.time_start else ''
+
+    def get_time_end(self, game):
         return game.time_start.strftime('%H:%M') if game.time_start else ''
 
 

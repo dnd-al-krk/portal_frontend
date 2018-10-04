@@ -71,7 +71,7 @@ class GameSession(UUIDModel):
     table = models.ForeignKey(Table, related_name='game_sessions', on_delete=models.CASCADE)
     dm = models.ForeignKey('profiles.Profile', related_name='game_sessions', on_delete=models.SET_NULL, blank=True,
                            null=True)
-    players = models.ManyToManyField('profiles.Profile', related_name='played_sessions', blank=True)
+    players = models.ManyToManyField('profiles.Profile', related_name='played_sessions', blank=True, through='games.GameSessionPlayerSignUp')
     adventure = models.ForeignKey(Adventure, related_name='game_sessions', on_delete=models.SET_NULL, blank=True,
                                   null=True)
     spots = models.PositiveIntegerField(_('Number of spots'), default=5)
@@ -98,3 +98,10 @@ class GameSession(UUIDModel):
     def can_sign_out(self, profile: Profile):
         # TODO: Add  test to cover this logic
         return profile in self.players.all()
+
+
+class GameSessionPlayerSignUp(models.Model):
+    game = models.ForeignKey(GameSession, on_delete=models.CASCADE)
+    player = models.ForeignKey('profiles.Profile', on_delete=models.CASCADE)
+    created = models.DateTimeField(_('Created'), auto_now_add=True)
+    # character = models.ForeignKey('profiles.Character', blank=True, null=True, on_delete=models.SET_NULL)
