@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import {inject, observer} from "mobx-react";
 import Grid from "@material-ui/core/Grid/Grid";
@@ -19,6 +19,8 @@ import Button from "@material-ui/core/Button/Button";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import CancelIcon from "@material-ui/icons/Cancel";
+import Menu from "@material-ui/core/Menu/Menu";
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 
 const styles = theme => ({
   root: {
@@ -57,23 +59,34 @@ class GameDetail extends Component {
 
   state = {
     game: null,
+    characters: null,
+    anchorEl: null,
     loading: true,
   };
 
   componentDidMount(){
-    this.getGame();
+    this.fetchData();
   }
 
-  getGame = () => {
+  fetchData = () => {
     this.setState({
       loading: true,
     });
-    return this.props.portalStore.games.get(this.props.match.params.id).then(game => {
+    return Promise.all([this.getGame(), this.fetchCharacters()]).then(data => {
       this.setState({
-        game: game,
+        game: data[0],
+        characters: data[1],
         loading: false,
       })
     })
+  };
+
+  getGame = () => {
+    return this.props.portalStore.games.get(this.props.match.params.id)
+  };
+
+  fetchCharacters = () => {
+    return this.props.portalStore.fetchProfileCharacters(this.props.portalStore.currentUser.profileID);
   };
 
   gameDate = (game) => {
@@ -96,14 +109,15 @@ class GameDetail extends Component {
 
   getUserListItem = (player) => {
     let action = null;
-    if(player.id === this.props.portalStore.currentUser.profileID){
+    if(player.profile.id === this.props.portalStore.currentUser.profileID){
       action = (
         <IconButton aria-label="See profile" onClick={() => this.signOut()}>
           <CancelIcon />
         </IconButton>
       )
     }
-    return <ProfileListItem key={`signed-up-player-${player.id}`} profile={player} history={this.props.history} action={action}/>
+    return <ProfileListItem key={`signed-up-player-${player.profile.id}`} profile={player.profile} character={player.character}
+                            history={this.props.history} action={action}/>
   };
 
   freeSpots = () => {
@@ -115,27 +129,41 @@ class GameDetail extends Component {
   };
 
   canSignUp = () => {
-    const players = this.state.game.players.map(player => player.id);
+    const players = this.state.game.players.map(player => player.profile.id);
     const player = this.props.portalStore.currentUser.profileID;
     const usersGameSlot = this.state.game.dm.id === player;
     const emptySpot = this.freeSpots() > 0;
     return players.indexOf(player) === -1 && !usersGameSlot && emptySpot;
   };
 
-  signUp = () => {
-    this.props.portalStore.games.signUp(this.state.game.id).then(() => {
-      this.getGame();
+  signUp = (characterId) => {
+    this.props.portalStore.games.signUp(this.state.game.id, characterId).then(() => {
+      this.fetchData();
     });
   };
 
   signOut = () => {
     this.props.portalStore.games.signOut(this.state.game.id).then(() => {
-      this.getGame();
+      this.fetchData();
     });
+  };
+
+  showCharacterPick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  hideCharacterPick = () => {
+    this.setState({ anchorEl: null });
+  };
+
+  handleCharacterPick = (e, id) => {
+    this.hideCharacterPick();
+    this.signUp(id);
   };
 
   render() {
     const {classes} = this.props;
+    const { anchorEl } = this.state;
     if(this.state.loading)
       return (
           <LoadingDiv>
@@ -184,11 +212,26 @@ class GameDetail extends Component {
             <List>
               {game.players.map(player => this.getUserListItem(player))}
             </List>
-            {this.canSignUp() && (
-              <Button variant="contained" color="secondary" onClick={() => this.signUp()}>
-                <PlusIcon/>
-                Join this game
-              </Button>
+            {this.canSignUp() && this.state.characters && (
+              <Fragment>
+                <Button variant="contained"
+                        aria-owns={anchorEl ? 'simple-menu' : null}
+                        aria-haspopup="true"
+                        color="secondary" onClick={this.showCharacterPick}>
+                  <PlusIcon/>
+                  Join this game
+                </Button>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={this.hideCharacterPick}
+                >
+                  {this.state.characters.map(character => (
+                    <MenuItem key={`character-pick-item-${character.id}`} onClick={(e) => this.handleCharacterPick(e, character.id)}>{character.name}, {character.pc_class} {character.level}</MenuItem>
+                  ))}
+                </Menu>
+              </Fragment>
             )}
 
           </Grid>

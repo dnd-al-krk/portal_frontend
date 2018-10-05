@@ -24,8 +24,8 @@ export default class GamesStore {
     return this.root.putData('games/booking', id, data);
   }
 
-  signUp(id){
-    return this.root.putData('games/list', `${id}/signUp`, {})
+  signUp(id, characterId){
+    return this.root.putData('games/list', `${id}/signUp`, {character_id: characterId})
   }
 
   signOut(id){

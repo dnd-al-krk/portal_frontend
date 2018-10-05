@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import ListItem from "@material-ui/core/ListItem/ListItem";
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
@@ -19,7 +19,7 @@ class ProfileListItem extends Component {
   };
 
   render() {
-    const {profile, action=null} = this.props;
+    const {profile, action=null, character=null} = this.props;
 
     return (
       <ListItem button onClick={() => this.gotoProfile(profile.id)}>
@@ -27,10 +27,16 @@ class ProfileListItem extends Component {
           <Person />
         </Avatar>
         <ListItemText primary={this.getName(profile)}
-                      secondary={`
-                      ${profile.role} | ${profile.characters_count} character${profile.characters_count !== 1 ? 's' : ''}
-
-                      `} />
+                      secondary={(
+                        <Fragment>
+                          {character && (
+                            <Fragment>
+                              <strong>Playing: {character.name}, {character.pc_class} {character.level}</strong><br/>
+                            </Fragment>
+                          )}
+                        {profile.role} | {profile.characters_count} character{profile.characters_count !== 1 ? 's' : ''}
+                        </Fragment>
+                      )} />
         {action && (
           <ListItemSecondaryAction>
             {action}

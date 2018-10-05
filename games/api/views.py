@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters import rest_framework as filters
 from rest_framework.response import Response
 
+from profiles.models import PlayerCharacter
 from ..models import Adventure, GameSession, GameSessionPlayerSignUp
 from .filters import AdventureFilter, GameSessionFilter
 from .serializers import AdventureSerializer, GameSessionSerializer, GameSessionBookSerializer
@@ -46,6 +47,14 @@ class GameSessionViewSet(mixins.ListModelMixin,
 
         instance = self.get_object()
         profile = request.user.profile
+        print(profile.id)
+        try:
+            character_id = request.data['character_id']
+            print(character_id)
+            character = profile.characters.get(id=character_id)
+            print(character)
+        except (PlayerCharacter.DoesNotExist, KeyError):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         if not instance.can_sign_up(profile):
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -53,6 +62,7 @@ class GameSessionViewSet(mixins.ListModelMixin,
         GameSessionPlayerSignUp.objects.create(
             game=instance,
             player=profile,
+            character=character,
         )
         return Response()
 

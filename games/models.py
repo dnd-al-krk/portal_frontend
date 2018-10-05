@@ -104,4 +104,4 @@ class GameSessionPlayerSignUp(models.Model):
     game = models.ForeignKey(GameSession, on_delete=models.CASCADE)
     player = models.ForeignKey('profiles.Profile', on_delete=models.CASCADE)
     created = models.DateTimeField(_('Created'), auto_now_add=True)
-    # character = models.ForeignKey('profiles.Character', blank=True, null=True, on_delete=models.SET_NULL)
+    character = models.ForeignKey('profiles.PlayerCharacter', null=True, blank=True, on_delete=models.SET_NULL)

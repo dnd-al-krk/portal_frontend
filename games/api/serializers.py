@@ -1,8 +1,7 @@
-from rest_framework import serializers, status
-from rest_framework.exceptions import APIException
+from rest_framework import serializers
 
-from profiles.api.serializers import PublicProfileSerializer
-from ..models import Adventure, GameSession
+from profiles.api.serializers import PublicProfileSerializer, PublicPlayerCharacterSerializer
+from ..models import Adventure, GameSession, GameSessionPlayerSignUp
 
 
 class AdventureSerializer(serializers.ModelSerializer):
@@ -16,10 +15,19 @@ class AdventureSerializer(serializers.ModelSerializer):
         return str(adventure)
 
 
+class GameSessionPlayerSignUpSerializer(serializers.ModelSerializer):
+    profile = PublicProfileSerializer(source='player', read_only=True)
+    character = PublicPlayerCharacterSerializer()
+
+    class Meta:
+        model = GameSessionPlayerSignUp
+        fields = ('profile', 'character',)
+
+
 class GameSessionSerializer(serializers.ModelSerializer):
     table_name = serializers.CharField(source='table.name', read_only=True)
     dm = PublicProfileSerializer(read_only=True)
-    players = PublicProfileSerializer(many=True, read_only=True)
+    players = GameSessionPlayerSignUpSerializer(many=True, source='gamesessionplayersignup_set', read_only=True)
     adventure = AdventureSerializer()
     time_start = serializers.SerializerMethodField()
     time_end = serializers.SerializerMethodField()
