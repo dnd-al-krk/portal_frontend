@@ -16,6 +16,7 @@ import RoomIcon from "@material-ui/icons/Room";
 import PersonIcon from "@material-ui/icons/Person";
 import UndecoratedLink from "../common/UndecoratedLink";
 import ExclamationIcon from "@material-ui/icons/Warning";
+import GamesStore from "../stores/GamesStore";
 
 const styles = theme => ({
   root: {
@@ -93,10 +94,10 @@ export default class Games extends React.Component {
                           <div style={{textAlign: 'center'}}>
                             <Typography variant="title" style={{marginBottom: 0}}>
                               <CalendarIcon/><br/>
-                              {games.getDateString(game)}
+                              {GamesStore.getDateString(game)}
                             </Typography>
                             <Typography component='p'>
-                              {games.getWeekDay(game)}<br/>
+                              {GamesStore.getWeekDay(game)}<br/>
                               <strong>{game.timeStart}</strong>
                             </Typography>
                           </div>
@@ -137,10 +138,10 @@ export default class Games extends React.Component {
                         <div style={{textAlign: 'center'}}>
                           <Typography variant="title" style={{marginBottom: 0}}>
                             <CalendarIcon/><br/>
-                            {games.getDateString(game)}
+                            {GamesStore.getDateString(game)}
                           </Typography>
                           <Typography component='p'>
-                            {games.getWeekDay(game)}<br/>
+                            {GamesStore.getWeekDay(game)}<br/>
                             <strong>{game.timeStart}</strong>
                           </Typography>
                         </div>
