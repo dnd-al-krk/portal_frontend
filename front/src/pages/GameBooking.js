@@ -10,8 +10,6 @@ import {SelectField} from "../common/Fields";
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
 import classNames from 'classnames';
-
-import TimeIcon from '@material-ui/icons/AccessTime';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
 import {dateToString, weekdayOf} from "../utils";
@@ -91,7 +89,7 @@ class GameBooking extends Component {
 
   getGame = () => {
     return this.props.portalStore.games.get(this.props.match.params.id).then(game => {
-      if(game.adventure !== null){
+      if(game.dm !== null){
         this.setState({
           gameAlreadyBooked: true,
         })

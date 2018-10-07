@@ -2,19 +2,20 @@ import React, {Fragment} from 'react';
 import LoadingDiv from "../common/LoadingDiv";
 import {ClipLoader} from "react-spinners";
 import {inject, observer} from "mobx-react";
-import Typography from "../../node_modules/@material-ui/core/Typography/Typography";
+import Typography from "@material-ui/core/Typography/Typography";
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from "../../node_modules/@material-ui/core/Button/Button";
-import List from "../../node_modules/@material-ui/core/List/List";
-import ListItem from "../../node_modules/@material-ui/core/ListItem/ListItem";
-import ListItemIcon from "../../node_modules/@material-ui/core/ListItemIcon/ListItemIcon";
-import ListItemText from "../../node_modules/@material-ui/core/ListItemText/ListItemText";
-import Avatar from "../../node_modules/@material-ui/core/Avatar/Avatar";
-import Chip from "../../node_modules/@material-ui/core/Chip/Chip";
+import Button from "@material-ui/core/Button/Button";
+import List from "@material-ui/core/List/List";
+import ListItem from "@material-ui/core/ListItem/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
+import Avatar from "@material-ui/core/Avatar/Avatar";
+import Chip from "@material-ui/core/Chip/Chip";
 import CalendarIcon from "@material-ui/icons/Event";
 import RoomIcon from "@material-ui/icons/Room";
 import PersonIcon from "@material-ui/icons/Person";
 import UndecoratedLink from "../common/UndecoratedLink";
+import ExclamationIcon from "@material-ui/icons/Warning";
 
 const styles = theme => ({
   root: {
@@ -41,14 +42,16 @@ export default class Games extends React.Component {
 
   state = {
     loading: true,
+    games: null,
   };
 
   componentDidMount(){
     this.setState({
       loading: true,
     });
-    this.props.portalStore.games.fetch().then(() => {
+    this.props.portalStore.games.fetch().then((games) => {
       this.setState({
+        games: games,
         loading: false,
       })
     })
@@ -63,8 +66,13 @@ export default class Games extends React.Component {
     this.props.history.push(`/games/${id}`);
   };
 
+  spotsLeft = (game) => {
+    return Math.max(game.spots - game.players.length, 0)
+  };
+
   render() {
     const {classes} = this.props;
+    const {games} = this.props.portalStore;
 
     if(this.state.loading)
       return (
@@ -76,55 +84,63 @@ export default class Games extends React.Component {
         return (
           <div className={classes.root}>
             <List>
-              {this.props.portalStore.games.items.map(game => (
-                <ListItem key={`game-session-slot-${game.id}`} button onClick={() => this.gotoGame(game.id)}>
-                  {game.adventure && (
-                    <Fragment>
+              {this.state.games.map(game => (
+                <Fragment>
+                  {game.adventure ? (
+                    <ListItem key={`game-session-slot-${game.id}`} button onClick={() => this.gotoGame(game.id)}>
+                      <Fragment>
+                        <ListItemIcon>
+                          <div style={{textAlign: 'center'}}>
+                            <Typography variant="title" style={{marginBottom: 0}}>
+                              <CalendarIcon/><br/>
+                              {games.getDateString(game)}
+                            </Typography>
+                            <Typography component='p'>
+                              {games.getWeekDay(game)}<br/>
+                              <strong>{game.timeStart}</strong>
+                            </Typography>
+                          </div>
+                        </ListItemIcon>
+
+                        <ListItemText primary={
+                          <Typography variant='title' className={classes.title}>
+                            {game.adventure.title_display}
+                          </Typography>
+                        } secondary={
+                          <Fragment>
+                            <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.table_name} className={classes.chip} />
+                            {game.dm ? (
+                              <Chip avatar={<Avatar><PersonIcon/></Avatar>} label={<UndecoratedLink to={`/profiles/${game.dm.id}/`}>{GamesStore.getDMName(game)}</UndecoratedLink>} className={classes.chip}/>
+                            ) : (
+                              <Chip color="secondary"
+                                    variant="outlined"
+                                    avatar={<Avatar><ExclamationIcon/></Avatar>}
+                                    label={`The DM can no longer run this game!`}
+                                    className={classes.chip}/>
+                            )}
+                          </Fragment>
+                        } />
+
+                        <ListItemIcon>
+                          <span>{this.spotsLeft(game)} spots left</span>
+                        </ListItemIcon>
+                        {!game.dm && this.props.portalStore.currentUser.role === 'Dungeon Master' && (
+                          <Button variant="outlined" size="small" color="primary" onClick={(e) => this.gotoGameBooking(e, game.id)}>
+                            Run a game in this slot
+                          </Button>
+                        )}
+                      </Fragment>
+                    </ListItem>
+                  ) : (
+                    <ListItem key={`game-session-slot-${game.id}`}>
                       <ListItemIcon>
                         <div style={{textAlign: 'center'}}>
                           <Typography variant="title" style={{marginBottom: 0}}>
                             <CalendarIcon/><br/>
-                            {game.getDateString()}
+                            {games.getDateString(game)}
                           </Typography>
                           <Typography component='p'>
-                            {game.getWeekDay()}<br/>
-                            <strong>{game.timeStart}</strong>
-                          </Typography>
-                        </div>
-                      </ListItemIcon>
-
-                      <ListItemText primary={
-                        <Typography variant='title' className={classes.title}>
-                          {game.adventure.title_display}
-                        </Typography>
-                      } secondary={
-                        <Fragment>
-                          <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.tableName} className={classes.chip} />
-                          <Chip avatar={<Avatar><PersonIcon/></Avatar>} label={<UndecoratedLink to={`/profiles/${game.dm.id}/`}>{game.getDMName()}</UndecoratedLink>} className={classes.chip}/>
-                        </Fragment>
-                      } />
-
-                      <ListItemIcon>
-                        <Avatar>JK</Avatar>
-                      </ListItemIcon>
-                      <ListItemIcon>
-                        <Avatar>KS</Avatar>
-                      </ListItemIcon>
-                      <ListItemIcon>
-                        <Avatar>+{game.spots}</Avatar>
-                      </ListItemIcon>
-                    </Fragment>
-                  )}
-                  {!game.adventure && (
-                    <Fragment>
-                      <ListItemIcon>
-                        <div style={{textAlign: 'center'}}>
-                          <Typography variant="title" style={{marginBottom: 0}}>
-                            <CalendarIcon/><br/>
-                            {game.getDateString()}
-                          </Typography>
-                          <Typography component='p'>
-                            {game.getWeekDay()}<br/>
+                            {games.getWeekDay(game)}<br/>
                             <strong>{game.timeStart}</strong>
                           </Typography>
                         </div>
@@ -134,16 +150,16 @@ export default class Games extends React.Component {
                           Empty Slot
                         </Typography>
                       } secondary={
-                        <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.tableName} className={classes.chip} />
+                        <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.table_name} className={classes.chip} />
                       } />
                       {this.props.portalStore.currentUser.role === 'Dungeon Master' && (
                         <Button variant="outlined" size="small" color="primary" onClick={(e) => this.gotoGameBooking(e, game.id)}>
                           Run a game in this slot
                         </Button>
                       )}
-                    </Fragment>
+                    </ListItem>
                   )}
-                </ListItem>
+                </Fragment>
               ))}
             </List>
           </div>

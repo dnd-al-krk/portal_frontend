@@ -16,7 +16,6 @@ import List from "@material-ui/core/List/List";
 import ProfileListItem from "../common/ProfileListItem";
 import PlusIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button/Button";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import CancelIcon from "@material-ui/icons/Cancel";
 import Menu from "@material-ui/core/Menu/Menu";
@@ -50,6 +49,11 @@ const styles = theme => ({
   userName: {
     height: 44,
     lineHeight: '44px',
+  },
+  gameButton: {
+    marginBottom: 20,
+    marginTop: 10,
+    display: 'block',
   }
 });
 
@@ -131,9 +135,10 @@ class GameDetail extends Component {
   canSignUp = () => {
     const players = this.state.game.players.map(player => player.profile.id);
     const player = this.props.portalStore.currentUser.profileID;
-    const usersGameSlot = this.state.game.dm.id === player;
+    const usersGameSlot = this.state.game.dm && this.state.game.dm.id === player;
     const emptySpot = this.freeSpots() > 0;
-    return players.indexOf(player) === -1 && !usersGameSlot && emptySpot;
+    const isDM = this.state.game.dm;
+    return isDM && players.indexOf(player) === -1 && !usersGameSlot && emptySpot;
   };
 
   signUp = (characterId) => {
@@ -159,6 +164,11 @@ class GameDetail extends Component {
   handleCharacterPick = (e, id) => {
     this.hideCharacterPick();
     this.signUp(id);
+  };
+
+  gotoGameBooking = (e, id) => {
+    e.stopPropagation();
+    this.props.history.push(`/games/${id}/book`);
   };
 
   render() {
@@ -192,12 +202,25 @@ class GameDetail extends Component {
             <Typography variant="headline" className={classes.header}>
                 Dungeon Master
             </Typography>
-            <div className={classes.userInfo}>
-              <Avatar className={classes.userAvatar}><PersonIcon/></Avatar>
-              <Typography variant="title" className={classes.userName}>
-                <UndecoratedLink to={`/profiles/${game.dm.id}`}>{this.gameDM(game.dm)}</UndecoratedLink>
-              </Typography>
-            </div>
+
+            {game.dm ? (
+              <div className={classes.userInfo}>
+                <Avatar className={classes.userAvatar}><PersonIcon/></Avatar>
+                <Typography variant="title" className={classes.userName}>
+                  <UndecoratedLink to={`/profiles/${game.dm.id}`}>{this.gameDM(game.dm)}</UndecoratedLink>
+                </Typography>
+              </div>
+              ): (
+              <div className={classes.noUserInfo}>
+                DM can no longer run this game and a new one is needed!
+                {this.props.portalStore.currentUser.role === 'Dungeon Master' && (
+                  <Button color='secondary' variant='contained' className={classes.gameButton}
+                          onClick={(e) => this.gotoGameBooking(e, game.id)}>
+                    I will run this game
+                  </Button>
+                )}
+              </div>
+            )}
             <Typography variant="headline" className={classes.header}>
                 Additional Notes
             </Typography>

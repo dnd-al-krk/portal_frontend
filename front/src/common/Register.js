@@ -14,7 +14,7 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {NarrowContent} from "./Content";
-import FormHelperText from "../../node_modules/@material-ui/core/FormHelperText/FormHelperText";
+import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import Link from "react-router-dom/es/Link";
 
 const styles = (theme) => ({

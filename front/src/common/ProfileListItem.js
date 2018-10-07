@@ -3,8 +3,6 @@ import ListItem from "@material-ui/core/ListItem/ListItem";
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import Person from "@material-ui/icons/Person";
 
 class ProfileListItem extends Component {
