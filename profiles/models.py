@@ -1,5 +1,6 @@
 import uuid
 
+from django.conf import settings
 from django.core.mail import send_mail, EmailMessage
 from django.db import models
 from django.contrib.auth.models import User
@@ -47,10 +48,11 @@ class Profile(models.Model):
             'token': account_activation_token.make_token(self.user),
         })
         to_email = self.user.email
+
         email = EmailMessage(
-            mail_subject, message, to=[to_email]
+            mail_subject, message, to=[to_email], from_email=settings.EMAIL_FROM
         )
-        email.send()
+        email.send(fail_silently=True)
 
 
 class CharacterClass(UUIDModel):
