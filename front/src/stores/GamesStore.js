@@ -22,6 +22,10 @@ export default class GamesStore {
     return this.root.putData('games/booking', id, data);
   }
 
+  cancel(id){
+    return this.root.get(`/games/booking/${id}/cancel/`);
+  }
+
   signUp(id, characterId){
     return this.root.putData('games/list', `${id}/signUp`, {character_id: characterId})
   }

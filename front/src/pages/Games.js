@@ -17,6 +17,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import UndecoratedLink from "../common/UndecoratedLink";
 import ExclamationIcon from "@material-ui/icons/Warning";
 import GamesStore from "../stores/GamesStore";
+import {withRouter} from "react-router-dom";
 
 const styles = theme => ({
   root: {
@@ -39,24 +40,8 @@ const styles = theme => ({
 
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
+@withRouter
 export default class Games extends React.Component {
-
-  state = {
-    loading: true,
-    games: null,
-  };
-
-  componentDidMount(){
-    this.setState({
-      loading: true,
-    });
-    this.props.portalStore.games.fetch().then((games) => {
-      this.setState({
-        games: games,
-        loading: false,
-      })
-    })
-  }
 
   gotoGameBooking = (e, id) => {
     e.stopPropagation();
@@ -72,98 +57,88 @@ export default class Games extends React.Component {
   };
 
   render() {
-    const {classes} = this.props;
-    const {games} = this.props.portalStore;
+    const {classes, list} = this.props;
 
-    if(this.state.loading)
-      return (
-          <LoadingDiv>
-            <ClipLoader color={'#FFDE00'} loading={this.state.loading}/>
-          </LoadingDiv>
-        );
-    else
-        return (
-          <div className={classes.root}>
-            <List>
-              {this.state.games.map(game => (
+    return (
+      <List className={classes.root}>
+        {list.map(game => (
+          <Fragment>
+            {game.adventure ? (
+              <ListItem key={`game-session-slot-${game.id}`} button onClick={() => this.gotoGame(game.id)}>
                 <Fragment>
-                  {game.adventure ? (
-                    <ListItem key={`game-session-slot-${game.id}`} button onClick={() => this.gotoGame(game.id)}>
-                      <Fragment>
-                        <ListItemIcon>
-                          <div style={{textAlign: 'center'}}>
-                            <Typography variant="title" style={{marginBottom: 0}}>
-                              <CalendarIcon/><br/>
-                              {GamesStore.getDateString(game)}
-                            </Typography>
-                            <Typography component='p'>
-                              {GamesStore.getWeekDay(game)}<br/>
-                              <strong>{game.timeStart}</strong>
-                            </Typography>
-                          </div>
-                        </ListItemIcon>
+                  <ListItemIcon>
+                    <div style={{textAlign: 'center'}}>
+                      <Typography variant="title" style={{marginBottom: 0}}>
+                        <CalendarIcon/><br/>
+                        {GamesStore.getDateString(game)}
+                      </Typography>
+                      <Typography component='p'>
+                        {GamesStore.getWeekDay(game)}<br/>
+                        <strong>{game.timeStart}</strong>
+                      </Typography>
+                    </div>
+                  </ListItemIcon>
 
-                        <ListItemText primary={
-                          <Typography variant='title' className={classes.title}>
-                            {game.adventure.title_display}
-                          </Typography>
-                        } secondary={
-                          <Fragment>
-                            <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.table_name} className={classes.chip} />
-                            {game.dm ? (
-                              <Chip avatar={<Avatar><PersonIcon/></Avatar>} label={<UndecoratedLink to={`/profiles/${game.dm.id}/`}>{GamesStore.getDMName(game)}</UndecoratedLink>} className={classes.chip}/>
-                            ) : (
-                              <Chip color="secondary"
-                                    variant="outlined"
-                                    avatar={<Avatar><ExclamationIcon/></Avatar>}
-                                    label={`The DM can no longer run this game!`}
-                                    className={classes.chip}/>
-                            )}
-                          </Fragment>
-                        } />
-
-                        <ListItemIcon>
-                          <span>{this.spotsLeft(game)} spots left</span>
-                        </ListItemIcon>
-                        {!game.dm && this.props.portalStore.currentUser.role === 'Dungeon Master' && (
-                          <Button variant="outlined" size="small" color="primary" onClick={(e) => this.gotoGameBooking(e, game.id)}>
-                            Run a game in this slot
-                          </Button>
-                        )}
-                      </Fragment>
-                    </ListItem>
-                  ) : (
-                    <ListItem key={`game-session-slot-${game.id}`}>
-                      <ListItemIcon>
-                        <div style={{textAlign: 'center'}}>
-                          <Typography variant="title" style={{marginBottom: 0}}>
-                            <CalendarIcon/><br/>
-                            {GamesStore.getDateString(game)}
-                          </Typography>
-                          <Typography component='p'>
-                            {GamesStore.getWeekDay(game)}<br/>
-                            <strong>{game.timeStart}</strong>
-                          </Typography>
-                        </div>
-                      </ListItemIcon>
-                      <ListItemText primary={
-                        <Typography variant='title' className={classes.title}>
-                          Empty Slot
-                        </Typography>
-                      } secondary={
-                        <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.table_name} className={classes.chip} />
-                      } />
-                      {this.props.portalStore.currentUser.role === 'Dungeon Master' && (
-                        <Button variant="outlined" size="small" color="primary" onClick={(e) => this.gotoGameBooking(e, game.id)}>
-                          Run a game in this slot
-                        </Button>
+                  <ListItemText primary={
+                    <Typography variant='title' className={classes.title}>
+                      {game.adventure.title_display}
+                    </Typography>
+                  } secondary={
+                    <Fragment>
+                      <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.table_name} className={classes.chip} />
+                      {game.dm ? (
+                        <Chip avatar={<Avatar><PersonIcon/></Avatar>} label={<UndecoratedLink to={`/profiles/${game.dm.id}/`}>{GamesStore.getDMName(game)}</UndecoratedLink>} className={classes.chip}/>
+                      ) : (
+                        <Chip color="secondary"
+                              variant="outlined"
+                              avatar={<Avatar><ExclamationIcon/></Avatar>}
+                              label={`The DM can no longer run this game!`}
+                              className={classes.chip}/>
                       )}
-                    </ListItem>
+                    </Fragment>
+                  } />
+
+                  <ListItemIcon>
+                    <span>{this.spotsLeft(game)} spots left</span>
+                  </ListItemIcon>
+                  {!game.dm && this.props.portalStore.currentUser.role === 'Dungeon Master' && (
+                    <Button variant="outlined" size="small" color="primary" onClick={(e) => this.gotoGameBooking(e, game.id)}>
+                      Run a game in this slot
+                    </Button>
                   )}
                 </Fragment>
-              ))}
-            </List>
-          </div>
-        );
+              </ListItem>
+            ) : (
+              <ListItem key={`game-session-slot-${game.id}`}>
+                <ListItemIcon>
+                  <div style={{textAlign: 'center'}}>
+                    <Typography variant="title" style={{marginBottom: 0}}>
+                      <CalendarIcon/><br/>
+                      {GamesStore.getDateString(game)}
+                    </Typography>
+                    <Typography component='p'>
+                      {GamesStore.getWeekDay(game)}<br/>
+                      <strong>{game.timeStart}</strong>
+                    </Typography>
+                  </div>
+                </ListItemIcon>
+                <ListItemText primary={
+                  <Typography variant='title' className={classes.title}>
+                    Empty Slot
+                  </Typography>
+                } secondary={
+                  <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.table_name} className={classes.chip} />
+                } />
+                {this.props.portalStore.currentUser.role === 'Dungeon Master' && (
+                  <Button variant="outlined" size="small" color="primary" onClick={(e) => this.gotoGameBooking(e, game.id)}>
+                    Run a game in this slot
+                  </Button>
+                )}
+              </ListItem>
+            )}
+          </Fragment>
+        ))}
+      </List>
+    );
   }
 }

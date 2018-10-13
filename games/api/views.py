@@ -93,9 +93,20 @@ class GameSessionBookViewSet(mixins.UpdateModelMixin,
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        if instance.adventure:
+        if instance.adventure and instance.dm and instance.dm != request.user.profile:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return super(GameSessionBookViewSet, self).update(request, *args, **kwargs)
 
     def perform_update(self, serializer):
         serializer.save(dm=self.request.user.profile)
+
+    @action(methods=['GET'], detail=True)
+    def cancel(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.dm != request.user.profile:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        instance.dm = None
+        instance.save()
+
+        return Response(status=status.HTTP_200_OK)

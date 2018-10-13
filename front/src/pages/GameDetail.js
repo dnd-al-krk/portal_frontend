@@ -35,10 +35,6 @@ const styles = theme => ({
     fontSize: 14,
     marginRight: 10
   },
-  userInfo: {
-    padding: 10,
-    height: 50,
-  },
   userAvatar: {
     padding: 10,
     width: 24,
@@ -171,6 +167,12 @@ class GameDetail extends Component {
     this.props.history.push(`/games/${id}/book`);
   };
 
+  cancel = (gameID) => {
+    this.props.portalStore.games.cancel(gameID).then(() => {
+      this.props.history.push('/games')
+    });
+  };
+
   render() {
     const {classes} = this.props;
     const { anchorEl } = this.state;
@@ -204,14 +206,21 @@ class GameDetail extends Component {
             </Typography>
 
             {game.dm ? (
-              <div className={classes.userInfo}>
+              <div>
                 <Avatar className={classes.userAvatar}><PersonIcon/></Avatar>
                 <Typography variant="title" className={classes.userName}>
                   <UndecoratedLink to={`/profiles/${game.dm.id}`}>{this.gameDM(game.dm)}</UndecoratedLink>
                 </Typography>
+                {game.dm.id === this.props.portalStore.currentUser.profileID && (
+                  <Button
+                    color='secondary'
+                    variant='contained'
+                    className={classes.gameButton}
+                    onClick={() => this.cancel(game.id)}>Cancel your booking on this game session</Button>
+                )}
               </div>
               ): (
-              <div className={classes.noUserInfo}>
+              <div>
                 DM can no longer run this game and a new one is needed!
                 {this.props.portalStore.currentUser.role === 'Dungeon Master' && (
                   <Button color='secondary' variant='contained' className={classes.gameButton}

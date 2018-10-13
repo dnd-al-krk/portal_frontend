@@ -101,6 +101,11 @@ export class PortalStore {
   }
 
   @action.bound
+  get(url){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}${url}`);
+  }
+
+  @action.bound
   signOut(){
     this.userToken = null;
     Cookies.remove(JWT_TOKEN);
@@ -108,12 +113,12 @@ export class PortalStore {
 
   @action.bound
   fetchData(name){
-    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/${name}/`).then(response => response.data);
+    return this.get(`/${name}/`).then(response => response.data);
   }
 
   @action.bound
   getData(name, id){
-    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/${name}/${id}/`).then(response => response.data);
+    return this.get(`/${name}/${id}/`).then(response => response.data);
   }
 
   @action.bound

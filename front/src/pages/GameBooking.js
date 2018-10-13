@@ -89,10 +89,26 @@ class GameBooking extends Component {
 
   getGame = () => {
     return this.props.portalStore.games.get(this.props.match.params.id).then(game => {
-      if(game.dm !== null){
-        this.setState({
-          gameAlreadyBooked: true,
-        })
+      console.log(game);
+      console.log(this.props.portalStore.currentUser);
+      if(game.adventure){
+        if(game.dm && game.dm.id !== this.props.portalStore.currentUser.profileID) {
+          this.setState({
+            gameAlreadyBooked: true,
+          })
+        }
+        else{
+          this.setState({
+            startTime: game.time_start,
+            endTime: game.time_end,
+            spots: game.spots,
+            gameID: this.props.match.params.id,
+            game: game,
+            adventure: game.adventure.id,
+            notes: game.notes,
+            formValid: true,
+          })
+        }
       }
       else {
         this.setState({

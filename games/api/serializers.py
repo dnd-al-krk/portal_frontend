@@ -53,7 +53,7 @@ class GameSessionSerializer(serializers.ModelSerializer):
         return game.time_start.strftime('%H:%M') if game.time_start else ''
 
     def get_time_end(self, game):
-        return game.time_start.strftime('%H:%M') if game.time_start else ''
+        return game.time_end.strftime('%H:%M') if game.time_end else ''
 
 
 class GameSessionBookSerializer(serializers.ModelSerializer):
