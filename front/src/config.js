@@ -5,7 +5,7 @@ const working_hostname = window && window.location && window.location.hostname;
 if(working_hostname === 'localhost'){
   backendHost = 'http://localhost:8000'
 }
-else if(working_hostname === 'http://alkrk.toady.org') {
+else if(working_hostname === 'https://alkrk.toady.org') {
   backendHost = working_hostname
 }
 else{
