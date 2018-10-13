@@ -39,7 +39,6 @@ export class PortalStore {
   @action.bound
   fetchCurrentUser(){
     if(this.isAuthenticated()){
-      console.log('fetching user data');
       this.currentUser = new UserStore(this);
       this.currentUser.fetchData();
     }

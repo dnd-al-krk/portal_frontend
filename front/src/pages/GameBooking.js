@@ -89,8 +89,6 @@ class GameBooking extends Component {
 
   getGame = () => {
     return this.props.portalStore.games.get(this.props.match.params.id).then(game => {
-      console.log(game);
-      console.log(this.props.portalStore.currentUser);
       if(game.adventure){
         if(game.dm && game.dm.id !== this.props.portalStore.currentUser.profileID) {
           this.setState({
