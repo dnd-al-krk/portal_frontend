@@ -1,5 +1,6 @@
 from profile import Profile
 
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -98,6 +99,9 @@ class GameSession(UUIDModel):
     def can_sign_out(self, profile: Profile):
         # TODO: Add  test to cover this logic
         return profile in self.players.all()
+
+    def get_absolute_url(self):
+        return settings.ROOT_URL + '/games/' + self.id
 
 
 class GameSessionPlayerSignUp(models.Model):
