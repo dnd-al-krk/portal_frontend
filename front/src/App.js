@@ -1,13 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import {PortalStore} from './store';
-import {inject, observer, Provider} from 'mobx-react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  withRouter, Redirect,
-} from 'react-router-dom';
+import {observer, Provider} from 'mobx-react';
+import {BrowserRouter as Router, Route,} from 'react-router-dom';
 
 import './App.css';
 import Account from "./pages/Account";
@@ -23,6 +18,9 @@ import Profile from "./pages/Profile";
 import CharacterCreate from "./pages/CharacterCreate";
 import CharacterEdit from "./pages/CharacterEdit";
 import Register from "./common/Register";
+import GameBooking from "./pages/GameBooking";
+import GameDetail from "./pages/GameDetail";
+import {GamesList} from "./pages/GamesList";
 
 
 const portalStore = new PortalStore();
@@ -30,8 +28,6 @@ const portalStore = new PortalStore();
 const PushedDiv = styled.div`
   padding-top: 80px;
 `;
-
-
 
 
 @observer
@@ -46,6 +42,9 @@ class App extends Component {
               <TopAppBar/>
               <PushedDiv>
                 <Route exact path="/" component={Home}/>
+                <RouteRequiresLogin exact path="/games" component={GamesList}/>
+                <RouteRequiresLogin exact path="/games/:id" component={GameDetail}/>
+                <RouteRequiresLogin exact path="/games/:id/book" component={GameBooking}/>
                 <RouteRequiresLogin exact path="/profiles" component={Profiles}/>
                 <RouteRequiresLogin exact path="/profiles/:id" component={Profile}/>
                 <RouteRequiresLogin exact path="/characters" component={Characters}/>

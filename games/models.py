@@ -1,3 +1,6 @@
+from profile import Profile
+
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -69,6 +72,7 @@ class GameSession(UUIDModel):
     table = models.ForeignKey(Table, related_name='game_sessions', on_delete=models.CASCADE)
     dm = models.ForeignKey('profiles.Profile', related_name='game_sessions', on_delete=models.SET_NULL, blank=True,
                            null=True)
+    players = models.ManyToManyField('profiles.Profile', related_name='played_sessions', blank=True, through='games.GameSessionPlayerSignUp')
     adventure = models.ForeignKey(Adventure, related_name='game_sessions', on_delete=models.SET_NULL, blank=True,
                                   null=True)
     spots = models.PositiveIntegerField(_('Number of spots'), default=5)
@@ -87,3 +91,21 @@ class GameSession(UUIDModel):
             table=self.table,
             adventure=str(self.adventure)
         )
+
+    def can_sign_up(self, profile: Profile):
+        # TODO: Add test to cover this logic
+        return self.players.count() < self.spots and profile not in self.players.all()
+
+    def can_sign_out(self, profile: Profile):
+        # TODO: Add  test to cover this logic
+        return profile in self.players.all()
+
+    def get_absolute_url(self):
+        return settings.ROOT_URL + '/games/' + self.id
+
+
+class GameSessionPlayerSignUp(models.Model):
+    game = models.ForeignKey(GameSession, on_delete=models.CASCADE)
+    player = models.ForeignKey('profiles.Profile', on_delete=models.CASCADE)
+    created = models.DateTimeField(_('Created'), auto_now_add=True)
+    character = models.ForeignKey('profiles.PlayerCharacter', null=True, blank=True, on_delete=models.SET_NULL)

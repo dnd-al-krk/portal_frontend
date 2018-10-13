@@ -3,17 +3,11 @@ import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {inject, observer} from "mobx-react/index";
 import List from "@material-ui/core/List/List";
-import ListItem from "@material-ui/core/ListItem/ListItem";
-import Avatar from "@material-ui/core/Avatar/Avatar";
-import Person from "@material-ui/icons/Person";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItemText from "@material-ui/core/ListItemText/ListItemText";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import { ClipLoader } from 'react-spinners';
+import {ClipLoader} from 'react-spinners';
 import LoadingDiv from "../common/LoadingDiv";
 import Typography from "@material-ui/core/Typography/Typography";
-import {NarrowContent, WideContent} from "../common/Content";
+import {WideContent} from "../common/Content";
+import ProfileListItem from "../common/ProfileListItem";
 
 const styles = theme => ({
   textField: {
@@ -63,41 +57,11 @@ class Profiles extends React.Component {
     );
   };
 
-  gotoProfile = (id) => {
-    this.props.history.push(`/profiles/${id}`);
-  };
-
-  getName = (profile) => {
-    const names = `${profile.user.first_name} ${profile.user.last_name}`;
-    const nickname = profile.nickname ? ` (${profile.nickname})` : '';
-    return names+nickname
-  };
-
-
   profiles_list() {
     if(this.state.profiles){
-      return this.state.profiles.map(profile => {
-                return (
-                  <ListItem key={profile.id} button onClick={() => this.gotoProfile(profile.id)}>
-                    <Avatar>
-                      <Person />
-                    </Avatar>
-                    <ListItemText primary={this.getName(profile)}
-                                  secondary={`
-                                  ${profile.role} | ${profile.characters_count} character${profile.characters_count !== 1 ? 's' : ''}
-
-                                  `} />
-                    <ListItemSecondaryAction>
-                      <IconButton aria-label="See profile" onClick={() => this.gotoProfile(profile.id)}>
-                        <ChevronRightIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                )
-              })
+      return this.state.profiles.map(profile => <ProfileListItem profile={profile} history={this.props.history}/>)
     }
   }
-
 
   render() {
 

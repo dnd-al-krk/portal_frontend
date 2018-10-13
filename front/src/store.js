@@ -3,6 +3,8 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import {API_HOSTNAME} from "./config";
 import {JWT_TOKEN} from "./constants";
+import GamesStore from "./stores/GamesStore";
+import AdventuresStore from "./stores/AdventuresStore";
 
 
 const csrftoken = Cookies.get('csrftoken');
@@ -31,11 +33,12 @@ export class PortalStore {
   @observable classes = [];
   @observable races = [];
   @observable factions = [];
+  @observable games = new GamesStore(this);
+  @observable adventures = new AdventuresStore(this);
 
   @action.bound
   fetchCurrentUser(){
     if(this.isAuthenticated()){
-      console.log('fetching user data');
       this.currentUser = new UserStore(this);
       this.currentUser.fetchData();
     }
@@ -97,6 +100,11 @@ export class PortalStore {
   }
 
   @action.bound
+  get(url){
+    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}${url}`);
+  }
+
+  @action.bound
   signOut(){
     this.userToken = null;
     Cookies.remove(JWT_TOKEN);
@@ -104,12 +112,17 @@ export class PortalStore {
 
   @action.bound
   fetchData(name){
-    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/${name}/`).then(response => response.data);
+    return this.get(`/${name}/`).then(response => response.data);
   }
 
   @action.bound
   getData(name, id){
-    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/${name}/${id}/`).then(response => response.data);
+    return this.get(`/${name}/${id}/`).then(response => response.data);
+  }
+
+  @action.bound
+  putData(name, id, data){
+    return getAxiosInstance(this.userToken).put(`${API_HOSTNAME}/${name}/${id}/`, data);
   }
 
   @action.bound
@@ -186,12 +199,13 @@ export class NavigationStore {
 
 export class UserStore {
   @observable rootStore;
-  @observable profileID;
-  @observable userID;
+  profileID;
+  userID;
   @observable first_name;
   @observable last_name;
   @observable nickname;
   @observable dci;
+  role;
 
   constructor(rootStore) {
     this.rootStore = rootStore;
@@ -213,6 +227,7 @@ export class UserStore {
         this.last_name = data.user.last_name;
         this.nickname = data.nickname;
         this.dci = data.dci;
+        this.role = data.role;
       })
       .catch((err) => {
         this.rootStore.signOut();
