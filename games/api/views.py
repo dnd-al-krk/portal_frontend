@@ -102,6 +102,11 @@ class GameSessionBookViewSet(mixins.UpdateModelMixin,
 
     @action(methods=['GET'], detail=True)
     def cancel(self, request, *args, **kwargs):
+        """
+        Cancels game run by the owner DM.
+
+        # TODO: Add tests to cover this case.
+        """
         instance = self.get_object()
         if instance.dm != request.user.profile:
             return Response(status=status.HTTP_400_BAD_REQUEST)
