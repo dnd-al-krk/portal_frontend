@@ -50,6 +50,12 @@ const styles = theme => ({
     marginBottom: 20,
     marginTop: 10,
     display: 'block',
+  },
+  notes: {
+    minHeight: 100,
+  },
+  userInfo: {
+    minHeight: 70
   }
 });
 
@@ -206,21 +212,14 @@ class GameDetail extends Component {
             </Typography>
 
             {game.dm ? (
-              <div>
+              <div className={classes.userInfo}>
                 <Avatar className={classes.userAvatar}><PersonIcon/></Avatar>
                 <Typography variant="title" className={classes.userName}>
                   <UndecoratedLink to={`/profiles/${game.dm.id}`}>{this.gameDM(game.dm)}</UndecoratedLink>
                 </Typography>
-                {game.dm.id === this.props.portalStore.currentUser.profileID && (
-                  <Button
-                    color='secondary'
-                    variant='contained'
-                    className={classes.gameButton}
-                    onClick={() => this.cancel(game.id)}>Cancel your booking on this game session</Button>
-                )}
               </div>
               ): (
-              <div>
+              <div className={classes.userInfo}>
                 DM can no longer run this game and a new one is needed!
                 {this.props.portalStore.currentUser.role === 'Dungeon Master' && (
                   <Button color='secondary' variant='contained' className={classes.gameButton}
@@ -233,9 +232,26 @@ class GameDetail extends Component {
             <Typography variant="headline" className={classes.header}>
                 Additional Notes
             </Typography>
-            <Typography variant="body1">
+            <Typography variant="body1" className={classes.notes}>
               {game.notes}
             </Typography>
+            {game.dm && game.dm.id === this.props.portalStore.currentUser.profileID && (
+              <Fragment>
+                <Typography variant="headline" className={classes.header}>
+                  Dungeon Master Options
+                </Typography>
+                <Button
+                  color='primary'
+                  variant='contained'
+                  className={classes.gameButton}
+                  onClick={(e) => this.gotoGameBooking(e, game.id)}>Edit game details</Button>
+                <Button
+                  color='secondary'
+                  variant='outlined'
+                  className={classes.gameButton}
+                  onClick={() => this.cancel(game.id)}>Cancel your booking on this game session</Button>
+              </Fragment>
+            )}
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="headline" className={classes.header}>

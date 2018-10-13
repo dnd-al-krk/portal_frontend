@@ -30,8 +30,6 @@ const PushedDiv = styled.div`
 `;
 
 
-
-
 @observer
 class App extends Component {
 
