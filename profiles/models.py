@@ -61,12 +61,18 @@ class CharacterClass(UUIDModel):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
 
 class CharacterRace(UUIDModel):
     name = models.CharField(_('Race Name'), max_length=16)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 class CharacterFaction(UUIDModel):
@@ -75,6 +81,9 @@ class CharacterFaction(UUIDModel):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+        
 
 class PlayerCharacter(UUIDModel):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='characters')
