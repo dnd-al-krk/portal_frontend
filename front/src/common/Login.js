@@ -50,7 +50,8 @@ class Login extends React.Component {
     errors: null,
   };
 
-  login = () => {
+  login = (e) => {
+    e.preventDefault();
     this.setState({
       isSigning: true
     });
