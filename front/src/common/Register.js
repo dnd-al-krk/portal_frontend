@@ -61,7 +61,8 @@ export default class Register extends React.Component {
     showPassword: false,
   };
 
-  signup = () => {
+  signup = (e) => {
+    e.preventDefault();
     if(this.state.password === this.state.passwordConfirm) {
       if(this.state.password.length < 8){
         this.setState({passwordErrors: 'The password should have at least 8 characters.'});
@@ -140,7 +141,7 @@ export default class Register extends React.Component {
     return (
       <NarrowContent>
         {!this.state.isDone && (
-          <form className={classes.container} noValidate autoComplete="off">
+          <form className={classes.container} noValidate autoComplete="off" onSubmit={this.signup}>
             <Grid container spacing={24}>
               <Grid item xs={12}>
                 <h1>Sign up</h1>
@@ -263,6 +264,7 @@ export default class Register extends React.Component {
               <Grid item xs={12} className={classes.submitRow}>
                 <Button variant="contained"
                         color="primary"
+                        type="submit"
                         className={classes.button}
                         disabled={this.state.isSigning}
                         onClick={this.signup}>

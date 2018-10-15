@@ -119,7 +119,10 @@ class GameBooking extends Component {
     })
   };
 
-  bookGame = () => {
+  bookGame = (e) => {
+    e.preventDefault();
+    if(!this.state.formValid)
+      return;
     const data = {
       time_start: this.state.startTime,
       time_end: this.state.endTime ? this.state.endTime : null,
@@ -198,75 +201,78 @@ class GameBooking extends Component {
               <LocationIcon className={classes.infoIcon}/> {this.state.game.table_name}
             </span>
           </Typography>
-          <SelectField name={'adventure'} label={'Select Adventure'}
-                       value={this.state.adventure}
-                       onChange={this.handleChange('adventure')}
-                       options={this.state.adventures.map(adventure => ({id: adventure.id, name: adventure.title_display}))}
-                       required={true}
-          />
-          <FormControl className={classNames([classes.field, classes.timeControl])}>
-            <TextField
-              id="startTime"
-              label="Starting time"
-              type="time"
-              onChange={this.handleChange('startTime')}
-              value={this.state.startTime}
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 900, // 15 min
-              }}
+          <form onSubmit={this.bookGame}>
+            <SelectField name={'adventure'} label={'Select Adventure'}
+                         value={this.state.adventure}
+                         onChange={this.handleChange('adventure')}
+                         options={this.state.adventures.map(adventure => ({id: adventure.id, name: adventure.title_display}))}
+                         required={true}
             />
-          </FormControl>
-          <FormControl className={classNames([classes.field, classes.timeControl, classes.endTimeControl])}>
-            <TextField
-              id="endTime"
-              label="Estimated end time"
-              type="time"
-              onChange={this.handleChange('endTime')}
-              value={this.state.endTime}
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 900, // 15 min
-              }}
-            />
-          </FormControl>
-          <FormControl className={classNames([classes.field, classes.spotsControl])}>
-            <TextField
-              id="spots"
-              label="Maximum players spots"
-              onChange={this.handleSpotsChange}
-              type="number"
-              helperText={`Maximum spots for the table: ${this.state.game.max_spots}`}
-              value={this.state.spots}
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </FormControl>
-          <FormControl className={classNames([classes.field, classes.notesControl])}>
-            <TextField
-              id="notes"
-              label="Notes for players"
-              type="text"
-              value={this.state.notes}
-              onChange={this.handleChange('notes')}
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </FormControl>
-          <Button variant="contained" color="secondary" className={classes.button}
-                  onClick={this.bookGame} disabled={!this.state.formValid}>
-            Book game slot
-          </Button>
+            <FormControl className={classNames([classes.field, classes.timeControl])}>
+              <TextField
+                id="startTime"
+                label="Starting time"
+                type="time"
+                onChange={this.handleChange('startTime')}
+                value={this.state.startTime}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  step: 900, // 15 min
+                }}
+              />
+            </FormControl>
+            <FormControl className={classNames([classes.field, classes.timeControl, classes.endTimeControl])}>
+              <TextField
+                id="endTime"
+                label="Estimated end time"
+                type="time"
+                onChange={this.handleChange('endTime')}
+                value={this.state.endTime}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  step: 900, // 15 min
+                }}
+              />
+            </FormControl>
+            <FormControl className={classNames([classes.field, classes.spotsControl])}>
+              <TextField
+                id="spots"
+                label="Maximum players spots"
+                onChange={this.handleSpotsChange}
+                type="number"
+                helperText={`Maximum spots for the table: ${this.state.game.max_spots}`}
+                value={this.state.spots}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </FormControl>
+            <FormControl className={classNames([classes.field, classes.notesControl])}>
+              <TextField
+                id="notes"
+                label="Notes for players"
+                type="text"
+                value={this.state.notes}
+                onChange={this.handleChange('notes')}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </FormControl>
+            <Button variant="contained" color="secondary" className={classes.button}
+                    type='submit'
+                    onClick={this.bookGame} disabled={!this.state.formValid}>
+              Book game slot
+            </Button>
+          </form>
         </WideContent>
       );
   }

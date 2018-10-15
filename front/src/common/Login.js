@@ -50,7 +50,8 @@ class Login extends React.Component {
     errors: null,
   };
 
-  login = () => {
+  login = (e) => {
+    e.preventDefault();
     this.setState({
       isSigning: true
     });
@@ -96,7 +97,7 @@ class Login extends React.Component {
 
     return (
       <NarrowContent>
-        <form className={classes.container} noValidate autoComplete="off">
+        <form className={classes.container} noValidate autoComplete="off" onSubmit={this.login}>
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <h1>Sign in</h1>
@@ -141,6 +142,7 @@ class Login extends React.Component {
             <Grid item xs={12} className={classes.submitRow}>
               <Button variant="contained"
                       color="primary"
+                      type="submit"
                       className={classes.button}
                       disabled={this.state.isSigning}
                       onClick={this.login}>

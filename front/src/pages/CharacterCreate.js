@@ -46,7 +46,8 @@ export default class CharacterCreate extends React.Component {
     return s.name.length > 0;
   };
 
-  addCharacter = () => {
+  addCharacter = (e) => {
+    e.preventDefault();
     const s = this.state;
     if(this.isFormValid()) {
       this.setState({
@@ -99,54 +100,55 @@ export default class CharacterCreate extends React.Component {
 
         <Grid container spacing={8}>
           <Grid item xs={12}>
-            <InputField name={'name'} label={'Character name'}
-                        value={this.state.name}
-                        onChange={this.handleChange('name')}/>
-            <InputField name={'level'} label={'Character level'}
-                        value={this.state.level}
-                        type={'number'}
-                        onChange={this.handleChange('level')}/>
+            <form onSubmit={this.addCharacter}>
+              <InputField name={'name'} label={'Character name'}
+                          value={this.state.name}
+                          onChange={this.handleChange('name')}/>
+              <InputField name={'level'} label={'Character level'}
+                          value={this.state.level}
+                          type={'number'}
+                          onChange={this.handleChange('level')}/>
 
-            <SelectField name={'race_pick'} label={'Character Race'}
-                         value={this.state.race_pick}
-                         onChange={this.handleChange('race_pick')}
-                         options={character_races}
-                         required={true} error={this.state.race_pick_error}
-            />
+              <SelectField name={'race_pick'} label={'Character Race'}
+                           value={this.state.race_pick}
+                           onChange={this.handleChange('race_pick')}
+                           options={character_races}
+                           required={true} error={this.state.race_pick_error}
+              />
 
-            <SelectField name={'class_pick'} label={'Character Class'}
-                         value={this.state.class_pick}
-                         onChange={this.handleChange('class_pick')}
-                         options={character_classes}
-                         required={true} error={this.state.class_pick_error}
-            />
+              <SelectField name={'class_pick'} label={'Character Class'}
+                           value={this.state.class_pick}
+                           onChange={this.handleChange('class_pick')}
+                           options={character_classes}
+                           required={true} error={this.state.class_pick_error}
+              />
 
-            <SelectField name={'faction_pick'} label={'Character Faction'}
-                         value={this.state.faction_pick}
-                         onChange={this.handleChange('faction_pick')}
-                         options={character_factions}
-                         blank={true}
-            />
+              <SelectField name={'faction_pick'} label={'Character Faction'}
+                           value={this.state.faction_pick}
+                           onChange={this.handleChange('faction_pick')}
+                           options={character_factions}
+                           blank={true}
+              />
 
-            <Button variant={'contained'} className={classes.addButton} onClick={this.addCharacter}
-                    disabled={this.state.buttonDisabled}>
-              {this.state.buttonText}
-            </Button>
+              <Button variant={'contained'} className={classes.addButton} onClick={this.addCharacter} type='submit'
+                      disabled={this.state.buttonDisabled}>
+                {this.state.buttonText}
+              </Button>
 
-            <Snackbar
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              open={this.state.snackbarOpen}
-              onClose={this.handleSnackbarClose}
-              autoHideDuration={6000}
-              ContentProps={{
-                'aria-describedby': 'message-id',
-              }}
-              message={<span id="message-id">Cannot add new character. Fill in all required fields and check their values!</span>}
-            />
-
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                open={this.state.snackbarOpen}
+                onClose={this.handleSnackbarClose}
+                autoHideDuration={6000}
+                ContentProps={{
+                  'aria-describedby': 'message-id',
+                }}
+                message={<span id="message-id">Cannot add new character. Fill in all required fields and check their values!</span>}
+              />
+            </form>
           </Grid>
         </Grid>
       </NarrowContent>
