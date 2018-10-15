@@ -52,6 +52,11 @@ export default class Games extends React.Component {
     this.props.history.push(`/games/${id}`);
   };
 
+  gotoDM = (e, id) => {
+    e.stopPropagation();
+    this.props.history.push(`/profiles/${id}`);
+  };
+
   spotsLeft = (game) => {
     return Math.max(game.spots - game.players.length, 0)
   };
@@ -87,7 +92,7 @@ export default class Games extends React.Component {
                     <Fragment>
                       <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.table_name} className={classes.chip} />
                       {game.dm ? (
-                        <Chip avatar={<Avatar><PersonIcon/></Avatar>} label={<UndecoratedLink to={`/profiles/${game.dm.id}/`}>{GamesStore.getDMName(game)}</UndecoratedLink>} className={classes.chip}/>
+                        <Chip avatar={<Avatar><PersonIcon/></Avatar>} label={GamesStore.getDMName(game)} onClick={(e) => this.gotoDM(e, game.dm.id)} className={classes.chip}/>
                       ) : (
                         <Chip color="secondary"
                               variant="outlined"
