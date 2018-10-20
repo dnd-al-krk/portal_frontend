@@ -5,12 +5,11 @@ import Person from "@material-ui/icons/Person";
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import Typography from "@material-ui/core/Typography/Typography";
 import Grid from "@material-ui/core/Grid/Grid";
-import LoadingDiv from "../common/LoadingDiv";
-import {ClipLoader} from "react-spinners";
 import {NarrowContent} from "../common/Content";
 import CharactersList from "../common/CharactersList";
 import Button from "@material-ui/core/Button/Button";
 import Divider from "@material-ui/core/Divider/Divider";
+import Spinner from "../common/LoadingDiv";
 
 
 const styles = theme => ({
@@ -106,9 +105,7 @@ export default class Profile extends React.Component {
     return (
       <NarrowContent className={classes.root}>
         {this.state.loading ? (
-          <LoadingDiv>
-            <ClipLoader color={'#FFDE00'} loading={this.state.loading}  />
-          </LoadingDiv>
+          <Spinner loading={this.state.loading} />
           )
           : (
           <Grid container spacing={8}>

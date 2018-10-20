@@ -7,8 +7,7 @@ import {inject, observer} from "mobx-react";
 import Button from "@material-ui/core/Button/Button";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import {InputField, SelectField} from "../common/Fields";
-import LoadingDiv from "../common/LoadingDiv";
-import {ClipLoader} from "react-spinners";
+import Spinner from "../common/LoadingDiv";
 
 const styles = (theme) => ({
   addButton: {
@@ -118,9 +117,7 @@ export default class CharacterEdit extends React.Component {
     return (
       <NarrowContent>
         {this.state.loading ? (
-            <LoadingDiv>
-              <ClipLoader color={'#FFDE00'} loading={this.state.loading}/>
-            </LoadingDiv>
+            <Spinner loading={this.state.loading} />
           )
           : (
             <div>

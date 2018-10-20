@@ -1,10 +1,18 @@
 import {inject, observer} from "mobx-react";
-import React from "react";
-import LoadingDiv from "../common/LoadingDiv";
-import {ClipLoader} from "react-spinners";
+import React, {Fragment} from "react";
+import Spinner from "../common/LoadingDiv";
 import Games from "./Games";
+import Typography from "@material-ui/core/Typography/Typography";
+import {withStyles} from "@material-ui/core";
 
 
+const styles = (theme) => ({
+  header: {
+    padding: '10px 30px'
+  }
+});
+
+@withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
 export class GamesList extends React.Component {
 
@@ -26,14 +34,19 @@ export class GamesList extends React.Component {
   }
 
   render(){
-
+    const {classes} = this.props;
     if(this.state.loading)
       return (
-          <LoadingDiv>
-            <ClipLoader color={'#FFDE00'} loading={this.state.loading}/>
-          </LoadingDiv>
+          <Spinner loading={this.state.loading} />
         );
     else
-      return <Games list={this.state.games} />
+      return (
+        <Fragment>
+          <Typography variant='display1' className={classes.header}>
+            All game sessions
+          </Typography>
+          <Games list={this.state.games} />
+        </Fragment>
+      )
   }
 }

@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import Typography from "@material-ui/core/Typography/Typography";
 import {WideContent} from "../common/Content";
-import LoadingDiv from "../common/LoadingDiv";
-import {ClipLoader} from "react-spinners";
+import Spinner from "../common/LoadingDiv";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {inject, observer} from "mobx-react";
 import FormControl from "@material-ui/core/FormControl/FormControl";
@@ -174,9 +173,7 @@ class GameBooking extends Component {
 
     if(this.state.loading)
       return (
-          <LoadingDiv>
-            <ClipLoader color={'#FFDE00'} loading={this.state.loading}/>
-          </LoadingDiv>
+          <Spinner loading={this.state.loading} />
         );
     else
       if(this.state.gameAlreadyBooked){

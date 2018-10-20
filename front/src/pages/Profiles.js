@@ -4,7 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import {inject, observer} from "mobx-react/index";
 import List from "@material-ui/core/List/List";
 import {ClipLoader} from 'react-spinners';
-import LoadingDiv from "../common/LoadingDiv";
+import Spinner from "../common/LoadingDiv";
 import Typography from "@material-ui/core/Typography/Typography";
 import {WideContent} from "../common/Content";
 import ProfileListItem from "../common/ProfileListItem";
@@ -76,9 +76,7 @@ class Profiles extends React.Component {
                   League players
                 </Typography>
                 {this.state.loading ? (
-                  <LoadingDiv>
-                    <ClipLoader color={'#FFDE00'} loading={this.state.loading}  />
-                  </LoadingDiv>
+                  <Spinner loading={this.state.loading}/>
                 )
                 : (
                   <List>
