@@ -20,6 +20,7 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import CancelIcon from "@material-ui/icons/Cancel";
 import Menu from "@material-ui/core/Menu/Menu";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
+import {Link} from "react-router-dom";
 
 const styles = theme => ({
   root: {
@@ -140,7 +141,11 @@ class GameDetail extends Component {
     const usersGameSlot = this.state.game.dm && this.state.game.dm.id === player;
     const emptySpot = this.freeSpots() > 0;
     const isDM = this.state.game.dm;
-    return isDM && players.indexOf(player) === -1 && !usersGameSlot && emptySpot && this.state.characters.length > 0;
+    return isDM && players.indexOf(player) === -1 && !usersGameSlot && emptySpot;
+  };
+
+  hasCharacters = () => {
+    return this.state.characters.length > 0
   };
 
   signUp = (characterId) => {
@@ -260,7 +265,7 @@ class GameDetail extends Component {
             <List>
               {game.players.map(player => this.getUserListItem(player))}
             </List>
-            {this.canSignUp() && (
+            {this.canSignUp() && this.hasCharacters() && (
               <Fragment>
                 <Button variant="contained"
                         aria-owns={anchorEl ? 'simple-menu' : null}
@@ -279,6 +284,13 @@ class GameDetail extends Component {
                     <MenuItem key={`character-pick-item-${character.id}`} onClick={(e) => this.handleCharacterPick(e, character.id)}>{character.name}, {character.pc_class} {character.level}</MenuItem>
                   ))}
                 </Menu>
+              </Fragment>
+            )}
+            {!this.hasCharacters() && (
+              <Fragment>
+                <Typography variant='body1'>
+                  You have no character. <Link to='/characters/create'>Create one</Link>, before you can sign up for a game.
+                </Typography>
               </Fragment>
             )}
 
