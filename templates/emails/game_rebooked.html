@@ -2,7 +2,7 @@
 
 {% block content %}
 {% autoescape off %}
-    <p>Looks like your DM has cancelled the game session you were going to attend:</p>
+    <p>Looks like your cancelled game has a new Dungeon Master. Here are you game details</p>
 
     <ul>
         <li><strong>Adventure name</strong>: {{ game.adventure }}</li>
@@ -10,9 +10,9 @@
         <li><strong>Location</strong>: {{ game.table }}</li>
     </ul>
 
-    <p>You can see the details of game <a href="{{ game.get_absolute_url }}">on the page.</a></p>
+    <p>You can see more <a href="{{ game.get_absolute_url }}">on the game page.</a></p>
 
-    <p>If no other DM takes on this this game. It will not be played. We will let you know, when other DM takes on this game.</p>
+    <p>If you no longer want to attend that game session, unsign on it's page.</p>
 
 {% endautoescape %}
 {% endblock %}

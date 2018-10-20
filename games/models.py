@@ -111,9 +111,15 @@ class GameSession(UUIDModel):
         send_email(
             'Game session cancelled',
             'emails/game_cancelled.html',
-            {
-                'game': self,
-            },
+            {'game': self},
+            bcc=[player.user.email for player in self.players.all()]
+        )
+
+    def booked_again(self):
+        send_email(
+            'Game session has a new DM',
+            'emails/game_rebooked.html',
+            {'game': self},
             bcc=[player.user.email for player in self.players.all()]
         )
 
