@@ -1,5 +1,24 @@
+{% extends 'emails/base.html' %}
+
+{% block greetings %}
+    Hi {{ user.first_name }} {{ user.last_name }},
+{% endblock %}
+
+{% block content %}
 {% autoescape off %}
-Hi {{ user.first_name }} {{ user.last_name }},
-Please click on the link to confirm your registration,
-https://alkrk.toady.org{% url 'activate' uid token %}
+    <p>
+        Welcome to the D&D Adventurers League Kraków system.
+        The adventure awaits. All you have to do is
+        <a href="https://alkrk.toady.org{% url 'activate' uid token %}">confirm your registration.</a>
+    </p>
+
+    <p>
+        If you cannot see the link above, go to the url: https://alkrk.toady.org{% url 'activate' uid token %}
+    </p>
+
+    <p>
+        See you at the next game session.
+    </p>
+
 {% endautoescape %}
+{% endblock %}

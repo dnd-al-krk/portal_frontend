@@ -111,7 +111,6 @@ class GameSessionBookViewSet(mixins.UpdateModelMixin,
         if instance.dm != request.user.profile:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        instance.dm = None
-        instance.save()
+        instance.cancel()
 
         return Response(status=status.HTTP_200_OK)
