@@ -140,7 +140,7 @@ class GameDetail extends Component {
     const usersGameSlot = this.state.game.dm && this.state.game.dm.id === player;
     const emptySpot = this.freeSpots() > 0;
     const isDM = this.state.game.dm;
-    return isDM && players.indexOf(player) === -1 && !usersGameSlot && emptySpot;
+    return isDM && players.indexOf(player) === -1 && !usersGameSlot && emptySpot && this.state.characters.length > 0;
   };
 
   signUp = (characterId) => {
@@ -260,7 +260,7 @@ class GameDetail extends Component {
             <List>
               {game.players.map(player => this.getUserListItem(player))}
             </List>
-            {this.canSignUp() && this.state.characters && (
+            {this.canSignUp() && (
               <Fragment>
                 <Button variant="contained"
                         aria-owns={anchorEl ? 'simple-menu' : null}
