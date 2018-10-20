@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from utils.email import send_email
 from .constants import (ADVENTURE_TYPE_EX, ADVENTURE_TYPE_EN, ADVENTURE_TYPE_EP, ADVENTURE_TYPE_HC, ADVENTURE_TYPE_IA,
                         ADVENTURE_TYPE_LE, ADVENTURE_TYPE_CCC, ADVENTURE_TYPE_OTHER, ADVENTURE_TYPE_AO)
 from utils.models import UUIDModel
@@ -101,7 +102,20 @@ class GameSession(UUIDModel):
         return profile in self.players.all()
 
     def get_absolute_url(self):
-        return settings.ROOT_URL + '/games/' + self.id
+        return settings.ROOT_URL + '/games/' + str(self.id)
+
+    def cancel(self):
+        self.dm = None
+        self.save()
+
+        send_email(
+            'Game session cancelled',
+            'emails/game_cancelled.html',
+            {
+                'game': self,
+            },
+            bcc=[player.user.email for player in self.players.all()]
+        )
 
 
 class GameSessionPlayerSignUp(models.Model):

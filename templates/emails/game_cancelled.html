@@ -1,18 +1,16 @@
 {% extends 'emails/base.html' %}
 
-{% block greetings %}
-    Hi {{ user.first_name }} {{ user.last_name }},
-{% endblock %}
-
 {% block content %}
 {% autoescape off %}
-    <p>Looks like your DM has cancelled the game session:</p>
+    <p>Looks like your DM has cancelled the game session you were going to attend:</p>
 
-    <p>Adventure name: {{ game.adventure }}</p>
-    <p>Game date: {{ game.date }}, {{ game.time_start }}</p>
-    <p>Location: {{ game.table }}</p>
+    <ul>
+        <li><strong>Adventure name</strong>: {{ game.adventure }}</li>
+        <li><strong>Game date</strong>: {{ game.date|date:"I, d. F Y" }}, {{ game.time_start|time:"H:i" }}</li>
+        <li><strong>Location</strong>: {{ game.table }}</li>
+    </ul>
 
-    <p>You can see the details of game here: {{ game.get_absolute_url }}</p>
+    <p>You can see the details of game <a href="{{ game.get_absolute_url }}">on the page.</a></p>
 
     <p>If no other DM takes on this this game. It will not be played. We will let you know, when other DM takes on this game.</p>
 

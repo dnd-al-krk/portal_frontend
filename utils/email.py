@@ -3,10 +3,10 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
 
-def send_email(to, subject, template, context):
+def send_email(subject, template, context=None, *args, **kwargs):
     message = render_to_string(template, context)
 
     email = EmailMessage(
-        subject, message, to=to, from_email=settings.EMAIL_FROM
+        subject, message, from_email=settings.EMAIL_FROM, *args, **kwargs
     )
     email.send(fail_silently=True)

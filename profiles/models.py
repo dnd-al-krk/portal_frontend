@@ -36,7 +36,6 @@ class Profile(models.Model):
 
     def send_verification_email(self):
         send_email(
-            [self.user.email],
             'Activate your portAL account.',
             'emails/account_activate_email.html',
             {
@@ -44,7 +43,8 @@ class Profile(models.Model):
                 'profile': self,
                 'uid': urlsafe_base64_encode(force_bytes(self.user.pk)).decode(),
                 'token': account_activation_token.make_token(self.user),
-            }
+            },
+            to=[self.user.email],
         )
 
 
