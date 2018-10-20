@@ -30,7 +30,7 @@ class GameSessionViewSet(mixins.ListModelMixin,
                          mixins.UpdateModelMixin,
                          viewsets.GenericViewSet):
     serializer_class = GameSessionSerializer
-    queryset = GameSession.objects.all()
+    queryset = GameSession.games.all()
     permission_classes = [IsAuthenticated, ]
     filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)
     filter_class = GameSessionFilter
@@ -88,7 +88,7 @@ class GameSessionViewSet(mixins.ListModelMixin,
 class GameSessionBookViewSet(mixins.UpdateModelMixin,
                              viewsets.GenericViewSet):
     serializer_class = GameSessionBookSerializer
-    queryset = GameSession.objects.all()
+    queryset = GameSession.games.all()
     permission_classes = [IsAuthenticated, ]
 
     def update(self, request, *args, **kwargs):

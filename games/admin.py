@@ -16,16 +16,27 @@ class AdventureAdmin(admin.ModelAdmin):
 
 @admin.register(GameSession)
 class GameSessionAdmin(admin.ModelAdmin):
-    list_display = ['date', 'table', 'adventure', 'time_start', 'spots', 'max_spots', 'dm']
+    list_display = ['date', 'table', 'adventure', 'time_start', 'spots', 'max_spots', 'dm', 'active']
     list_filter = ['date', 'adventure__season', 'adventure__type', 'adventure__number',
                    'spots', 'table__max_spots']
     search_fields = [
         'adventure__title', 'table__name',
         'dm__nickname', 'dm__user__first_name', 'dm__user__last_name',
     ]
+    actions = ['activate_sessions', 'deactivate_sessions']
 
     def max_spots(self, session):
         return session.table.max_spots
+
+    def activate_sessions(self, request, queryset):
+        updated = queryset.update(active=True)
+        self.message_user(request, "%s successfully marked as active." % updated)
+    activate_sessions.short_description = 'Mark game sessions as active'
+
+    def deactivate_sessions(self, request, queryset):
+        updated = queryset.update(active=False)
+        self.message_user(request, "%s successfully marked as not active." % updated)
+    deactivate_sessions.short_description = 'Mark game sessions as not active'
 
 
 @admin.register(GameSessionPlayerSignUp)

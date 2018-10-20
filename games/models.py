@@ -68,6 +68,16 @@ class Adventure(UUIDModel):
         return self.get_type_display() if self.type != ADVENTURE_TYPE_OTHER else ''
 
 
+class GameSessionQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(active=True)
+
+
+class GameSessionActiveGamesManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        return super(GameSessionActiveGamesManager, self).get_queryset(*args, **kwargs).active()
+
+
 class GameSession(UUIDModel):
     date = models.DateField(_('Date'))
     table = models.ForeignKey(Table, related_name='game_sessions', on_delete=models.CASCADE)
@@ -80,6 +90,11 @@ class GameSession(UUIDModel):
     notes = models.CharField(_('Additional notes'), max_length=255, blank=True, null=True)
     time_start = models.TimeField(_('Starting time'), blank=True, null=True)
     time_end = models.TimeField(_('Ending time'), blank=True, null=True)
+    active = models.BooleanField(_('Active'), default=False)
+    #
+    objects = models.Manager.from_queryset(GameSessionQuerySet)()
+    games = GameSessionActiveGamesManager.from_queryset(GameSessionQuerySet)()
+
 
     class Meta:
         verbose_name = _('Game Session')
