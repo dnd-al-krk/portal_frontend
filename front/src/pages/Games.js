@@ -15,6 +15,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import ExclamationIcon from "@material-ui/icons/Warning";
 import GamesStore from "../stores/GamesStore";
 import {withRouter} from "react-router-dom";
+import classNames from 'classnames';
 
 const styles = theme => ({
   root: {
@@ -40,6 +41,10 @@ const styles = theme => ({
   gameItemOfPlayer: {
     borderLeft: '5px solid #DF9E00',
     paddingLeft: 19,
+  },
+  currentDM: {
+    backgroundColor: '#DF9E00',
+    color: 'white',
   }
 });
 
@@ -109,7 +114,17 @@ export default class Games extends React.Component {
                     <Fragment>
                       <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.table_name} className={classes.chip} />
                       {game.dm ? (
-                        <Chip avatar={<Avatar><PersonIcon/></Avatar>} label={GamesStore.getDMName(game)} onClick={(e) => this.gotoDM(e, game.dm.id)} className={classes.chip}/>
+                        <Fragment>
+                          {game.dm.id !== this.props.portalStore.currentUser.profileID ? (
+                            <Chip avatar={<Avatar><PersonIcon/></Avatar>} label={GamesStore.getDMName(game)}
+                                  onClick={(e) => this.gotoDM(e, game.dm.id)} className={classes.chip}/>
+                          ):(
+                            <Chip avatar={<Avatar className={classes.currentDM}><PersonIcon/></Avatar>} label={'You run this game'}
+                                  onClick={(e) => this.gotoDM(e, game.dm.id)}
+                                  className={classNames(classes.chip, classes.currentDM)}/>
+                          )}
+
+                        </Fragment>
                       ) : (
                         <Chip color="secondary"
                               variant="outlined"
