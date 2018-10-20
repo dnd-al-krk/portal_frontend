@@ -1,6 +1,4 @@
 import React, {Fragment} from 'react';
-import LoadingDiv from "../common/LoadingDiv";
-import {ClipLoader} from "react-spinners";
 import {inject, observer} from "mobx-react";
 import Typography from "@material-ui/core/Typography/Typography";
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -14,7 +12,6 @@ import Chip from "@material-ui/core/Chip/Chip";
 import CalendarIcon from "@material-ui/icons/Event";
 import RoomIcon from "@material-ui/icons/Room";
 import PersonIcon from "@material-ui/icons/Person";
-import UndecoratedLink from "../common/UndecoratedLink";
 import ExclamationIcon from "@material-ui/icons/Warning";
 import GamesStore from "../stores/GamesStore";
 import {withRouter} from "react-router-dom";
@@ -35,6 +32,14 @@ const styles = theme => ({
   },
   title: {
     marginBottom: 10,
+  },
+  gameItemOfDM: {
+    borderLeft: '5px solid #333333',
+    paddingLeft: 19,
+  },
+  gameItemOfPlayer: {
+    borderLeft: '5px solid #DF9E00',
+    paddingLeft: 19,
   }
 });
 
@@ -61,6 +66,16 @@ export default class Games extends React.Component {
     return Math.max(game.spots - game.players.length, 0)
   };
 
+  getItemClassNames = (game) => {
+    const {classes} = this.props;
+    const profileID = this.props.portalStore.currentUser.profileID;
+    if(game.dm && game.dm.id === profileID)
+      return classes.gameItemOfDM;
+    if(game.players.map(player => player.profile.id).some((id) => id === profileID))
+      return classes.gameItemOfPlayer;
+    return null;
+  };
+
   render() {
     const {classes, list} = this.props;
 
@@ -69,7 +84,9 @@ export default class Games extends React.Component {
         {list.map(game => (
           <Fragment>
             {game.adventure ? (
-              <ListItem key={`game-session-slot-${game.id}`} button onClick={() => this.gotoGame(game.id)}>
+              <ListItem key={`game-session-slot-${game.id}`} button onClick={() => this.gotoGame(game.id)}
+                        className={this.getItemClassNames(game)}
+              >
                 <Fragment>
                   <ListItemIcon>
                     <div style={{textAlign: 'center'}}>

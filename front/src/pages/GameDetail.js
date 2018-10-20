@@ -7,8 +7,7 @@ import CalendarIcon from '@material-ui/icons/CalendarToday';
 import TimeIcon from '@material-ui/icons/AccessTime';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import {dateToString, weekdayOf} from "../utils";
-import LoadingDiv from "../common/LoadingDiv";
-import {ClipLoader} from "react-spinners";
+import Spinner from "../common/LoadingDiv";
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import PersonIcon from "@material-ui/icons/Person";
 import UndecoratedLink from "../common/UndecoratedLink";
@@ -189,9 +188,7 @@ class GameDetail extends Component {
     const { anchorEl } = this.state;
     if(this.state.loading)
       return (
-          <LoadingDiv>
-            <ClipLoader color={'#FFDE00'} loading={this.state.loading}/>
-          </LoadingDiv>
+          <Spinner loading={this.state.loading} />
         );
 
     const game = this.state.game;

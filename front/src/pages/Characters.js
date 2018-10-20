@@ -1,9 +1,8 @@
 import React from 'react';
 import {inject, observer} from "mobx-react";
 import withStyles from '@material-ui/core/styles/withStyles';
-import LoadingDiv from "../common/LoadingDiv";
-import {ClipLoader} from "react-spinners";
-import {NarrowContent, WideContent} from "../common/Content";
+import Spinner from "../common/LoadingDiv";
+import {WideContent} from "../common/Content";
 import Typography from "@material-ui/core/Typography/Typography";
 import Grid from "@material-ui/core/Grid/Grid";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
@@ -68,9 +67,7 @@ export default class Characters extends React.Component{
     return (
       <WideContent>
         {this.state.loading ? (
-            <LoadingDiv>
-              <ClipLoader color={'#FFDE00'} loading={this.state.loading}/>
-            </LoadingDiv>
+            <Spinner loading={this.state.loading}/>
           )
           : (
             <div>

@@ -1,6 +1,8 @@
 import styled from "styled-components";
+import {ClipLoader} from "react-spinners";
+import React from "react";
 
-const LoadingDiv = styled.div`
+export const LoadingDiv = styled.div`
   position:fixed;
   top: 50%;
   left: 50%;
@@ -13,4 +15,11 @@ const LoadingDiv = styled.div`
   font-size: 2em;
 `;
 
-export default LoadingDiv;
+
+const Spinner = (props) => (
+  <LoadingDiv>
+    <ClipLoader color={'#DF9E00'} loading={props.loading}/>
+  </LoadingDiv>
+);
+
+export default Spinner;
