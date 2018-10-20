@@ -1,18 +1,13 @@
-import uuid
-
-from django.conf import settings
-from django.core.mail import send_mail, EmailMessage
-from django.db import models
 from django.contrib.auth.models import User
-from django.template.loader import render_to_string
+from django.db import models
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-
 from django.utils.translation import ugettext_lazy as _
 
-from .utils import account_activation_token
+from utils.email import send_email
 from utils.models import UUIDModel
 from .constants import ROLE_DM, ROLE_PLAYER
+from .utils import account_activation_token
 
 
 class Profile(models.Model):
@@ -40,19 +35,17 @@ class Profile(models.Model):
             self.send_verification_email()
 
     def send_verification_email(self):
-        mail_subject = 'Activate your portAL account.'
-        message = render_to_string('emails/account_activate_email.html', {
-            'user': self.user,
-            'profile': self,
-            'uid': urlsafe_base64_encode(force_bytes(self.user.pk)).decode(),
-            'token': account_activation_token.make_token(self.user),
-        })
-        to_email = self.user.email
-
-        email = EmailMessage(
-            mail_subject, message, to=[to_email], from_email=settings.EMAIL_FROM
+        send_email(
+            [self.user.email],
+            'Activate your portAL account.',
+            'emails/account_activate_email.html',
+            {
+                'user': self.user,
+                'profile': self,
+                'uid': urlsafe_base64_encode(force_bytes(self.user.pk)).decode(),
+                'token': account_activation_token.make_token(self.user),
+            }
         )
-        email.send(fail_silently=True)
 
 
 class CharacterClass(UUIDModel):
@@ -83,7 +76,7 @@ class CharacterFaction(UUIDModel):
 
     class Meta:
         ordering = ['name']
-        
+
 
 class PlayerCharacter(UUIDModel):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='characters')
