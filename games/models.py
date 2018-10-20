@@ -58,10 +58,10 @@ class Adventure(UUIDModel):
         )
 
     def get_season(self):
-        return str(self.season) + '-' if self.season else ''
+        return str(self.season) + '-' if self.season is not None else ''
 
     def get_number(self):
-        return str(self.number) if self.number else ''
+        return str(self.number) if self.number is not None else ''
 
     def get_type(self):
         return self.get_type_display() if self.type != ADVENTURE_TYPE_OTHER else ''
