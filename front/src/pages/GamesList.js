@@ -4,11 +4,15 @@ import Spinner from "../common/LoadingDiv";
 import Games from "./Games";
 import Typography from "@material-ui/core/Typography/Typography";
 import {withStyles} from "@material-ui/core";
+import Link from "react-router-dom/es/Link";
 
 
 const styles = (theme) => ({
   header: {
     padding: '10px 30px'
+  },
+  infoParagraph: {
+    padding: '10px 20px',
   }
 });
 
@@ -127,6 +131,100 @@ export class GamesList extends React.Component {
             All game sessions
           </Typography>
           <Games list={this.state.games} />
+        </Fragment>
+      )
+  }
+}
+
+
+@withStyles(styles, {withTheme: true})
+@inject('portalStore') @observer
+export class CurrentUserGamesList extends React.Component {
+
+  state = {
+    loading: true,
+    games: null,
+  };
+
+  componentDidMount(){
+    this.setState({
+      loading: true,
+    });
+    this.props.portalStore.games.fetchFutureForCurrentUser().then((games) => {
+      this.setState({
+        games: games,
+        loading: false,
+      })
+    })
+  }
+
+  render(){
+    const {classes} = this.props;
+    if(this.state.loading)
+      return (
+          <Spinner loading={this.state.loading} />
+        );
+    else
+      return (
+        <Fragment>
+          <Typography variant='display1' className={classes.header}>
+            Your next games
+          </Typography>
+          {this.state.games.length ? (
+            <Games list={this.state.games} />
+          ) : (
+            <Typography>
+              You are not playing any game soon. <Link to='/games'>Check incomming games</Link> to join one.
+            </Typography>
+          )}
+
+        </Fragment>
+      )
+  }
+}
+
+
+@withStyles(styles, {withTheme: true})
+@inject('portalStore') @observer
+export class CurrentDMGamesList extends React.Component {
+
+  state = {
+    loading: true,
+    games: null,
+  };
+
+  componentDidMount(){
+    this.setState({
+      loading: true,
+    });
+    this.props.portalStore.games.fetchFutureForCurrentDM().then((games) => {
+      this.setState({
+        games: games,
+        loading: false,
+      })
+    })
+  }
+
+  render(){
+    const {classes} = this.props;
+    if(this.state.loading)
+      return (
+          <Spinner loading={this.state.loading} />
+        );
+    else
+      return (
+        <Fragment>
+          <Typography variant='display1' className={classes.header}>
+            The next games you run as a DM
+          </Typography>
+          {this.state.games.length ? (
+            <Games list={this.state.games} />
+          ) : (
+            <Typography variant='body1' className={classes.infoParagraph}>
+              As a DM you are not running any game yet. <Link to='/games'>Check available slots</Link> to run one.
+            </Typography>
+          )}
+
         </Fragment>
       )
   }

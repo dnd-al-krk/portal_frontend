@@ -20,6 +20,22 @@ export default class GamesStore {
     return this.root.fetchData('games/past');
   }
 
+  fetchFutureForUser(id){
+    return this.root.get(`/games/future/?having_player=${id}`).then(response => response.data);
+  }
+
+  fetchFutureForDM(id){
+    return this.root.get(`/games/future/?dm__id=${id}`).then(response => response.data);
+  }
+
+  fetchFutureForCurrentUser(){
+    return this.fetchFutureForUser(this.root.currentUser.profileID);
+  }
+
+  fetchFutureForCurrentDM(){
+    return this.fetchFutureForDM(this.root.currentUser.profileID);
+  }
+
   get(id){
     return this.root.getData('games/list', id);
   }
