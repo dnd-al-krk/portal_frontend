@@ -55,11 +55,11 @@ export default class Games extends React.Component {
 
   gotoGameBooking = (e, id) => {
     e.stopPropagation();
-    this.props.history.push(`/games/${id}/book`);
+    this.props.history.push(`/games/game/${id}/book`);
   };
 
   gotoGame = (id) => {
-    this.props.history.push(`/games/${id}`);
+    this.props.history.push(`/games/game/${id}`);
   };
 
   gotoDM = (e, id) => {

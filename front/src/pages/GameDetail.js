@@ -174,7 +174,7 @@ class GameDetail extends Component {
 
   gotoGameBooking = (e, id) => {
     e.stopPropagation();
-    this.props.history.push(`/games/${id}/book`);
+    this.props.history.push(`/games/game/${id}/book`);
   };
 
   cancel = (gameID) => {

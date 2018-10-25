@@ -81,7 +81,16 @@ export default class SidebarNavigationList extends React.Component{
               <ListItemIcon>
                 <Settings/>
               </ListItemIcon>
-              <ListItemText primary="Game sessions">
+              <ListItemText primary="Upcoming Game sessions">
+              </ListItemText>
+            </ListItem>
+          </UndecoratedLink>
+          <UndecoratedLink to="/games/archive">
+            <ListItem button>
+              <ListItemIcon>
+                <Settings/>
+              </ListItemIcon>
+              <ListItemText primary="Game sessions archive">
               </ListItemText>
             </ListItem>
           </UndecoratedLink>

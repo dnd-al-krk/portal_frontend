@@ -85,6 +85,14 @@ class GameSessionViewSet(mixins.ListModelMixin,
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+class FutureGameSessionViewSet(GameSessionViewSet):
+    queryset = GameSession.games.future()
+
+
+class PastGameSessionViewSet(GameSessionViewSet):
+    queryset = GameSession.games.past()
+
+
 class GameSessionBookViewSet(mixins.UpdateModelMixin,
                              viewsets.GenericViewSet):
     serializer_class = GameSessionBookSerializer
