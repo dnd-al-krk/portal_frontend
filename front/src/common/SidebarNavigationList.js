@@ -4,14 +4,36 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Settings from "@material-ui/icons/Settings";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import PermIdentity from "@material-ui/icons/PermIdentity";
 import UndecoratedLink from "./UndecoratedLink";
 import {inject, observer} from "mobx-react";
 import Hidden from "@material-ui/core/Hidden/Hidden";
 import Divider from "@material-ui/core/Divider/Divider";
+
+// icons
+import CalendarIcon from '@material-ui/icons/CalendarToday';
+import Settings from "@material-ui/icons/Settings";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import PermIdentity from "@material-ui/icons/PermIdentity";
+import Archive from "@material-ui/icons/Archive";
+
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faGhost, faUserShield, faUser,
+  faCalendar, faArchive, faIdCard,
+  faUserCircle, faUserPlus,
+} from '@fortawesome/free-solid-svg-icons'
+
+library.add(faGhost);
+library.add(faUser);
+library.add(faUserShield);
+library.add(faCalendar);
+library.add(faArchive);
+library.add(faIdCard);
+library.add(faUserCircle);
+library.add(faUserPlus);
 
 
 const styles = theme => ({
@@ -47,7 +69,7 @@ export default class SidebarNavigationList extends React.Component{
               <UndecoratedLink to={`/profiles/${this.currentProfile().profileID}`}>
                 <ListItem button>
                   <ListItemIcon>
-                    <AccountCircle/>
+                    <FontAwesomeIcon icon="user-circle" />
                   </ListItemIcon>
                   <ListItemText primary="Your profile">
                   </ListItemText>
@@ -57,7 +79,7 @@ export default class SidebarNavigationList extends React.Component{
                 <UndecoratedLink to={`/characters/create`}>
                   <ListItem button>
                     <ListItemIcon>
-                      <PersonAddIcon/>
+                      <FontAwesomeIcon icon="user-plus" />
                     </ListItemIcon>
                     <ListItemText primary="Add new character">
                     </ListItemText>
@@ -67,37 +89,38 @@ export default class SidebarNavigationList extends React.Component{
               <Divider />
             </Fragment>
           )}
-          <UndecoratedLink to="/profiles">
-            <ListItem button>
-              <ListItemIcon>
-                <Settings/>
-              </ListItemIcon>
-              <ListItemText primary="AL Players">
-              </ListItemText>
-            </ListItem>
-          </UndecoratedLink>
           <UndecoratedLink to="/games">
             <ListItem button>
               <ListItemIcon>
-                <Settings/>
+                <FontAwesomeIcon icon="calendar" />
               </ListItemIcon>
-              <ListItemText primary="Upcoming Game sessions">
+              <ListItemText primary="Next Game sessions">
               </ListItemText>
             </ListItem>
           </UndecoratedLink>
           <UndecoratedLink to="/games/archive">
             <ListItem button>
               <ListItemIcon>
-                <Settings/>
+                <FontAwesomeIcon icon="archive" />
               </ListItemIcon>
-              <ListItemText primary="Game sessions archive">
+              <ListItemText primary="Games Archive">
+              </ListItemText>
+            </ListItem>
+          </UndecoratedLink>
+          <Divider />
+          <UndecoratedLink to="/profiles">
+            <ListItem button>
+              <ListItemIcon>
+                <FontAwesomeIcon icon="user" />
+              </ListItemIcon>
+              <ListItemText primary="AL Players">
               </ListItemText>
             </ListItem>
           </UndecoratedLink>
           <UndecoratedLink to="/characters">
             <ListItem button>
               <ListItemIcon>
-                <PermIdentity/>
+                <FontAwesomeIcon icon="id-card" />
               </ListItemIcon>
               <ListItemText primary="Characters">
               </ListItemText>
