@@ -1,4 +1,4 @@
-import {observable, action} from 'mobx';
+import {observable, action, computed} from 'mobx';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import {API_HOSTNAME} from "./config";
@@ -78,19 +78,22 @@ export class PortalStore {
 
   @action.bound
   login(user, password){
-    return axiosInstance.post(`${API_HOSTNAME}/token/auth/`, {
-      'username': user,
-      'password': password,
-    }).then((response) => {
-      if(response.status === 200){
-        this.userToken = response.data.token;
-        Cookies.set(JWT_TOKEN, this.userToken);
-        this.currentUser = new UserStore(this);
-        this.currentUser.fetchData()
-          .then(() => this.fetchClasses().then(data => this.classes = data))
-          .then(() => this.fetchRaces().then(data => this.races = data))
-          .then(() => this.fetchFactions().then(data => this.factions = data));
-      }
+    return new Promise((resolve, reject) => {
+      axiosInstance.post(`${API_HOSTNAME}/token/auth/`, {
+        'username': user,
+        'password': password,
+      }).then((response) => {
+        if (response.status === 200) {
+          this.userToken = response.data.token;
+          Cookies.set(JWT_TOKEN, this.userToken);
+          this.currentUser = new UserStore(this);
+          this.currentUser.fetchData()
+            .then(() => this.fetchClasses().then(data => this.classes = data))
+            .then(() => this.fetchRaces().then(data => this.races = data))
+            .then(() => this.fetchFactions().then(data => this.factions = data))
+            .then(() => resolve(response));
+        }
+      });
     });
   }
 
@@ -107,6 +110,7 @@ export class PortalStore {
   @action.bound
   signOut(){
     this.userToken = null;
+    this.currentUser = null;
     Cookies.remove(JWT_TOKEN);
   }
 
@@ -172,7 +176,11 @@ export class PortalStore {
 
   @action.bound
   createCharacter(data){
-    return getAxiosInstance(this.userToken).post(`${API_HOSTNAME}/characters/`, data)
+    return getAxiosInstance(this.userToken).post(`${API_HOSTNAME}/characters/`, data).then(response => {
+      if(response.status === 201){
+        this.currentUser.charactersCount++;
+      }
+    })
   }
 
   @action.bound
@@ -206,9 +214,14 @@ export class UserStore {
   @observable nickname;
   @observable dci;
   role;
+  @observable charactersCount;
 
   constructor(rootStore) {
     this.rootStore = rootStore;
+  }
+
+  @computed get isDM(){
+    return this.role === 'Dungeon Master';
   }
 
   @action.bound
@@ -228,6 +241,7 @@ export class UserStore {
         this.nickname = data.nickname;
         this.dci = data.dci;
         this.role = data.role;
+        this.charactersCount = data.characters_count;
       })
       .catch((err) => {
         this.rootStore.signOut();
