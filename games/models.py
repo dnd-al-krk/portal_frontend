@@ -2,6 +2,7 @@ from profile import Profile
 
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from utils.email import send_email
@@ -72,10 +73,22 @@ class GameSessionQuerySet(models.QuerySet):
     def active(self):
         return self.filter(active=True)
 
+    def future(self):
+        return self.filter(date__gte=timezone.now())
+
+    def past(self):
+        return self.filter(date__lt=timezone.now())
+
 
 class GameSessionActiveGamesManager(models.Manager):
     def get_queryset(self, *args, **kwargs):
         return super(GameSessionActiveGamesManager, self).get_queryset(*args, **kwargs).active()
+
+    def future(self):
+        return self.get_queryset().future()
+
+    def past(self):
+        return self.get_queryset().past()
 
 
 class GameSession(UUIDModel):
@@ -117,7 +130,7 @@ class GameSession(UUIDModel):
         return profile in self.players.all()
 
     def get_absolute_url(self):
-        return settings.ROOT_URL + '/games/' + str(self.id)
+        return settings.ROOT_URL + '/games/game/' + str(self.id)
 
     def cancel(self):
         self.dm = None

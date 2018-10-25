@@ -3,15 +3,21 @@ import {dateToString, weekdayOf} from "../utils";
 
 export default class GamesStore {
   @observable root = null;
-  @observable items = [];
 
   constructor(root){
     this.root = root
   }
 
   fetch(){
-    this.items = [];
     return this.root.fetchData('games/list');
+  }
+
+  fetchFuture(){
+    return this.root.fetchData('games/future');
+  }
+
+  fetchPast(){
+    return this.root.fetchData('games/past');
   }
 
   get(id){

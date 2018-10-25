@@ -131,7 +131,7 @@ class GameBooking extends Component {
     };
     this.props.portalStore.games.book(this.props.match.params.id, data).then(() => {
       // TODO: Go to the booked game page, but for now simply return to the list
-      this.props.history.push(`/games/${this.state.game.id}`);
+      this.props.history.push(`/games/game/${this.state.game.id}`);
     });
   };
 

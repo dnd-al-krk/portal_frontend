@@ -14,6 +14,87 @@ const styles = (theme) => ({
 
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
+export class FutureGamesList extends React.Component {
+
+  state = {
+    loading: true,
+    games: null,
+  };
+
+  componentDidMount(){
+    this.setState({
+      loading: true,
+    });
+    this.props.portalStore.games.fetchFuture().then((games) => {
+      this.setState({
+        games: games,
+        loading: false,
+      })
+    })
+  }
+
+  render(){
+    const {classes} = this.props;
+    if(this.state.loading)
+      return (
+          <Spinner loading={this.state.loading} />
+        );
+    else
+      return (
+        <Fragment>
+          <Typography variant='display1' className={classes.header}>
+            Incoming game sessions
+          </Typography>
+          <Games list={this.state.games} />
+        </Fragment>
+      )
+  }
+}
+
+
+@withStyles(styles, {withTheme: true})
+@inject('portalStore') @observer
+export class PastGamesList extends React.Component {
+
+  state = {
+    loading: true,
+    games: null,
+  };
+
+  componentDidMount(){
+    this.setState({
+      loading: true,
+    });
+    this.props.portalStore.games.fetchPast().then((games) => {
+      this.setState({
+        games: games,
+        loading: false,
+      })
+    })
+  }
+
+  render(){
+    const {classes} = this.props;
+    if(this.state.loading)
+      return (
+          <Spinner loading={this.state.loading} />
+        );
+    else
+      return (
+        <Fragment>
+          <Typography variant='display1' className={classes.header}>
+            Game sessions archive
+          </Typography>
+          <Games list={this.state.games} />
+        </Fragment>
+      )
+  }
+}
+
+
+
+@withStyles(styles, {withTheme: true})
+@inject('portalStore') @observer
 export class GamesList extends React.Component {
 
   state = {
