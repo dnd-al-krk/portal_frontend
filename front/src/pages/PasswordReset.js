@@ -59,7 +59,7 @@ export default class PasswordReset extends React.Component {
       }).catch((error) => {
         if(error.response.status === 400){
           this.setState({
-            errors: error.response.data.non_field_errors.join(),
+            errors: error.response.data.email,
             isSigning: false,
           })
         }
