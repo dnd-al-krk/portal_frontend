@@ -1,6 +1,6 @@
 import factory
 
-from ..models import Adventure
+from ..models import Adventure, GameSession
 
 
 class AdventureFactory(factory.Factory):
@@ -9,3 +9,7 @@ class AdventureFactory(factory.Factory):
 
     title = 'Super Adventure'
 
+
+class GameSessionFactory(factory.Factory):
+    class Meta:
+        model = GameSession

@@ -125,9 +125,16 @@ class GameSession(UUIDModel):
         # TODO: Add test to cover this logic
         return self.players.count() < self.spots and profile not in self.players.all()
 
-    def can_sign_out(self, profile: Profile):
-        # TODO: Add  test to cover this logic
+    @property
+    def ended(self):
+        t = timezone.now()
+        return t.date() > self.date or (self.time_end is not None and t.date() == self.date and t.time() > self.time_end)
+
+    def has_player(self, profile: Profile):
         return profile in self.players.all()
+
+    def can_sign_out(self, profile: Profile):
+        return self.has_player(profile) and not self.ended
 
     def get_absolute_url(self):
         return settings.ROOT_URL + '/games/game/' + str(self.id)

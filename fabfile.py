@@ -83,11 +83,11 @@ def runserver():
 
 
 @task
-def test():
+def test(dirs=''):
     """
     Runs local tests
     """
-    manage('test')
+    manage('test {}'.format(dirs))
 
 
 @task
