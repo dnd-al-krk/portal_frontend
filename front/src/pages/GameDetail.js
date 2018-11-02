@@ -115,7 +115,7 @@ class GameDetail extends Component {
 
   getUserListItem = (player) => {
     let action = null;
-    if(player.profile.id === this.props.portalStore.currentUser.profileID && !this.state.game.eneded){
+    if(player.profile.id === this.props.portalStore.currentUser.profileID && !this.state.game.ended){
       action = (
         <IconButton aria-label="Sign out" onClick={() => this.signOut()}>
           <CancelIcon />
