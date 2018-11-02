@@ -4,7 +4,6 @@ import {inject, observer} from "mobx-react";
 import {Redirect} from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Paper from "@material-ui/core/Paper/Paper";
 import Button from "@material-ui/core/Button/Button";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
@@ -150,7 +149,8 @@ class Login extends React.Component {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              No account yet? <Link to='/register'>Sign up!</Link>
+              <p>No account yet? <Link to='/register'>Sign up!</Link></p>
+              <p>Forgotten password? Go to <Link to="/password-reset">Password Reset Page</Link></p>
             </Grid>
           </Grid>
         </form>

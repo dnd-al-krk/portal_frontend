@@ -21,6 +21,8 @@ import Register from "./common/Register";
 import GameBooking from "./pages/GameBooking";
 import GameDetail from "./pages/GameDetail";
 import {FutureGamesList, GamesList, PastGamesList} from "./pages/GamesList";
+import PasswordReset from "./pages/PasswordReset";
+import PasswordResetConfirm from "./pages/PasswordResetConfirm";
 
 
 const portalStore = new PortalStore();
@@ -42,6 +44,8 @@ class App extends Component {
               <TopAppBar/>
               <PushedDiv>
                 <Route exact path="/" component={Home}/>
+                <Route exact path="/password-reset/" component={PasswordReset}/>
+                <Route exact path="/password-reset/:token" component={PasswordResetConfirm}/>
                 <RouteRequiresLogin exact path="/games/archive" component={PastGamesList}/>
                 <RouteRequiresLogin exact path="/games" component={FutureGamesList}/>
                 <RouteRequiresLogin exact path="/games/game/:id" component={GameDetail}/>

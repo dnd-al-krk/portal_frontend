@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'django_filters',
+    'django_rest_passwordreset',
     'profiles',
     'games',
 ]

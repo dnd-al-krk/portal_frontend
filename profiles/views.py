@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.contrib.auth.views import login
+from django.contrib.auth import login
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 

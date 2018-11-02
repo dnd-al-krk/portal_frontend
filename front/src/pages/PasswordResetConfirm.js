@@ -1,10 +1,8 @@
 import React from 'react'
 import classNames from 'classnames';
 import {inject, observer} from "mobx-react";
-import {Redirect} from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Paper from "@material-ui/core/Paper/Paper";
 import Button from "@material-ui/core/Button/Button";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
@@ -13,7 +11,7 @@ import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import {NarrowContent} from "./Content";
+import {NarrowContent} from "../common/Content";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import Link from "react-router-dom/es/Link";
 
@@ -39,29 +37,18 @@ const styles = (theme) => ({
 
 @withStyles(styles, { withTheme: true })
 @inject('portalStore') @observer
-export default class Register extends React.Component {
+export default class PasswordResetConfirm extends React.Component {
   state = {
-    redirectToReferrer: false,
     isSigning: false,
-    isDone: false,
-    email: '',
+    done: false,
     password: '',
     passwordConfirm: '',
-    first_name: '',
-    last_name: '',
-    nickname: '',
-    dci: '',
-    emailErrors: null,
     passwordErrors: null,
-    first_nameErrors: null,
-    last_nameErrors: null,
-    nicknameErrors: null,
-    dciErrors: null,
-    signupText: 'Sign up',
+    buttonText: 'Change password',
     showPassword: false,
   };
 
-  signup = (e) => {
+  reset = (e) => {
     e.preventDefault();
     if(this.state.password === this.state.passwordConfirm) {
       if(this.state.password.length < 8){
@@ -71,46 +58,19 @@ export default class Register extends React.Component {
       this.setState({
         isSigning: true
       });
-      this.props.portalStore.register({
-        nickname: this.state.nickname,
-        dci: this.state.dci ? this.state.dci : null,
-        user: {
-          email: this.state.email,
-          password: this.state.password,
-          first_name: this.state.first_name,
-          last_name: this.state.last_name,
-        }
-      })
+      this.props.portalStore.changePassword(this.props.match.params.token, this.state.password)
         .then(() => {
           this.setState(() => ({
-            email: '',
-            password: '',
             isSigning: false,
-            isDone: true,
+            done: true,
           }))
         }).catch(error => {
-        const new_state = {
-          emailErrors: null,
-          passwordErrors: null,
-          first_nameErrors: null,
-          last_nameErrors: null,
-          nicknameErrors: null,
-          dciErrors: null,
-        };
-        const data = error.response.data;
-        Reflect.ownKeys(data).forEach(key => {
-          if (data[key].constructor.name.toLowerCase() === "object") {
-            Reflect.ownKeys(data[key]).forEach(innerKey => {
-              new_state[innerKey + 'Errors'] = data[key][innerKey][0];
-            })
-          }
-          else {
-            new_state[key + 'Errors'] = data[key][0];
-          }
+          const new_state = {
+            passwordErrors: error.response.data.status === 'notfound' ? 'Incorrect token' : error.response.data.status,
+            isSigning: false,
+          };
+          this.setState(new_state);
         });
-        new_state.isSigning = false;
-        this.setState(new_state);
-      });
     }
     else {
       this.setState({passwordErrors: "Passwords don't match"});
@@ -140,26 +100,12 @@ export default class Register extends React.Component {
 
     return (
       <NarrowContent>
-        {!this.state.isDone && (
+        {!this.state.done ? (
           <form className={classes.container} noValidate autoComplete="off" onSubmit={this.signup}>
             <Grid container spacing={24}>
               <Grid item xs={12}>
-                <h1>Sign up</h1>
-                <p>Register in order to access D&D Adventurers League Krakow system and start playing.</p>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                  <InputLabel htmlFor="signUp-email">E-mail</InputLabel>
-                  <Input
-                    id="signUp-email"
-                    type="text"
-                    error={!!this.state.emailErrors}
-                    aria-describedby="email-error-text"
-                    value={this.state.email}
-                    onChange={this.handleChange('email')}
-                  />
-                  {this.state.emailErrors && (<FormHelperText id="email-error-text">{this.state.emailErrors}</FormHelperText>)}
-                </FormControl>
+                <h1>Password change</h1>
+                <p>Put new password below to change it.</p>
               </Grid>
               <Grid item xs={12} md={6}>
                  <FormControl className={classNames(classes.inputMargin, classes.textField)}>
@@ -211,78 +157,23 @@ export default class Register extends React.Component {
                    {this.diffPasswords() && (<FormHelperText id="first-name-error-text">Passwords don't match!</FormHelperText>)}
                 </FormControl>
               </Grid>
-              <Grid item xs={12} md={6}>
-                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                  <InputLabel htmlFor="signUp-first-name">First name</InputLabel>
-                  <Input
-                    id="signUp-first-name"
-                    type="text"
-                    error={!!this.state.first_nameErrors}
-                    aria-describedby="last-name-error-text"
-                    value={this.state.first_name}
-                    onChange={this.handleChange('first_name')}
-                  />
-                 {this.state.first_nameErrors && (<FormHelperText id="last-name-error-text">{this.state.first_nameErrors}</FormHelperText>)}
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                  <InputLabel htmlFor="signUp-last-name">Last name</InputLabel>
-                  <Input
-                    id="signUp-last-name"
-                    type="text"
-                    error={!!this.state.last_nameErrors}
-                    aria-describedby="name-error-text"
-                    value={this.state.last_name}
-                    onChange={this.handleChange('last_name')}
-                  />
-                 {this.state.last_nameErrors && (<FormHelperText id="name-error-text">{this.state.last_nameErrors}</FormHelperText>)}
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                  <InputLabel htmlFor="signUp-nickname">Nickname</InputLabel>
-                  <Input
-                    id="signUp-nickname"
-                    type="text"
-                    value={this.state.nickname}
-                    onChange={this.handleChange('nickname')}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                  <InputLabel htmlFor="signUp-dci">Your DCI</InputLabel>
-                  <Input
-                    id="signUp-dci"
-                    type="text"
-                    value={this.state.dci}
-                    onChange={this.handleChange('dci')}
-                  />
-                </FormControl>
-              </Grid>
               <Grid item xs={12} className={classes.submitRow}>
                 <Button variant="contained"
                         color="primary"
                         type="submit"
                         className={classes.button}
                         disabled={this.state.isSigning}
-                        onClick={this.signup}>
-                  { this.state.signupText }
+                        onClick={this.reset}>
+                  { this.state.buttonText }
                 </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <p>Already registered? <Link to="/login">Sign in</Link></p>
-                <p>Forgotten password? Go to <Link to="/password-reset">Password Reset Page</Link></p>
               </Grid>
             </Grid>
           </form>
-        )}
-        {this.state.isDone && (
+        ) : (
           <Grid container spacing={24}>
             <Grid item xs={12}>
-              <h1>Sign up</h1>
-              <p>All set! We have sent you activation e-mail. You won't be able to login until you click the link it contains.</p>
+              <h1>Password change</h1>
+              <p>All set! Your password is changed. Now you can <Link to="/login">sign in</Link>.</p>
             </Grid>
           </Grid>
         )}
