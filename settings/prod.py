@@ -34,3 +34,5 @@ ROOT_URL = 'http://alkrk.toady.org'
 
 STATIC_ROOT = BASE_DIR + '/public/static/'
 STATIC_URL = '/static/'
+
+SECURE_SSL_REDIRECT = True
