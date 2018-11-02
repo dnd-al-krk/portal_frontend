@@ -149,7 +149,8 @@ class Login extends React.Component {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              No account yet? <Link to='/register'>Sign up!</Link>
+              <p>No account yet? <Link to='/register'>Sign up!</Link></p>
+              <p>Forgotten password? Go to <Link to="/password-reset">Password Reset Page</Link></p>
             </Grid>
           </Grid>
         </form>

@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button/Button";
 import {inject, observer} from "mobx-react/index";
 import Typography from "@material-ui/core/Typography/Typography";
 import {NarrowContent} from "../common/Content";
+import {Link} from "react-router-dom";
 
 const styles = theme => ({
   textField: {
@@ -135,6 +136,10 @@ class Account extends React.Component {
                 </Button>
               </Grid>
             </Grid>
+            <Grid item xs={12}>
+                <Typography variant="title">Password change</Typography>
+              <p>Due to security reasons you cannot change your password here. In order to do so, use <Link to="/password-reset">Password Reset Page</Link></p>
+              </Grid>
           </div>
         </form>
       </NarrowContent>

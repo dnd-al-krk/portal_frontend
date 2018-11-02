@@ -272,7 +272,8 @@ export default class Register extends React.Component {
                 </Button>
               </Grid>
               <Grid item xs={12}>
-                Already registered? <Link to="/login">Sign in</Link>
+                <p>Already registered? <Link to="/login">Sign in</Link></p>
+                <p>Forgotten password? Go to <Link to="/password-reset">Password Reset Page</Link></p>
               </Grid>
             </Grid>
           </form>
