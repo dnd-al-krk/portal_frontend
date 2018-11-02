@@ -47,6 +47,7 @@ class GameSessionSerializer(serializers.ModelSerializer):
             'notes',
             'spots',
             'max_spots',
+            'ended',
         )
 
     def get_time_start(self, game):
