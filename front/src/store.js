@@ -103,6 +103,11 @@ export class PortalStore {
   }
 
   @action.bound
+  sendPasswordReset(login){
+    return axiosInstance.post(`${API_HOSTNAME}/password_reset/`, {email: login})
+  }
+
+  @action.bound
   get(url){
     return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}${url}`);
   }
