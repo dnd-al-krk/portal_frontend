@@ -176,7 +176,7 @@ export class GameCard extends React.Component {
 
           <CardActions>
             {!game.dm && this.props.portalStore.currentUser.role === 'Dungeon Master' && (
-              <Button size="small" color="primary" onClick={(e) => this.gotoGameBooking(e)}>
+              <Button size="small" variant="outlined" color="primary" onClick={(e) => this.gotoGameBooking(e)}>
                 Run a game in this slot
               </Button>
             )}
