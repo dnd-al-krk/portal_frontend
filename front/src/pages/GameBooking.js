@@ -179,7 +179,7 @@ class GameBooking extends Component {
       if(this.state.gameAlreadyBooked){
         return (
           <WideContent>
-            <Typography variant='display1' className={classes.header}>
+            <Typography variant="h5" className={classes.header}>
               This game is already booked. Sorry!
             </Typography>
           </WideContent>
@@ -187,7 +187,7 @@ class GameBooking extends Component {
       }
       return (
         <WideContent>
-          <Typography variant='display1' className={classes.header}>
+          <Typography variant='h5' className={classes.header}>
             Booking slot for a game
           </Typography>
           <Typography variant="body1" className={classes.header}>

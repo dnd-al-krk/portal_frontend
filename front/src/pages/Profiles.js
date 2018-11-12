@@ -72,7 +72,7 @@ class Profiles extends React.Component {
         <form className={classes.container} noValidate autoComplete="off">
             <Grid container spacing={24}>
               <Grid item xs={12}>
-                <Typography variant="title">
+                <Typography variant="h6">
                   League players
                 </Typography>
                 {this.state.loading ? (

@@ -71,7 +71,7 @@ export default class Characters extends React.Component{
           )
           : (
             <div>
-              <Typography variant="title">
+              <Typography variant="h6">
                 League characters
               </Typography>
               <Grid container spacing={8} style={{margin: '20px 0'}}>

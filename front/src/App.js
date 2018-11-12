@@ -23,6 +23,9 @@ import GameDetail from "./pages/GameDetail";
 import {FutureGamesList, GamesList, PastGamesList} from "./pages/GamesList";
 import PasswordReset from "./pages/PasswordReset";
 import PasswordResetConfirm from "./pages/PasswordResetConfirm";
+import SidebarNavigationList from "./common/SidebarNavigationList";
+import Grid from "@material-ui/core/Grid/Grid";
+import Hidden from "@material-ui/core/Hidden/Hidden";
 
 
 const portalStore = new PortalStore();
@@ -43,21 +46,30 @@ class App extends Component {
             <div>
               <TopAppBar/>
               <PushedDiv>
-                <Route exact path="/" component={Home}/>
-                <Route exact path="/password-reset/" component={PasswordReset}/>
-                <Route exact path="/password-reset/:token" component={PasswordResetConfirm}/>
-                <RouteRequiresLogin exact path="/games/archive" component={PastGamesList}/>
-                <RouteRequiresLogin exact path="/games" component={FutureGamesList}/>
-                <RouteRequiresLogin exact path="/games/game/:id" component={GameDetail}/>
-                <RouteRequiresLogin exact path="/games/game/:id/book" component={GameBooking}/>
-                <RouteRequiresLogin exact path="/profiles" component={Profiles}/>
-                <RouteRequiresLogin exact path="/profiles/:id" component={Profile}/>
-                <RouteRequiresLogin exact path="/characters" component={Characters}/>
-                <RouteRequiresLogin exact path="/characters/create" component={CharacterCreate}/>
-                <RouteRequiresLogin exact path="/characters/:id/edit" component={CharacterEdit}/>
-                <RouteRequiresLogin path="/account" component={Account}/>
-                <Route exact path="/login" component={Login}/>
-                <Route exact path="/register" component={Register}/>
+                <Grid container>
+                  <Hidden smDown>
+                    <Grid item md={3} lg={2}>
+                      <SidebarNavigationList/>
+                    </Grid>
+                  </Hidden>
+                  <Grid item xs={12} md={9} lg={10}>
+                    <Route exact path="/" component={Home}/>
+                    <Route exact path="/password-reset/" component={PasswordReset}/>
+                    <Route exact path="/password-reset/:token" component={PasswordResetConfirm}/>
+                    <RouteRequiresLogin exact path="/games/archive" component={PastGamesList}/>
+                    <RouteRequiresLogin exact path="/games" component={FutureGamesList}/>
+                    <RouteRequiresLogin exact path="/games/game/:id" component={GameDetail}/>
+                    <RouteRequiresLogin exact path="/games/game/:id/book" component={GameBooking}/>
+                    <RouteRequiresLogin exact path="/profiles" component={Profiles}/>
+                    <RouteRequiresLogin exact path="/profiles/:id" component={Profile}/>
+                    <RouteRequiresLogin exact path="/characters" component={Characters}/>
+                    <RouteRequiresLogin exact path="/characters/create" component={CharacterCreate}/>
+                    <RouteRequiresLogin exact path="/characters/:id/edit" component={CharacterEdit}/>
+                    <RouteRequiresLogin path="/account" component={Account}/>
+                    <Route exact path="/login" component={Login}/>
+                    <Route exact path="/register" component={Register}/>
+                  </Grid>
+                </Grid>
               </PushedDiv>
             </div>
           </Router>

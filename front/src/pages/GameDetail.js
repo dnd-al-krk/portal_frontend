@@ -197,7 +197,7 @@ class GameDetail extends Component {
       <div className={classes.root}>
         <Grid container spacing={8}>
           <Grid item xs={12} md={6}>
-            <Typography variant="display1" className={classes.header}>
+            <Typography variant="h5" className={classes.header}>
               {game.adventure.title_display}
             </Typography>
             <Typography variant="body1" className={classes.info}>
@@ -209,14 +209,14 @@ class GameDetail extends Component {
             <Typography variant="body1" className={classes.info}>
                 <LocationIcon className={classes.infoIcon}/> {game.table_name}
             </Typography>
-            <Typography variant="headline" className={classes.header}>
+            <Typography variant="h6" className={classes.header}>
                 Dungeon Master
             </Typography>
 
             {game.dm ? (
               <div className={classes.userInfo}>
                 <Avatar className={classes.userAvatar}><PersonIcon/></Avatar>
-                <Typography variant="title" className={classes.userName}>
+                <Typography variant="h6" className={classes.userName}>
                   <UndecoratedLink to={`/profiles/${game.dm.id}`}>{this.gameDM(game.dm)}</UndecoratedLink>
                 </Typography>
               </div>
@@ -231,7 +231,7 @@ class GameDetail extends Component {
                 )}
               </div>
             )}
-            <Typography variant="headline" className={classes.header}>
+            <Typography variant="h6" className={classes.header}>
                 Additional Notes
             </Typography>
             <Typography variant="body1" className={classes.notes}>
@@ -239,7 +239,7 @@ class GameDetail extends Component {
             </Typography>
             {game.dm && game.dm.id === this.props.portalStore.currentUser.profileID && (
               <Fragment>
-                <Typography variant="headline" className={classes.header}>
+                <Typography variant="h6" className={classes.header}>
                   Dungeon Master Options
                 </Typography>
                 <Button
@@ -256,7 +256,7 @@ class GameDetail extends Component {
             )}
           </Grid>
           <Grid item xs={12} md={6}>
-            <Typography variant="headline" className={classes.header}>
+            <Typography variant="h6" className={classes.header}>
                 Signed up players ({this.takenSpots()}/{this.state.game.spots})
             </Typography>
             <List>

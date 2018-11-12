@@ -84,7 +84,7 @@ class Account extends React.Component {
           <div className={classes.paperContainer}>
             <Grid container spacing={24}>
               <Grid item xs={12}>
-                <Typography variant="title">Change account settings</Typography>
+                <Typography variant="h6">Change account settings</Typography>
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -137,7 +137,7 @@ class Account extends React.Component {
               </Grid>
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="title">Password change</Typography>
+                <Typography variant="h6">Password change</Typography>
               <p>Due to security reasons you cannot change your password here. In order to do so, use <Link to="/password-reset">Password Reset Page</Link></p>
               </Grid>
           </div>

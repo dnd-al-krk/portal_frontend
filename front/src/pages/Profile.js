@@ -113,7 +113,7 @@ export default class Profile extends React.Component {
               <Avatar className={classes.avatar}>
                 <Person className={classes.avatarIcon} />
               </Avatar>
-              <Typography variant="headline">
+              <Typography variant="h6">
                 {profile.first_name} {profile.last_name} ({profile.nickname})
               </Typography>
               <Typography variant="body1">
@@ -123,7 +123,7 @@ export default class Profile extends React.Component {
             <Grid item xs={12} className={classes.charactersList}>
               {this.state.characters.length > 0 && (
                 <Fragment>
-                  <Typography variant="headline">
+                  <Typography variant="h6">
                     Characters
                   </Typography>
                   <CharactersList characters={this.state.characters} use_by={false}/>

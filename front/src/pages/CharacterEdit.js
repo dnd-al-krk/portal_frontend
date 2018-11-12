@@ -121,7 +121,7 @@ export default class CharacterEdit extends React.Component {
           )
           : (
             <div>
-              <Typography variant={'title'}>
+              <Typography variant="h6">
                 Edit {this.state.name}
               </Typography>
 

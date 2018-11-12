@@ -94,7 +94,7 @@ export default class CharacterCreate extends React.Component {
 
     return (
       <NarrowContent>
-        <Typography variant={'title'}>
+        <Typography variant="h6">
           Add New Character
         </Typography>
 
