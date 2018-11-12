@@ -119,10 +119,12 @@ class TopAppBar extends React.Component {
         <AppBar className={ classes.appBar }>
           <Toolbar className={ classes.toolbar }>
 
-            <IconButton color="inherit" className={ classes.menuButton } aria-label="Menu"
-            onClick={this.toggleDrawer}>
-              <MenuIcon />
-            </IconButton>
+            <Hidden mdUp>
+              <IconButton color="inherit" className={ classes.menuButton } aria-label="Menu"
+              onClick={this.toggleDrawer}>
+                <MenuIcon />
+              </IconButton>
+            </Hidden>
 
 
             <Typography variant="h6" color="inherit">

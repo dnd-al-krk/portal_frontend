@@ -10,24 +10,17 @@ import Hidden from "@material-ui/core/Hidden/Hidden";
 import Divider from "@material-ui/core/Divider/Divider";
 
 // icons
-import CalendarIcon from '@material-ui/icons/CalendarToday';
-import Settings from "@material-ui/icons/Settings";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import PermIdentity from "@material-ui/icons/PermIdentity";
-import Archive from "@material-ui/icons/Archive";
-
-
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faGhost, faUserShield, faUser,
+  faGhost, faUserShield, faUser, faHome,
   faCalendar, faArchive, faIdCard,
   faUserCircle, faUserPlus,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faGhost);
 library.add(faUser);
+library.add(faHome);
 library.add(faUserShield);
 library.add(faCalendar);
 library.add(faArchive);
@@ -64,6 +57,16 @@ export default class SidebarNavigationList extends React.Component{
     return (
       <div className={classes.root}>
         <List component="nav">
+          <UndecoratedLink to="/">
+            <ListItem button>
+              <ListItemIcon>
+                <FontAwesomeIcon icon="home" />
+              </ListItemIcon>
+              <ListItemText primary="Homepage">
+              </ListItemText>
+            </ListItem>
+          </UndecoratedLink>
+          <Divider />
           {this.isAuth() && (
             <Fragment>
               <UndecoratedLink to={`/profiles/${this.currentProfile().profileID}`}>
@@ -86,7 +89,6 @@ export default class SidebarNavigationList extends React.Component{
                   </ListItem>
                 </UndecoratedLink>
               </Hidden>
-              <Divider />
             </Fragment>
           )}
           <UndecoratedLink to="/games">
@@ -113,7 +115,7 @@ export default class SidebarNavigationList extends React.Component{
               <ListItemIcon>
                 <FontAwesomeIcon icon="user" />
               </ListItemIcon>
-              <ListItemText primary="AL Players">
+              <ListItemText primary="League Players">
               </ListItemText>
             </ListItem>
           </UndecoratedLink>

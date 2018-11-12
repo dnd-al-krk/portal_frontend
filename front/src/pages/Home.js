@@ -6,10 +6,25 @@ import Typography from "@material-ui/core/Typography/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {WideContent} from "../common/Content";
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import List from "@material-ui/core/List/List";
+import ListItem from "@material-ui/core/ListItem/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
+import UndecoratedLink from "../common/UndecoratedLink";
+
+import {faDiscord, faFacebook, faFacebookF} from '@fortawesome/free-brands-svg-icons'
+import {faFile, faFilePdf} from '@fortawesome/free-regular-svg-icons'
+library.add(faFacebook, faDiscord, faFilePdf, faFile);
 
 const styles = (theme) => ({
-  info: {
-  }
+  communityIcon: {
+    fontSize: 24
+  },
+  community: {
+    padding: 20,
+  },
 });
 
 
@@ -20,33 +35,71 @@ class Home extends React.Component {
     const {classes} = this.props;
 
     return (
-      <div className="container">
-        <Grid container spacing={8}>
-        {this.props.portalStore.currentUser ? (
-          <Fragment>
-            <Grid item xs={12} >
-              <CurrentUserGamesList/>
-            </Grid>
-            <Grid item xs={12} >
-              {this.props.portalStore.currentUser.isDM && (
-                <CurrentDMGamesList/>
-              )}
-            </Grid>
-          </Fragment>
-        ) : (
-          <Grid item xs={12}>
-            <WideContent>
-              <Typography variant="h5">
-                Adventure Awaits!
-              </Typography>
-              <Typography variant="body1" className={classes.info}>
-                Welcome to D&D Adventurers League Kraków service.<br/>
-                Here you can sign up for the games run by our finest Dungeon Masters.<br/>
-                Or maybe you would like to become DM? Sure thing!
-              </Typography>
-            </WideContent>
+      <div className={classes.container}>
+        <Grid container spacing={16}>
+          <Grid item xs={12} md={8} lg={9}>
+          {this.props.portalStore.currentUser ? (
+            <Fragment>
+                <CurrentUserGamesList/>
+                {this.props.portalStore.currentUser.isDM && (
+                  <CurrentDMGamesList/>
+                )}
+            </Fragment>
+          ) : (
+            <Fragment>
+                <Typography variant="h5">
+                  Adventure Awaits!
+                </Typography>
+                <Typography variant="body1" className={classes.info}>
+                  Welcome to D&D Adventurers League Kraków service.<br/>
+                  Here you can sign up for the games run by our finest Dungeon Masters.<br/>
+                  Or maybe you would like to become DM? Sure thing!
+                </Typography>
+            </Fragment>
+          )}
           </Grid>
-        )}
+          <Grid item xs={12} md={4} lg={3}>
+            <div className={classes.community}>
+              <Typography variant="h5">
+                Join our community
+              </Typography>
+              <List component="nav">
+                <ListItem button onClick={() => window.open('https://www.facebook.com/groups/ALKrakow/')}>
+                  <ListItemIcon className={classes.communityIcon}>
+                    <FontAwesomeIcon icon={["fab","facebook"]}/>
+                  </ListItemIcon>
+                  <ListItemText primary="Facebook Group">
+                  </ListItemText>
+                </ListItem>
+
+                <ListItem button onClick={() => window.open('https://discord.gg/BWYKVxk')}>
+                  <ListItemIcon className={classes.communityIcon}>
+                    <FontAwesomeIcon icon={["fab","discord"]} />
+                  </ListItemIcon>
+                  <ListItemText primary="Discord Server">
+                  </ListItemText>
+                </ListItem>
+
+                <UndecoratedLink to="/">
+                  <ListItem button>
+                    <ListItemIcon className={classes.communityIcon}>
+                      <FontAwesomeIcon icon={["far","file"]} />
+                    </ListItemIcon>
+                    <ListItemText primary="Terms & Conditions">
+                    </ListItemText>
+                  </ListItem>
+                </UndecoratedLink>
+
+                <ListItem button>
+                  <ListItemIcon className={classes.communityIcon}>
+                    <FontAwesomeIcon icon={["far","file-pdf"]} />
+                  </ListItemIcon>
+                  <ListItemText primary="Read FAQ">
+                  </ListItemText>
+                </ListItem>
+              </List>
+            </div>
+          </Grid>
         </Grid>
       </div>
     );
