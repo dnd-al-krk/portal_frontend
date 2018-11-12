@@ -90,7 +90,7 @@ class FutureGameSessionViewSet(GameSessionViewSet):
 
 
 class PastGameSessionViewSet(GameSessionViewSet):
-    queryset = GameSession.games.past()
+    queryset = GameSession.games.past().exclude(adventure=None)
 
 
 class GameSessionBookViewSet(mixins.UpdateModelMixin,
