@@ -138,9 +138,10 @@ class GameDetail extends Component {
     const players = this.state.game.players.map(player => player.profile.id);
     const player = this.props.portalStore.currentUser.profileID;
     const usersGameSlot = this.state.game.dm && this.state.game.dm.id === player;
+    const future = this.state.game.ended === false;
     const emptySpot = this.freeSpots() > 0;
     const isDM = this.state.game.dm;
-    return isDM && players.indexOf(player) === -1 && !usersGameSlot && emptySpot;
+    return isDM && future && players.indexOf(player) === -1 && !usersGameSlot && emptySpot;
   };
 
   hasCharacters = () => {
