@@ -123,7 +123,8 @@ class GameSession(UUIDModel):
 
     def can_sign_up(self, profile: Profile):
         # TODO: Add test to cover this logic
-        return self.players.count() < self.spots and profile not in self.players.all()
+        return self.dm is not None and not self.ended and self.dm.id != profile.id and \
+               self.players.count() < self.spots and profile not in self.players.all()
 
     @property
     def ended(self):
