@@ -9,7 +9,8 @@ import Link from "react-router-dom/es/Link";
 
 const styles = (theme) => ({
   header: {
-    padding: '10px 30px'
+    padding: '10px 30px',
+    fontSize: 24,
   },
   infoParagraph: {
     padding: '10px 20px',
@@ -46,7 +47,7 @@ export class FutureGamesList extends React.Component {
     else
       return (
         <Fragment>
-          <Typography variant='display1' className={classes.header}>
+          <Typography variant='h5' className={classes.header}>
             Incoming game sessions
           </Typography>
           <Games list={this.state.games} />
@@ -86,7 +87,7 @@ export class PastGamesList extends React.Component {
     else
       return (
         <Fragment>
-          <Typography variant='display1' className={classes.header}>
+          <Typography variant='h5' className={classes.header}>
             Game sessions archive
           </Typography>
           <Games list={this.state.games} />
@@ -127,7 +128,7 @@ export class GamesList extends React.Component {
     else
       return (
         <Fragment>
-          <Typography variant='display1' className={classes.header}>
+          <Typography variant='h5' className={classes.header}>
             All game sessions
           </Typography>
           <Games list={this.state.games} />
@@ -167,7 +168,7 @@ export class CurrentUserGamesList extends React.Component {
     else
       return (
         <Fragment>
-          <Typography variant='display1' className={classes.header}>
+          <Typography variant='h4' component="h1" className={classes.header}>
             Your next games
           </Typography>
           {this.state.games.length ? (
@@ -214,7 +215,7 @@ export class CurrentDMGamesList extends React.Component {
     else
       return (
         <Fragment>
-          <Typography variant='display1' className={classes.header}>
+          <Typography variant='h4' component="h1" className={classes.header}>
             The next games you run as a DM
           </Typography>
           {this.state.games.length ? (
