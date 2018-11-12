@@ -90,7 +90,7 @@ export class GameInfo extends React.Component {
     return (
       <Fragment>
         <Chip avatar={<Avatar><RoomIcon/></Avatar>} label={game.table_name} className={classes.chip} />
-        <Chip avatar={<Avatar><FontAwesomeIcon icon="chair" /></Avatar>} label={`${spots} spots left`} className={classes.chip}/>
+        {!game.ended && (<Chip avatar={<Avatar><FontAwesomeIcon icon="chair" /></Avatar>} label={`${spots} spots left`} className={classes.chip}/>)}
         {game.adventure && (
           <Fragment>
             {game.dm ? (
