@@ -36,7 +36,7 @@ class Home extends React.Component {
         ) : (
           <Grid item xs={12}>
             <WideContent>
-              <Typography variant="display1">
+              <Typography variant="h5">
                 Adventure Awaits!
               </Typography>
               <Typography variant="body1" className={classes.info}>

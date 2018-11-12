@@ -125,7 +125,7 @@ class TopAppBar extends React.Component {
             </IconButton>
 
 
-            <Typography variant="title" color="inherit">
+            <Typography variant="h6" color="inherit">
               <Link to="/" className={ classes.link }>
                 <img src={ al_krakow_logo } className={classes.logo} alt="logo" />
               </Link>
