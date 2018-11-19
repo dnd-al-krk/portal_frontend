@@ -174,7 +174,7 @@ export class CurrentUserGamesList extends React.Component {
           {this.state.games.length ? (
             <Games list={this.state.games} />
           ) : (
-            <Typography>
+            <Typography className={classes.infoParagraph}>
               You are not playing any game soon. <Link to='/games'>Check incomming games</Link> to join one.
             </Typography>
           )}
