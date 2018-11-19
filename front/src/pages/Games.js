@@ -199,8 +199,8 @@ export default class Games extends React.Component {
       <Fragment>
         <Grid container spacing={8} className={classes.cardsRoot}>
           {list.map(game => (
-            <Grid item xs={12} md={6} lg={4}>
-              <GameCard game={game} key={`game-list-card-${game.id}`}/>
+            <Grid item xs={12} md={6} lg={4} key={`game-list-card-${game.id}`}>
+              <GameCard game={game}/>
             </Grid>
           ))}
         </Grid>
