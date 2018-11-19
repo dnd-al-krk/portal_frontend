@@ -34,7 +34,7 @@ class PublicPlayerCharacterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PlayerCharacter
-        fields = ('id', 'name', 'pc_class', 'race', 'level', 'faction')
+        fields = ('id', 'name', 'pc_class', 'race', 'level', 'faction', 'notes')
 
     def get_pc_class(self, obj):
         return obj.pc_class.name if obj.pc_class else ''
@@ -50,7 +50,7 @@ class PlayerCharacterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PlayerCharacter
-        fields = ('id', 'owner', 'name', 'pc_class', 'race', 'faction', 'level', 'created', 'modified', )
+        fields = ('id', 'owner', 'name', 'pc_class', 'race', 'faction', 'level', 'notes', 'created', 'modified', )
         read_only_fields = ('created', 'modified', 'owner')
 
 
