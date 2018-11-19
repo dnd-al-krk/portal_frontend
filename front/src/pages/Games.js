@@ -23,6 +23,7 @@ import {
   faChair, faDiceD20
 } from '@fortawesome/free-solid-svg-icons'
 import Typography from "@material-ui/core/Typography/Typography";
+import Grid from "@material-ui/core/Grid/Grid";
 
 library.add(faChair);
 library.add(faDiceD20);
@@ -55,11 +56,9 @@ const styles = theme => ({
   },
   gameItemOfDM: {
     borderLeft: '5px solid #333333',
-    paddingLeft: 19,
   },
   gameItemOfPlayer: {
     borderLeft: '5px solid #DF9E00',
-    paddingLeft: 19,
   },
   currentDM: {
     backgroundColor: '#DF9E00',
@@ -161,9 +160,11 @@ export class GameCard extends React.Component {
   render() {
     const {classes, game} = this.props;
 
-    return <CardActionArea className={classes.card} onClick={() => this.gotoGame(game.id)}>
-        <Card className={classNames(this.getItemClassNames(game))} key={`game-list-card-${game.id}`}>
-
+    return <Card className={classNames(this.getItemClassNames(game), classes.card)} key={`game-list-card-${game.id}`}>
+          <CardActionArea
+            onClick={() => { !!game.adventure && this.gotoGame(game.id)}}
+            disabled={ !game.adventure }
+          >
             <CardHeader
               title={<Typography variant="subtitle1" style={{fontSize: 18}}><FontAwesomeIcon icon='dice-d20'/> {
                 this.isEmpty() ? 'Empty slot' : game.adventure.title_display
@@ -173,6 +174,7 @@ export class GameCard extends React.Component {
             <CardContent>
               <GameInfo game={game}/>
             </CardContent>
+          </CardActionArea>
 
           <CardActions>
             {!game.dm && this.props.portalStore.currentUser.role === 'Dungeon Master' && (
@@ -182,7 +184,6 @@ export class GameCard extends React.Component {
             )}
           </CardActions>
         </Card>
-      </CardActionArea>
   }
 }
 
@@ -196,11 +197,13 @@ export default class Games extends React.Component {
     const {list, classes} = this.props;
     return (
       <Fragment>
-        <div className={classes.cardsRoot}>
+        <Grid container spacing={8} className={classes.cardsRoot}>
           {list.map(game => (
-            <GameCard game={game} key={`game-list-card-${game.id}`}/>
+            <Grid item xs={12} md={6} lg={4}>
+              <GameCard game={game} key={`game-list-card-${game.id}`}/>
+            </Grid>
           ))}
-        </div>
+        </Grid>
       </Fragment>
     );
   }
