@@ -80,6 +80,8 @@ class GameSessionViewSet(mixins.ListModelMixin,
                 player=profile
             )
             signup.delete()
+
+            instance.checkMinimumPlayers()
             return Response()
         except GameSessionPlayerSignUp.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -137,6 +137,19 @@ class GameSession(UUIDModel):
     def can_sign_out(self, profile: Profile):
         return self.has_player(profile) and not self.ended
 
+    def checkMinimumPlayers(self):
+        """
+        This is run after a player signs out of the game session. If there are not enough players
+        for the game session, the message is sent to other participants.
+        """
+        if self.players.count() < 3:
+            send_email(
+                'Not enough players in the game session',
+                'emails/game_not_enough_players.html',
+                {'game': self},
+                bcc=[player.user.email for player in self.players.all()] + [self.dm.user.email]
+            )
+
     def get_absolute_url(self):
         return settings.ROOT_URL + '/games/game/' + str(self.id)
 
