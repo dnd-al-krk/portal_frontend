@@ -194,14 +194,18 @@ export class GameCard extends React.Component {
 export default class Games extends React.Component {
 
   render() {
-    const {list, classes} = this.props;
+    const {list, classes, displayEmpty=false} = this.props;
     return (
       <Fragment>
         <Grid container spacing={8} className={classes.cardsRoot}>
           {list.map(game => (
-            <Grid item xs={12} md={6} lg={4} key={`game-list-card-${game.id}`}>
-              <GameCard game={game}/>
-            </Grid>
+            <Fragment>
+              {(displayEmpty || game.adventure) ? (
+                <Grid item xs={12} md={6} lg={4} key={`game-list-card-${game.id}`}>
+                  <GameCard game={game}/>
+                </Grid>
+                ) : (null)}
+            </Fragment>
           ))}
         </Grid>
       </Fragment>
