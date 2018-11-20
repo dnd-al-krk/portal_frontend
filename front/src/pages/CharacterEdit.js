@@ -26,6 +26,7 @@ export default class CharacterEdit extends React.Component {
     loading: true,
     name: '',
     level: 1,
+    notes: '',
     race_pick: '',
     class_pick: '',
     race_pick_error: '',
@@ -47,6 +48,7 @@ export default class CharacterEdit extends React.Component {
           this.setState({
             name: data.name,
             level: data.level,
+            notes: data.notes,
             race_pick: data.race,
             class_pick: data.pc_class,
             faction_pick: data.faction === null ? '': data.faction,
@@ -79,6 +81,7 @@ export default class CharacterEdit extends React.Component {
       this.props.portalStore.saveCharacter(this.state.id, {
         'name': s.name,
         'level': s.level,
+        'notes': s.notes,
         'race': s.race_pick,
         'pc_class': s.class_pick,
         'faction': s.faction_pick,
@@ -155,6 +158,12 @@ export default class CharacterEdit extends React.Component {
                                options={character_factions}
                                blank={true}
                   />
+
+                  <InputField name={'notes'} label={'Additional notes / multiclassing / items etc.'}
+                              value={this.state.notes}
+                              type={'text'}
+                              multiline={true}
+                              onChange={this.handleChange('notes')}/>
 
                   <Button variant={'contained'} className={classes.addButton} onClick={this.saveCharacter}
                           disabled={this.state.buttonDisabled}>

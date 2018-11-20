@@ -5,6 +5,9 @@ import Games from "./Games";
 import Typography from "@material-ui/core/Typography/Typography";
 import {withStyles} from "@material-ui/core";
 import Link from "react-router-dom/es/Link";
+import Switch from "@material-ui/core/Switch/Switch";
+import FormGroup from "@material-ui/core/FormGroup/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 
 const styles = (theme) => ({
@@ -14,7 +17,10 @@ const styles = (theme) => ({
   },
   infoParagraph: {
     padding: '10px 20px',
-  }
+  },
+  listFilters: {
+    padding: '10px 20px',
+  },
 });
 
 @withStyles(styles, {withTheme: true})
@@ -24,6 +30,7 @@ export class FutureGamesList extends React.Component {
   state = {
     loading: true,
     games: null,
+    displayEmptyGames: false,
   };
 
   componentDidMount(){
@@ -34,9 +41,14 @@ export class FutureGamesList extends React.Component {
       this.setState({
         games: games,
         loading: false,
+        displayEmptyGames: this.props.portalStore.currentUser.isDM,
       })
     })
   }
+
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.checked });
+  };
 
   render(){
     const {classes} = this.props;
@@ -50,7 +62,20 @@ export class FutureGamesList extends React.Component {
           <Typography variant='h5' className={classes.header}>
             Incoming game sessions
           </Typography>
-          <Games list={this.state.games} />
+          <FormGroup row className={classes.listFilters}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={this.state.displayEmptyGames}
+                  onChange={this.handleChange('displayEmptyGames')}
+                  value="displayEmptyGames"
+                  color='secondary'
+                />
+              }
+              label="Display empty game slots"
+            />
+          </FormGroup>
+          <Games list={this.state.games} displayEmpty={this.state.displayEmptyGames}/>
         </Fragment>
       )
   }
@@ -174,7 +199,7 @@ export class CurrentUserGamesList extends React.Component {
           {this.state.games.length ? (
             <Games list={this.state.games} />
           ) : (
-            <Typography>
+            <Typography className={classes.infoParagraph}>
               You are not playing any game soon. <Link to='/games'>Check incomming games</Link> to join one.
             </Typography>
           )}

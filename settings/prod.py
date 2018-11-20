@@ -36,3 +36,5 @@ STATIC_ROOT = BASE_DIR + '/public/static/'
 STATIC_URL = '/static/'
 
 SECURE_SSL_REDIRECT = True
+
+ADMINS = (('AL KRK Tech', 'alkrk_tech@toady.org'),)

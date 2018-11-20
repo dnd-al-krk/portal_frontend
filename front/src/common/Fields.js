@@ -28,7 +28,7 @@ const styles = (theme) => ({
 export  class InputField extends React.Component {
   render(){
 
-    const {classes, name, label, onChange, value, type} = this.props;
+    const {classes, name, label, onChange, value, type, ...rest} = this.props;
 
     return (
       <FormControl className={classNames(classes.margin, classes.textField)}>
@@ -38,6 +38,7 @@ export  class InputField extends React.Component {
           value={value}
           onChange={onChange}
           type={type !== undefined ? type : 'text'}
+          {...rest}
         />
       </FormControl>
     )

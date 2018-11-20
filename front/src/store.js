@@ -262,12 +262,8 @@ export class UserStore {
   saveData(){
     return getAxiosInstance(this.getToken()).put(`${API_HOSTNAME}/profiles/${this.profileID}/`,
       {
-        'id': this.profile_id,
-        'user': {
-          'id': this.user_id,
-          'first_name': this.first_name,
-          'last_name': this.last_name,
-        },
+        'id': this.profileID,
+        'user': this.userID,
         'nickname': this.nickname,
         'dci': this.dci,
     }).catch((err) => {

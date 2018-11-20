@@ -12,7 +12,7 @@ class AdventureFilter(filters.FilterSet):
 
 
 class GameSessionFilter(filters.FilterSet):
-    having_player = Filter(field_name='players', lookup_expr='in')
+    having_player = Filter(field_name='players',)
 
     class Meta:
         model = GameSession
@@ -20,5 +20,3 @@ class GameSessionFilter(filters.FilterSet):
             'dm__id', 'date', 'adventure__id',
             'spots', 'adventure__number', 'adventure__season',
         )
-
-

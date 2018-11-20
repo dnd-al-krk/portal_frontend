@@ -46,7 +46,7 @@ class App extends Component {
             <div>
               <TopAppBar/>
               <PushedDiv>
-                <Grid container>
+                <Grid container spacing={8}>
                   <Hidden smDown>
                     <Grid item md={3} lg={2}>
                       <SidebarNavigationList/>
