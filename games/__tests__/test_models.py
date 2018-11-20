@@ -3,6 +3,7 @@ from unittest.mock import patch
 import pytest
 from django.utils import timezone
 
+import games
 from profiles.__tests__.factories import ProfileFactory
 from ..constants import ADVENTURE_TYPE_OTHER
 from .factories import AdventureFactory, GameSessionFactory, GameSessionPlayerSignUpFactory
@@ -58,32 +59,30 @@ def test_today_after_time_end_game_session_is_ended(game_session_factory):
 
 
 @pytest.mark.django_db
-@patch('games.models.send_email')
-def test_minimum_players_not_available_email_sent(send_email_function_mock, game_session_factory, profile_factory,
-                                                  game_session_player_sign_up_factory):
+def test_minimum_players_not_available_email_sent(game_session_factory, profile_factory,
+                                                  game_session_player_sign_up_factory, mocker):
     # given
     game = game_session_factory(dm=profile_factory())
     game_session_player_sign_up_factory.create_batch(2, game=game, player=profile_factory())
+    mocker.patch('games.models.send_email')
 
     # when
     game.checkMinimumPlayers()
 
     # then
-    # assert game.players.count() == 3
-    assert send_email_function_mock.called
+    assert games.models.send_email.call_count == 1
 
 
 @pytest.mark.django_db
-@patch('games.models.send_email')
-def test_minimum_players_number_is_there_no_email(send_email_function_mock, game_session_factory, profile_factory,
-                                                  game_session_player_sign_up_factory):
+def test_minimum_players_number_is_there_no_email(game_session_factory, profile_factory,
+                                                  game_session_player_sign_up_factory, mocker):
     # given
     game = game_session_factory(dm=profile_factory())
     game_session_player_sign_up_factory.create_batch(3, game=game, player=profile_factory())
+    mocker.patch('games.models.send_email')
 
     # when
     game.checkMinimumPlayers()
 
     # then
-    # assert game.players.count() == 3
-    assert not send_email_function_mock.called
+    assert not games.models.send_email.called
