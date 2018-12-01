@@ -60,8 +60,7 @@ export function InlineSnackbarContent(props) {
           {message}
         </span>
       }
-      action={[
-        <IconButton
+      action={onClose && [(<IconButton
           key="close"
           aria-label="Close"
           color="inherit"
@@ -69,8 +68,7 @@ export function InlineSnackbarContent(props) {
           onClick={onClose}
         >
           <CloseIcon className={classes.icon} />
-        </IconButton>,
-      ]}
+        </IconButton>)]}
       {...other}
     />
   );
