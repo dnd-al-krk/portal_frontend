@@ -47,7 +47,7 @@ const styles1 = theme => ({
 
 
 export function InlineSnackbarContent(props) {
-  const { classes, className, message, onClose, variant, ...other } = props;
+  const { classes, className, message, onClose=null, variant, ...other } = props;
   const Icon = variantIcon[variant];
 
   return (
