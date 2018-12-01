@@ -7,7 +7,7 @@
     <ul>
         <li><strong>Adventure name</strong>: {{ game.adventure }}</li>
         <li><strong>Game date</strong>: {{ game.date|date:"l, d. E Y" }}, {{ game.time_start|time:"H:i" }}</li>
-        <li><strong>Location</strong>: {{ game.table }}</li>
+        <li><strong>Table</strong>: {{ game.table }}</li>
     </ul>
 
     <p>You can see the details of game <a href="{{ game.get_absolute_url }}">on the page.</a></p>
