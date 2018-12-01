@@ -26,6 +26,7 @@ import PasswordResetConfirm from "./pages/PasswordResetConfirm";
 import SidebarNavigationList from "./common/SidebarNavigationList";
 import Grid from "@material-ui/core/Grid/Grid";
 import Hidden from "@material-ui/core/Hidden/Hidden";
+import {Terms} from "./common/Terms";
 
 
 const portalStore = new PortalStore();
@@ -69,6 +70,7 @@ class App extends Component {
                     <Route exact path="/login" component={Login}/>
                     <Route exact path="/register" component={Register}/>
                     <Route exact path="/register/activated" component={RegisterActive}/>
+                    <Route exact path="/terms" component={Terms}/>
                   </Grid>
                 </Grid>
               </PushedDiv>

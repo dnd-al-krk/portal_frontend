@@ -25,6 +25,9 @@ const styles = (theme) => ({
   community: {
     padding: 20,
   },
+  root: {
+    padding: theme.spacing.unit,
+  },
 });
 
 
@@ -46,7 +49,7 @@ class Home extends React.Component {
                 )}
             </Fragment>
           ) : (
-            <Fragment>
+            <div className={classes.root}>
                 <Typography variant="h5">
                   Adventure Awaits!
                 </Typography>
@@ -55,7 +58,7 @@ class Home extends React.Component {
                   Here you can sign up for the games run by our finest Dungeon Masters.<br/>
                   Or maybe you would like to become DM? Sure thing!
                 </Typography>
-            </Fragment>
+            </div>
           )}
           </Grid>
           <Grid item xs={12} md={4} lg={3}>
@@ -80,12 +83,12 @@ class Home extends React.Component {
                   </ListItemText>
                 </ListItem>
 
-                <UndecoratedLink to="/">
+                <UndecoratedLink to="/terms">
                   <ListItem button>
                     <ListItemIcon className={classes.communityIcon}>
                       <FontAwesomeIcon icon={["far","file"]} />
                     </ListItemIcon>
-                    <ListItemText primary="Terms & Conditions">
+                    <ListItemText primary="Terms &amp; Conditions">
                     </ListItemText>
                   </ListItem>
                 </UndecoratedLink>
