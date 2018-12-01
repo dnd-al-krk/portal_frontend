@@ -16,6 +16,10 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {NarrowContent} from "./Content";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import Link from "react-router-dom/es/Link";
+import {SnackbarContentWrapper} from "./InfoSnackbar";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import UndecoratedLink from "./UndecoratedLink";
 
 const styles = (theme) => ({
   textField: {
@@ -34,8 +38,28 @@ const styles = (theme) => ({
   inputMargin: {
     margin: `0`,
   },
+  whiteUrl: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textDecoration: 'none',
+  }
 });
 
+
+@withStyles(styles, {withTheme:true})
+export class RegisterActive extends React.Component {
+  render() {
+    const {classes} = this.props;
+    return (
+      <div>
+        <SnackbarContentWrapper
+          variant="success"
+          className={classes.margin}
+          message={(<div>Your account has been activated. <Link to="/login" className={classes.whiteUrl}>You can now login</Link></div>)}/>
+      </div>
+    )
+  }
+}
 
 @withStyles(styles, { withTheme: true })
 @inject('portalStore') @observer
@@ -51,11 +75,13 @@ export default class Register extends React.Component {
     last_name: '',
     nickname: '',
     dci: '',
+    terms: null,
     emailErrors: null,
     passwordErrors: null,
     first_nameErrors: null,
     last_nameErrors: null,
     nicknameErrors: null,
+    termsErrors: false,
     dciErrors: null,
     signupText: 'Sign up',
     showPassword: false,
@@ -66,6 +92,10 @@ export default class Register extends React.Component {
     if(this.state.password === this.state.passwordConfirm) {
       if(this.state.password.length < 8){
         this.setState({passwordErrors: 'The password should have at least 8 characters.'});
+        return;
+      }
+      if(!this.state.terms){
+        this.setState({termsErrors: true});
         return;
       }
       this.setState({
@@ -119,6 +149,10 @@ export default class Register extends React.Component {
 
   handleChange = prop => event => {
     this.setState({ [prop]: event.target.value });
+  };
+
+  handleCheckChange = prop => event => {
+    this.setState({ [prop]: event.target.checked, [prop+"Errors"]: false});
   };
 
   handleMouseDownPassword = event => {
@@ -260,6 +294,20 @@ export default class Register extends React.Component {
                     onChange={this.handleChange('dci')}
                   />
                 </FormControl>
+              </Grid>
+
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={this.state.terms}
+                      onChange={this.handleCheckChange('terms')}
+                      aria-describedby="terms-error-text"
+                    />
+                  }
+                  label={(<div>I agree with <Link to='/terms'>Terms of use</Link></div>)}
+                />
+                {this.state.termsErrors && (<FormHelperText id="terms-error-text">You cannot register until you agree to our terms.</FormHelperText>)}
               </Grid>
               <Grid item xs={12} className={classes.submitRow}>
                 <Button variant="contained"

@@ -53,7 +53,7 @@ const styles = (theme) => ({
   rightNav: {
     position: 'absolute',
     right: '15px',
-  }
+  },
 });
 
 
@@ -136,10 +136,10 @@ class TopAppBar extends React.Component {
 
             {!this.isAuthenticated() && (
               <div className={classes.rightNav}>
-                <Button color="inherit" onClick={this.gotoRegister}>Register</Button>
-                <Button color="inherit" onClick={this.gotoLogin}>Login</Button>
-                {/* TODO: Add once signup form is ready*/}
-                {/*<Button color="inherit">Sign up</Button>*/}
+                <Hidden xsDown>
+                  <Button color="inherit" onClick={this.gotoRegister}>Register</Button>
+                  <Button color="inherit" onClick={this.gotoLogin}>Login</Button>
+                </Hidden>
               </div>
             )}
 

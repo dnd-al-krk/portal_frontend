@@ -66,6 +66,26 @@ export default class SidebarNavigationList extends React.Component{
               </ListItemText>
             </ListItem>
           </UndecoratedLink>
+          {!this.isAuth() && (
+            <Hidden smUp>
+              <UndecoratedLink to="/register">
+                <ListItem button>
+                  <ListItemIcon>
+                    <FontAwesomeIcon icon="user-circle" />
+                  </ListItemIcon>
+                  <ListItemText primary="Register"/>
+                </ListItem>
+              </UndecoratedLink>
+              <UndecoratedLink to="/login">
+                <ListItem button>
+                  <ListItemIcon>
+                    <FontAwesomeIcon icon="user-circle" />
+                  </ListItemIcon>
+                  <ListItemText primary="Login"/>
+                </ListItem>
+              </UndecoratedLink>
+            </Hidden>
+          )}
           <Divider />
           {this.isAuth() && (
             <Fragment>
