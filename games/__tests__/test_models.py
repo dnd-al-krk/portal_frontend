@@ -1,26 +1,36 @@
+from unittest.mock import patch
+
+import pytest
 from django.utils import timezone
 
+import games
+from profiles.__tests__.factories import ProfileFactory
 from ..constants import ADVENTURE_TYPE_OTHER
-from .factories import AdventureFactory, GameSessionFactory
+from .factories import AdventureFactory, GameSessionFactory, GameSessionPlayerSignUpFactory
 
 from pytest_factoryboy import register
 
 register(AdventureFactory)
 register(GameSessionFactory)
+register(GameSessionPlayerSignUpFactory)
+register(ProfileFactory)
 
 
+@pytest.mark.django_db
 def test_factory_fixture(adventure_factory):
     adventure = adventure_factory(type=ADVENTURE_TYPE_OTHER)
 
     assert adventure.type == ADVENTURE_TYPE_OTHER
 
 
+@pytest.mark.django_db
 def test_other_adventure_display_only_name(adventure_factory):
     adventure = adventure_factory(type=ADVENTURE_TYPE_OTHER)
 
     assert str(adventure) == 'Super Adventure'
 
 
+@pytest.mark.django_db
 def test_future_game_session_not_ended(game_session_factory):
     # given
     game = game_session_factory(date=timezone.now().date() + timezone.timedelta(days=2))
@@ -29,6 +39,7 @@ def test_future_game_session_not_ended(game_session_factory):
     assert not game.ended
 
 
+@pytest.mark.django_db
 def test_past_game_session_ended(game_session_factory):
     # given
     game = game_session_factory(date=timezone.now().date() - timezone.timedelta(days=2))
@@ -37,6 +48,7 @@ def test_past_game_session_ended(game_session_factory):
     assert game.ended
 
 
+@pytest.mark.django_db
 def test_today_after_time_end_game_session_is_ended(game_session_factory):
     # given
     game = game_session_factory(date=timezone.now().date(),
@@ -44,3 +56,33 @@ def test_today_after_time_end_game_session_is_ended(game_session_factory):
 
     # then
     assert game.ended
+
+
+@pytest.mark.django_db
+def test_minimum_players_not_available_email_sent(game_session_factory, profile_factory,
+                                                  game_session_player_sign_up_factory, mocker):
+    # given
+    game = game_session_factory(dm=profile_factory())
+    game_session_player_sign_up_factory.create_batch(2, game=game, player=profile_factory())
+    mocker.patch('games.models.send_email')
+
+    # when
+    game.checkMinimumPlayers()
+
+    # then
+    assert games.models.send_email.call_count == 1
+
+
+@pytest.mark.django_db
+def test_minimum_players_number_is_there_no_email(game_session_factory, profile_factory,
+                                                  game_session_player_sign_up_factory, mocker):
+    # given
+    game = game_session_factory(dm=profile_factory())
+    game_session_player_sign_up_factory.create_batch(3, game=game, player=profile_factory())
+    mocker.patch('games.models.send_email')
+
+    # when
+    game.checkMinimumPlayers()
+
+    # then
+    assert not games.models.send_email.called
