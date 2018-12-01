@@ -36,7 +36,7 @@ class Home extends React.Component {
 
     return (
       <div className={classes.container}>
-        <Grid container spacing={16}>
+        <Grid container>
           <Grid item xs={12} md={8} lg={9}>
           {this.props.portalStore.currentUser ? (
             <Fragment>

@@ -16,6 +16,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {NarrowContent} from "./Content";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import Link from "react-router-dom/es/Link";
+import {SnackbarContentWrapper} from "./InfoSnackbar";
 
 const styles = (theme) => ({
   textField: {
@@ -34,7 +35,29 @@ const styles = (theme) => ({
   inputMargin: {
     margin: `0`,
   },
+  whiteUrl: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textDecoration: 'none',
+  }
 });
+
+
+@withStyles(styles, {withTheme:true})
+@inject('portalStore') @observer
+export class RegisterActive extends React.Component {
+  render() {
+    const {classes} = this.props;
+    return (
+      <div>
+        <SnackbarContentWrapper
+          variant="success"
+          className={classes.margin}
+          message={(<div>Your account has been activated. <Link to="/login" className={classes.whiteUrl}>You can now login</Link></div>)}/>
+      </div>
+    )
+  }
+}
 
 
 @withStyles(styles, { withTheme: true })

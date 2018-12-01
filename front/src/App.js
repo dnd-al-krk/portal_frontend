@@ -17,7 +17,7 @@ import Profiles from "./pages/Profiles";
 import Profile from "./pages/Profile";
 import CharacterCreate from "./pages/CharacterCreate";
 import CharacterEdit from "./pages/CharacterEdit";
-import Register from "./common/Register";
+import Register, {RegisterActive} from "./common/Register";
 import GameBooking from "./pages/GameBooking";
 import GameDetail from "./pages/GameDetail";
 import {FutureGamesList, GamesList, PastGamesList} from "./pages/GamesList";
@@ -46,7 +46,7 @@ class App extends Component {
             <div>
               <TopAppBar/>
               <PushedDiv>
-                <Grid container spacing={8}>
+                <Grid container>
                   <Hidden smDown>
                     <Grid item md={3} lg={2}>
                       <SidebarNavigationList/>
@@ -68,6 +68,7 @@ class App extends Component {
                     <RouteRequiresLogin path="/account" component={Account}/>
                     <Route exact path="/login" component={Login}/>
                     <Route exact path="/register" component={Register}/>
+                    <Route exact path="/register/activated" component={RegisterActive}/>
                   </Grid>
                 </Grid>
               </PushedDiv>
