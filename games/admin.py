@@ -16,7 +16,7 @@ class AdventureAdmin(admin.ModelAdmin):
 
 @admin.register(GameSession)
 class GameSessionAdmin(admin.ModelAdmin):
-    list_display = ['date', 'table', 'adventure', 'time_start', 'spots', 'max_spots', 'dm', 'active']
+    list_display = ['date', 'table', 'adventure', 'time_start', 'spots', 'max_spots', 'dm', 'active', 'reported']
     list_filter = ['date', 'adventure__season', 'adventure__type', 'adventure__number',
                    'spots', 'table__max_spots']
     search_fields = [

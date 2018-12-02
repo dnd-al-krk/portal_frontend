@@ -28,12 +28,20 @@ export default class GamesStore {
     return this.root.get(`/games/future/?dm__id=${id}`).then(response => response.data);
   }
 
+  fetchNotReportedForDM(id){
+    return this.root.get(`/games/past/?dm__id=${id}&reported=false`).then(response => response.data);
+  }
+
   fetchFutureForCurrentUser(){
     return this.fetchFutureForUser(this.root.currentUser.profileID);
   }
 
   fetchFutureForCurrentDM(){
     return this.fetchFutureForDM(this.root.currentUser.profileID);
+  }
+
+  fetchNotReportedForCurrentDM(){
+    return this.fetchNotReportedForDM(this.root.currentUser.profileID);
   }
 
   get(id){
