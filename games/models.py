@@ -104,7 +104,9 @@ class GameSession(UUIDModel):
     time_start = models.TimeField(_('Starting time'), blank=True, null=True)
     time_end = models.TimeField(_('Ending time'), blank=True, null=True)
     active = models.BooleanField(_('Active'), default=False)
-    #
+    reported = models.BooleanField(_('Reported'), default=False)
+    extra_players = models.CharField(_('Additional players'), max_length=255, blank=True, null=True)
+
     objects = models.Manager.from_queryset(GameSessionQuerySet)()
     games = GameSessionActiveGamesManager.from_queryset(GameSessionQuerySet)()
 
