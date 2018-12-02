@@ -174,9 +174,15 @@ class GameSession(UUIDModel):
             bcc=[player.user.email for player in self.players.all()]
         )
 
+    def report(self, save=True):
+        self.reported = True
+        if save:
+            self.save(update_fields=['reported'])
+
 
 class GameSessionPlayerSignUp(models.Model):
     game = models.ForeignKey(GameSession, on_delete=models.CASCADE)
     player = models.ForeignKey('profiles.Profile', on_delete=models.CASCADE)
     created = models.DateTimeField(_('Created'), auto_now_add=True)
     character = models.ForeignKey('profiles.PlayerCharacter', null=True, blank=True, on_delete=models.SET_NULL)
+    reported = models.NullBooleanField(_('Reported'), default=None)

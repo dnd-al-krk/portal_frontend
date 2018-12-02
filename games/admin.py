@@ -41,6 +41,6 @@ class GameSessionAdmin(admin.ModelAdmin):
 
 @admin.register(GameSessionPlayerSignUp)
 class GameSessionPlayerSignUpAdmin(admin.ModelAdmin):
-    list_display = ['created', 'game', 'player', 'character']
+    list_display = ['created', 'game', 'player', 'character', 'reported']
     list_filter = ['game__date', 'game__adventure__season', 'game__adventure__type', 'game__adventure__number',
                    'game__spots']
