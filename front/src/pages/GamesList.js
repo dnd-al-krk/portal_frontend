@@ -297,7 +297,7 @@ export class DMNotReportedGamesList extends React.Component {
             <Games list={this.state.games} />
           ) : (
             <Typography variant='body1' className={classes.infoParagraph}>
-              All good. Nothing to report left for now.
+              All good. Nothing left to report for now.
             </Typography>
           )}
 
