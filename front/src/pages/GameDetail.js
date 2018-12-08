@@ -20,6 +20,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import Menu from "@material-ui/core/Menu/Menu";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import {Link} from "react-router-dom";
+import ReportDialog from "../common/ReportDialog";
 
 const styles = theme => ({
   root: {
@@ -68,6 +69,7 @@ class GameDetail extends Component {
     characters: null,
     anchorEl: null,
     loading: true,
+    reportDialogOpen: false,
   };
 
   componentDidMount(){
@@ -184,6 +186,14 @@ class GameDetail extends Component {
     });
   };
 
+  reportGame = () => {
+    this.setState({reportDialogOpen: true});
+  };
+
+  handleCloseReport = () => {
+    this.setState({reportDialogOpen: false});
+  };
+
   render() {
     const {classes} = this.props;
     const { anchorEl } = this.state;
@@ -238,21 +248,30 @@ class GameDetail extends Component {
             <Typography variant="body1" className={classes.notes}>
               {game.notes}
             </Typography>
-            {game.dm && game.dm.id === this.props.portalStore.currentUser.profileID && (
+            {game.dm && game.dm.id === this.props.portalStore.currentUser.profileID &&  (
               <Fragment>
                 <Typography variant="h6" className={classes.header}>
                   Dungeon Master Options
                 </Typography>
-                <Button
-                  color='primary'
-                  variant='contained'
-                  className={classes.gameButton}
-                  onClick={(e) => this.gotoGameBooking(e, game.id)}>Edit game details</Button>
-                <Button
-                  color='secondary'
-                  variant='outlined'
-                  className={classes.gameButton}
-                  onClick={() => this.cancel(game.id)}>Cancel your booking on this game session</Button>
+                {!this.state.game.ended ? (
+                  <Fragment>
+                    <Button
+                      color='primary'
+                      variant='contained'
+                      className={classes.gameButton}
+                      onClick={(e) => this.gotoGameBooking(e, game.id)}>Edit game details</Button>
+                    <Button
+                      color='secondary'
+                      variant='outlined'
+                      className={classes.gameButton}
+                      onClick={() => this.cancel(game.id)}>Cancel your booking on this game session</Button>
+                  </Fragment>
+                ) : (
+                <Button color='primary'
+                        variant='contained'
+                        className={classes.gameButton}
+                        onClick={(e) => this.reportGame()}>Confirm game report</Button>
+                )}
               </Fragment>
             )}
           </Grid>
@@ -294,6 +313,8 @@ class GameDetail extends Component {
 
           </Grid>
         </Grid>
+
+        <ReportDialog game={game.id} open={this.state.reportDialogOpen} players={game.players} onClose={this.handleCloseReport}/>
       </div>
     );
   }
