@@ -105,6 +105,7 @@ class GameSession(UUIDModel):
     time_end = models.TimeField(_('Ending time'), blank=True, null=True)
     active = models.BooleanField(_('Active'), default=False)
     reported = models.BooleanField(_('Reported'), default=False)
+    report_time = models.DateTimeField(_('Reporting time'), blank=True, null=True)
     extra_players = models.CharField(_('Additional players'), max_length=255, blank=True, null=True)
 
     objects = models.Manager.from_queryset(GameSessionQuerySet)()
@@ -176,8 +177,9 @@ class GameSession(UUIDModel):
 
     def report(self, save=True):
         self.reported = True
+        self.report_time = timezone.now()
         if save:
-            self.save(update_fields=['reported'])
+            self.save(update_fields=['reported', 'report_time'])
 
 
 class GameSessionPlayerSignUp(models.Model):
