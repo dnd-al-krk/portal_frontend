@@ -26,7 +26,6 @@ class ReportDialog extends Component {
   state = {
     players: [],
     selectAll: false,
-    openSnackbar: false,
   };
 
   componentWillMount(){
@@ -52,13 +51,13 @@ class ReportDialog extends Component {
     return names+nickname
   };
 
-  handleClose = () => {
+  handleClose = (success) => {
     const {onClose} = this.props;
-    onClose();
+    onClose(success);
   };
 
   handleCancel = () => {
-    this.handleClose();
+    this.handleClose(false);
   };
 
   handleConfirm = () => {
@@ -69,8 +68,7 @@ class ReportDialog extends Component {
       .map(player => player.id);
     this.props.portalStore.games.sendReport(game.id, {players: players_list})
       .then(response => {
-        this.handleClose();
-        this.setState({openSnackbar: true});
+        this.handleClose(true);
       })
       .catch(error => {
         if(error.response.status === 400){
@@ -100,7 +98,7 @@ class ReportDialog extends Component {
     return (
       <Dialog
         open={open}
-        onClose={this.handleClose}
+        onClose={(e) => this.handleClose(false)}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">Confirm game report</DialogTitle>

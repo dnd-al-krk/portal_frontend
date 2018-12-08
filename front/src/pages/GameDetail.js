@@ -200,9 +200,10 @@ class GameDetail extends Component {
     this.setState({loading: true});
   };
 
-  handleCloseReport = () => {
-    this.fetchData();
-    this.setState({reportDialogOpen: false, openSnackbar: true});
+  handleCloseReport = (success) => {
+    if(success)
+      this.fetchData();
+    this.setState({reportDialogOpen: false, openSnackbar: success});
   };
 
   handleSnackbarClose = (event, reason) => {
