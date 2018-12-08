@@ -64,6 +64,10 @@ export default class GamesStore {
     return this.root.putData('games/list', `${id}/signOut`, {})
   }
 
+  sendReport(id, data){
+    return this.root.putData('games/list', `${id}/report`, data)
+  }
+
   static getDMName(game) {
     if(!game.dm) return '';
     return `${game.dm.first_name} ${game.dm.last_name} (${game.dm.nickname})`;

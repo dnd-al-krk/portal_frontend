@@ -5,15 +5,13 @@ import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions/DialogActions";
 import Button from "@material-ui/core/Button/Button";
-import TextField from "@material-ui/core/TextField/TextField";
 import FormControl from "@material-ui/core/FormControl/FormControl";
-import FormLabel from "@material-ui/core/FormLabel/FormLabel";
 import FormGroup from "@material-ui/core/FormGroup/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import {withStyles} from "@material-ui/core";
 import Switch from "@material-ui/core/Switch/Switch";
+import {inject, observer} from "mobx-react";
 
 
 const styles = theme => ({
@@ -22,11 +20,13 @@ const styles = theme => ({
 
 
 @withStyles(styles, {withTheme: true})
+@inject('portalStore') @observer
 class ReportDialog extends Component {
 
   state = {
     players: [],
     selectAll: false,
+    openSnackbar: false,
   };
 
   componentWillMount(){
@@ -53,7 +53,7 @@ class ReportDialog extends Component {
   };
 
   handleClose = () => {
-    const {game, open, players, onClose} = this.props;
+    const {onClose} = this.props;
     onClose();
   };
 
@@ -62,7 +62,21 @@ class ReportDialog extends Component {
   };
 
   handleConfirm = () => {
-    this.handleClose();
+    const {game, onClosing} = this.props;
+    onClosing();
+    const players_list = this.state.players
+      .filter(player => player.confirmed || this.state.selectAll)
+      .map(player => player.id);
+    this.props.portalStore.games.sendReport(game.id, {players: players_list})
+      .then(response => {
+        this.handleClose();
+        this.setState({openSnackbar: true});
+      })
+      .catch(error => {
+        if(error.response.status === 400){
+          console.log('Wrong data passed to errors');
+        }
+      });
   };
 
   confirmPlayer = id => event => {
@@ -75,7 +89,9 @@ class ReportDialog extends Component {
   };
 
   confirmAllPlayers = () => {
-    this.setState({selectAll: !this.state.selectAll});
+    const players = this.state.players;
+    players.map(player => player.confirmed = !this.state.selectAll);
+    this.setState({selectAll: !this.state.selectAll, players: players});
   };
 
   render() {
