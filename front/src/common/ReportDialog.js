@@ -12,10 +12,17 @@ import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import {withStyles} from "@material-ui/core";
 import Switch from "@material-ui/core/Switch/Switch";
 import {inject, observer} from "mobx-react";
+import TextField from "@material-ui/core/TextField/TextField";
+import Grid from "@material-ui/core/Grid/Grid";
 
 
 const styles = theme => ({
-
+  textField: {
+    width: '100%',
+  },
+  formControl: {
+    width: '100%',
+  }
 });
 
 
@@ -25,6 +32,7 @@ class ReportDialog extends Component {
 
   state = {
     players: [],
+    extraPlayers: null,
     selectAll: false,
   };
 
@@ -66,7 +74,7 @@ class ReportDialog extends Component {
     const players_list = this.state.players
       .filter(player => player.confirmed || this.state.selectAll)
       .map(player => player.id);
-    this.props.portalStore.games.sendReport(game.id, {players: players_list})
+    this.props.portalStore.games.sendReport(game.id, {players: players_list, extra_players: this.state.extraPlayers})
       .then(response => {
         this.handleClose(true);
       })
@@ -130,6 +138,15 @@ class ReportDialog extends Component {
                   label={player.name+" DCI: "+player.dci}
                 />
               ))}
+              <TextField
+                  id="name"
+                  label="Additional players"
+                  className={classes.textField}
+                  value={this.state.extraPlayers}
+                  helperText="If you had any extra players at the table, enter only their DCIs comma-separated"
+                  onChange={(event) => this.setState({extraPlayers: event.target.value})}
+                  margin="normal"
+                />
             </FormGroup>
           </FormControl>
           <DialogContentText>

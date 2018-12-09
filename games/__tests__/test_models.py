@@ -86,3 +86,19 @@ def test_minimum_players_number_is_there_no_email(game_session_factory, profile_
 
     # then
     assert not games.models.send_email.called
+
+
+@pytest.mark.django_db
+def test_reporting_game_session(game_session_factory):
+    # given
+    game = game_session_factory()
+    extra_players = '123,456,789'
+
+    # when
+    game.report(extra_players)
+
+    # then
+    game.refresh_from_db()
+    assert game.extra_players == extra_players
+    assert game.reported
+    assert game.report_time is not None
