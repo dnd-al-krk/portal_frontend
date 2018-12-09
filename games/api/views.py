@@ -94,9 +94,10 @@ class GameSessionViewSet(mixins.ListModelMixin,
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         players = data.get('players')
+        extra_players = data.get('extra_players', None)
         GameSessionPlayerSignUp.objects.filter(game=instance).update(reported=False)
         GameSessionPlayerSignUp.objects.filter(player_id__in=players, game=instance).update(reported=True)
-        instance.report()
+        instance.report(extra_players)
 
         return Response(status=status.HTTP_200_OK)
 

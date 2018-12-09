@@ -175,11 +175,12 @@ class GameSession(UUIDModel):
             bcc=[player.user.email for player in self.players.all()]
         )
 
-    def report(self, save=True):
+    def report(self, extra_players=None, save=True):
         self.reported = True
+        self.extra_players = extra_players
         self.report_time = timezone.now()
         if save:
-            self.save(update_fields=['reported', 'report_time'])
+            self.save(update_fields=['reported', 'report_time', 'extra_players'])
 
 
 class GameSessionPlayerSignUp(models.Model):
