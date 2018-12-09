@@ -10,8 +10,7 @@
         DM: {{ game.dm }}<br/>
         Players:
         {% for player in game.players %}
-            {{ player }}{% if not forloop.last %},{% endif %}
-        {% endfor %}{% if game.extra_players %}, {{ game.extra_players }}{% endif %}
+            {{ player }}{% if not forloop.last %},{% endif %}{% endfor %}{% if game.extra_players %}, {{ game.extra_players }}{% endif %}
     </p>
     {% endfor %}
 
