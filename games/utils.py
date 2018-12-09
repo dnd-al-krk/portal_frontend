@@ -16,9 +16,10 @@ def send_report(queryset: GameSessionQuerySet):
         game = {
             'date': session.date,
             'players': list(session.gamesessionplayersignup_set.filter(reported=True).values_list('player__dci', flat=True)),
-            'dm': session.dm.dci,
-            'extra_players': session.extra_players
+            'dm': str(session.dm.dci),
+            'extra_players': session.extra_players if session.extra_players else ''
         }
+        print(game)
         games.append(game)
 
     send_email(
@@ -29,3 +30,5 @@ def send_report(queryset: GameSessionQuerySet):
         },
         to=receivers,
     )
+
+    return for_update.count()
