@@ -36,7 +36,7 @@ class Profile(models.Model):
 
     def send_verification_email(self):
         send_email(
-            'Activate your portAL account.',
+            'Activate your portAL account',
             'emails/account_activate_email.html',
             {
                 'user': self.user,
