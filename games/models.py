@@ -178,7 +178,7 @@ class GameSession(UUIDModel):
             bcc=[player.user.email for player in self.players.all()]
         )
 
-    def report(self, extra_players: str=None, save: bool=True):
+    def report(self, extra_players=None, save=True):
         self.reported = True
         self.extra_players = extra_players
         self.report_time = timezone.now()

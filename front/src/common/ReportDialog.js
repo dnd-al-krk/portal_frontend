@@ -78,7 +78,7 @@ class ReportDialog extends Component {
     this.props.portalStore.games.sendReport(
       game.id,
       {players: players_list,
-        extra_players: this.state.extraPlayers ? this.state.extraPlayers !== '' : null
+        extra_players: this.state.extraPlayers !== '' ? this.state.extraPlayers : null
       })
       .then(response => {
         this.handleClose(true);

@@ -25,7 +25,7 @@ class GameSessionAdmin(admin.ModelAdmin):
         'adventure__title', 'table__name',
         'dm__nickname', 'dm__user__first_name', 'dm__user__last_name',
     ]
-    actions = ['activate_sessions', 'deactivate_sessions']
+    actions = ['activate_sessions', 'deactivate_sessions', 'generate_report']
 
     def max_spots(self, session):
         return session.table.max_spots
@@ -42,7 +42,7 @@ class GameSessionAdmin(admin.ModelAdmin):
 
     def generate_report(self, request, queryset):
         updated = send_report(queryset)
-        self.message_user(request, "%s placed in the report sent to managers' emails" % updated)
+        self.message_user(request, "%s game sent in the report to managers' emails" % updated)
     generate_report.short_description = 'Create and send report for the games'
 
 
