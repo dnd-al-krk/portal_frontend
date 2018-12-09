@@ -98,7 +98,7 @@ export class GameInfo extends React.Component {
                   <Chip avatar={<Avatar><PersonIcon/></Avatar>} label={GamesStore.getDMName(game)}
                         onClick={(e) => this.gotoDM(e, game.dm.id)} className={classes.chip}/>
                 ):(
-                  <Chip avatar={<Avatar className={classes.currentDM}><PersonIcon/></Avatar>} label={'You run this game'}
+                  <Chip avatar={<Avatar className={classes.currentDM}><PersonIcon/></Avatar>} label={'Your game'}
                         onClick={(e) => this.gotoDM(e, game.dm.id)}
                         className={classNames(classes.chip, classes.currentDM)}/>
                 )}

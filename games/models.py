@@ -104,7 +104,10 @@ class GameSession(UUIDModel):
     time_start = models.TimeField(_('Starting time'), blank=True, null=True)
     time_end = models.TimeField(_('Ending time'), blank=True, null=True)
     active = models.BooleanField(_('Active'), default=False)
-    #
+    reported = models.BooleanField(_('Reported'), default=False)
+    report_time = models.DateTimeField(_('Reporting time'), blank=True, null=True)
+    extra_players = models.CharField(_('Additional players'), max_length=255, blank=True, null=True)
+
     objects = models.Manager.from_queryset(GameSessionQuerySet)()
     games = GameSessionActiveGamesManager.from_queryset(GameSessionQuerySet)()
 
@@ -172,9 +175,16 @@ class GameSession(UUIDModel):
             bcc=[player.user.email for player in self.players.all()]
         )
 
+    def report(self, save=True):
+        self.reported = True
+        self.report_time = timezone.now()
+        if save:
+            self.save(update_fields=['reported', 'report_time'])
+
 
 class GameSessionPlayerSignUp(models.Model):
     game = models.ForeignKey(GameSession, on_delete=models.CASCADE)
     player = models.ForeignKey('profiles.Profile', on_delete=models.CASCADE)
     created = models.DateTimeField(_('Created'), auto_now_add=True)
     character = models.ForeignKey('profiles.PlayerCharacter', null=True, blank=True, on_delete=models.SET_NULL)
+    reported = models.NullBooleanField(_('Reported'), default=None)

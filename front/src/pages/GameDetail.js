@@ -20,6 +20,9 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import Menu from "@material-ui/core/Menu/Menu";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import {Link} from "react-router-dom";
+import ReportDialog from "../common/ReportDialog";
+import CloseIcon from '@material-ui/icons/Close';
+import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 
 const styles = theme => ({
   root: {
@@ -56,6 +59,9 @@ const styles = theme => ({
   },
   userInfo: {
     minHeight: 70
+  },
+  close: {
+    color: '#fff',
   }
 });
 
@@ -68,6 +74,8 @@ class GameDetail extends Component {
     characters: null,
     anchorEl: null,
     loading: true,
+    reportDialogOpen: false,
+    openSnackbar: false,
   };
 
   componentDidMount(){
@@ -184,6 +192,28 @@ class GameDetail extends Component {
     });
   };
 
+  reportGame = () => {
+    this.setState({reportDialogOpen: true});
+  };
+
+  handleCloseReportStarted = () => {
+    this.setState({loading: true});
+  };
+
+  handleCloseReport = (success) => {
+    if(success)
+      this.fetchData();
+    this.setState({reportDialogOpen: false, openSnackbar: success});
+  };
+
+  handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({ openSnackbar: false });
+  };
+
   render() {
     const {classes} = this.props;
     const { anchorEl } = this.state;
@@ -238,21 +268,36 @@ class GameDetail extends Component {
             <Typography variant="body1" className={classes.notes}>
               {game.notes}
             </Typography>
-            {game.dm && game.dm.id === this.props.portalStore.currentUser.profileID && (
+            {game.dm && game.dm.id === this.props.portalStore.currentUser.profileID &&
+            (!this.state.game.ended || !this.state.game.reported) &&
+            (
               <Fragment>
                 <Typography variant="h6" className={classes.header}>
                   Dungeon Master Options
                 </Typography>
-                <Button
-                  color='primary'
-                  variant='contained'
-                  className={classes.gameButton}
-                  onClick={(e) => this.gotoGameBooking(e, game.id)}>Edit game details</Button>
-                <Button
-                  color='secondary'
-                  variant='outlined'
-                  className={classes.gameButton}
-                  onClick={() => this.cancel(game.id)}>Cancel your booking on this game session</Button>
+                {!this.state.game.ended ? (
+                  <Fragment>
+                    <Button
+                      color='primary'
+                      variant='contained'
+                      className={classes.gameButton}
+                      onClick={(e) => this.gotoGameBooking(e, game.id)}>Edit game details</Button>
+                    <Button
+                      color='secondary'
+                      variant='outlined'
+                      className={classes.gameButton}
+                      onClick={() => this.cancel(game.id)}>Cancel your booking on this game session</Button>
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    {!this.state.game.reported && (
+                      <Button color='primary'
+                        variant='contained'
+                        className={classes.gameButton}
+                        onClick={(e) => this.reportGame()}>Confirm game report</Button>
+                    )}
+                  </Fragment>
+                )}
               </Fragment>
             )}
           </Grid>
@@ -294,6 +339,34 @@ class GameDetail extends Component {
 
           </Grid>
         </Grid>
+
+        <ReportDialog game={game} open={this.state.reportDialogOpen} players={game.players}
+                      onClosing={this.handleCloseReportStarted} onClose={this.handleCloseReport}/>
+
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          open={this.state.openSnackbar}
+          autoHideDuration={6000}
+          onClose={this.handleSnackbarClose}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">Report sent</span>}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="primary"
+              className={classes.close}
+              onClick={this.handleSnackbarClose}
+            >
+              <CloseIcon/>
+            </IconButton>,
+          ]}
+        />
       </div>
     );
   }

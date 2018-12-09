@@ -1,15 +1,14 @@
+from django_filters import rest_framework as filters
 from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
-from rest_framework.exceptions import APIException
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import IsAuthenticated
-from django_filters import rest_framework as filters
 from rest_framework.response import Response
 
 from profiles.models import PlayerCharacter
-from ..models import Adventure, GameSession, GameSessionPlayerSignUp
 from .filters import AdventureFilter, GameSessionFilter
 from .serializers import AdventureSerializer, GameSessionSerializer, GameSessionBookSerializer
+from ..models import Adventure, GameSession, GameSessionPlayerSignUp
 
 
 class AdventuresViewSet(mixins.ListModelMixin,
@@ -85,6 +84,21 @@ class GameSessionViewSet(mixins.ListModelMixin,
             return Response()
         except GameSessionPlayerSignUp.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=['PUT'], detail=True)
+    def report(self, request, *args, **kwargs):
+        data = request.data
+        instance = self.get_object()
+        dm = request.user.profile
+        if dm != instance.dm:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        players = data.get('players')
+        GameSessionPlayerSignUp.objects.filter(game=instance).update(reported=False)
+        GameSessionPlayerSignUp.objects.filter(player_id__in=players, game=instance).update(reported=True)
+        instance.report()
+
+        return Response(status=status.HTTP_200_OK)
 
 
 class FutureGameSessionViewSet(GameSessionViewSet):

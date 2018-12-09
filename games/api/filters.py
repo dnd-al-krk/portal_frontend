@@ -18,5 +18,5 @@ class GameSessionFilter(filters.FilterSet):
         model = GameSession
         fields = (
             'dm__id', 'date', 'adventure__id',
-            'spots', 'adventure__number', 'adventure__season',
+            'spots', 'adventure__number', 'adventure__season', 'reported',
         )
