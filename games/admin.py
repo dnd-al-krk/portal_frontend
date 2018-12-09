@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from games.utils import send_report
 from .models import Table, Adventure, GameSession, GameSessionPlayerSignUp
 
 
@@ -38,6 +39,11 @@ class GameSessionAdmin(admin.ModelAdmin):
         updated = queryset.update(active=False)
         self.message_user(request, "%s successfully marked as not active." % updated)
     deactivate_sessions.short_description = 'Mark game sessions as not active'
+
+    def generate_report(self, request, queryset):
+        updated = send_report(queryset)
+        self.message_user(request, "%s placed in the report sent to managers' emails" % updated)
+    generate_report.short_description = 'Create and send report for the games'
 
 
 @admin.register(GameSessionPlayerSignUp)

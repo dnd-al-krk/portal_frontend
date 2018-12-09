@@ -79,6 +79,9 @@ class GameSessionQuerySet(models.QuerySet):
     def past(self):
         return self.filter(date__lt=timezone.now())
 
+    def reported(self):
+        return self.filter(reported=True)
+
 
 class GameSessionActiveGamesManager(models.Manager):
     def get_queryset(self, *args, **kwargs):
@@ -175,7 +178,7 @@ class GameSession(UUIDModel):
             bcc=[player.user.email for player in self.players.all()]
         )
 
-    def report(self, extra_players=None, save=True):
+    def report(self, extra_players: str=None, save: bool=True):
         self.reported = True
         self.extra_players = extra_players
         self.report_time = timezone.now()
