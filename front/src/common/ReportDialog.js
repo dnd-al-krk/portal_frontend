@@ -101,24 +101,13 @@ class ReportDialog extends Component {
         onClose={(e) => this.handleClose(false)}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Confirm game report</DialogTitle>
+        <DialogTitle id="form-dialog-title">DM game report</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Confirm all players that were playing at your table.
+            Confirm the players that attended the game at your table.
           </DialogContentText>
 
           <FormControl component="fieldset" className={classes.formControl}>
-            <FormGroup>
-              {this.state.players.map(player => (
-                <FormControlLabel
-                  key={`player-checkbox-${player.id}`}
-                  control={
-                    <Checkbox checked={player.confirmed || this.state.selectAll} onChange={this.confirmPlayer(player.id)} />
-                  }
-                  label={player.name+" DCI: "+player.dci}
-                />
-              ))}
-            </FormGroup>
             <FormGroup>
               <FormControlLabel
                 control={
@@ -131,7 +120,21 @@ class ReportDialog extends Component {
                 label="Select all players in the list"
               />
             </FormGroup>
+            <FormGroup>
+              {this.state.players.map(player => (
+                <FormControlLabel
+                  key={`player-checkbox-${player.id}`}
+                  control={
+                    <Checkbox checked={player.confirmed || this.state.selectAll} onChange={this.confirmPlayer(player.id)} />
+                  }
+                  label={player.name+" DCI: "+player.dci}
+                />
+              ))}
+            </FormGroup>
           </FormControl>
+          <DialogContentText>
+            Make sure all report data is correct before confirming. You won't be able to change it.
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleCancel} color="primary">
