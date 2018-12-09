@@ -13,15 +13,16 @@ import {withStyles} from "@material-ui/core";
 import Switch from "@material-ui/core/Switch/Switch";
 import {inject, observer} from "mobx-react";
 import TextField from "@material-ui/core/TextField/TextField";
-import Grid from "@material-ui/core/Grid/Grid";
+import Divider from "@material-ui/core/Divider/Divider";
 
 
 const styles = theme => ({
-  textField: {
-    width: '100%',
-  },
   formControl: {
     width: '100%',
+  },
+  divider: {
+    marginTop: 30,
+    marginBottom: 10,
   }
 });
 
@@ -32,7 +33,7 @@ class ReportDialog extends Component {
 
   state = {
     players: [],
-    extraPlayers: null,
+    extraPlayers: '',
     selectAll: false,
   };
 
@@ -74,7 +75,11 @@ class ReportDialog extends Component {
     const players_list = this.state.players
       .filter(player => player.confirmed || this.state.selectAll)
       .map(player => player.id);
-    this.props.portalStore.games.sendReport(game.id, {players: players_list, extra_players: this.state.extraPlayers})
+    this.props.portalStore.games.sendReport(
+      game.id,
+      {players: players_list,
+        extra_players: this.state.extraPlayers ? this.state.extraPlayers !== '' : null
+      })
       .then(response => {
         this.handleClose(true);
       })
@@ -143,12 +148,13 @@ class ReportDialog extends Component {
                   label="Additional players"
                   className={classes.textField}
                   value={this.state.extraPlayers}
-                  helperText="If you had any extra players at the table, enter only their DCIs comma-separated"
+                  helperText="If there were extra players at the table, enter only their DCIs comma-separated"
                   onChange={(event) => this.setState({extraPlayers: event.target.value})}
                   margin="normal"
                 />
             </FormGroup>
           </FormControl>
+          <Divider className={classes.divider} />
           <DialogContentText>
             Make sure all report data is correct before confirming. You won't be able to change it.
           </DialogContentText>
