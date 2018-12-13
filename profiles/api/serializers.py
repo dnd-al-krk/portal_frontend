@@ -28,22 +28,10 @@ class CharacterFactionSerializer(serializers.ModelSerializer):
 
 
 class PublicPlayerCharacterSerializer(serializers.ModelSerializer):
-    pc_class = serializers.SerializerMethodField()
-    race = serializers.SerializerMethodField()
-    faction = serializers.SerializerMethodField()
 
     class Meta:
         model = PlayerCharacter
         fields = ('id', 'name', 'pc_class', 'race', 'level', 'faction', 'notes')
-
-    def get_pc_class(self, obj):
-        return obj.pc_class.name if obj.pc_class else ''
-
-    def get_race(self, obj):
-        return obj.race.name if obj.race else ''
-
-    def get_faction(self, obj):
-        return obj.faction.name if obj.faction else ''
 
 
 class PlayerCharacterSerializer(serializers.ModelSerializer):

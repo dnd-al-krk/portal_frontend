@@ -1,13 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-
 from django.utils.translation import ugettext_lazy as _
 
 # Define an inline admin descriptor for Employee model
 # which acts a bit like a singleton
 from .constants import ROLE_DM, ROLE_PLAYER
-from .models import Profile, CharacterFaction, CharacterRace, CharacterClass, PlayerCharacter, DMNote
+from .models import Profile, PlayerCharacter, DMNote
 
 
 class ProfileInline(admin.StackedInline):
@@ -40,11 +39,6 @@ class ProfileAdmin(admin.ModelAdmin):
         updated = queryset.update(role=ROLE_PLAYER)
         self.message_user(request, _("{} successfully changed roles to Player.").format(updated))
     make_player.short_description = _('Change role to Player')
-
-
-admin.site.register(CharacterClass)
-admin.site.register(CharacterRace)
-admin.site.register(CharacterFaction)
 
 
 @admin.register(PlayerCharacter)
