@@ -48,36 +48,6 @@ class Profile(models.Model):
         )
 
 
-class CharacterClass(UUIDModel):
-    name = models.CharField(_('Class Name'), max_length=16)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-
-
-class CharacterRace(UUIDModel):
-    name = models.CharField(_('Race Name'), max_length=16)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-
-
-class CharacterFaction(UUIDModel):
-    name = models.CharField(_('Faction Name'), max_length=16)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-
-
 class PlayerCharacter(UUIDModel):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='characters')
     name = models.CharField(_('Character name'), max_length=255)

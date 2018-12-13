@@ -23,11 +23,11 @@ export default class CharacterCreate extends React.Component {
   state = {
     name: '',
     level: 1,
-    race_pick: '',
-    class_pick: '',
-    race_pick_error: '',
-    class_pick_error: '',
-    faction_pick: '',
+    race: '',
+    class: '',
+    race_error: '',
+    class_error: '',
+    faction: '',
     buttonDisabled: false,
     buttonText: 'Add character',
     snackbarOpen: false,
@@ -40,8 +40,8 @@ export default class CharacterCreate extends React.Component {
 
   isFormValid = () => {
     const s = this.state;
-    if(s.race_pick.length < 1) { this.setState({race_pick_error: 'No race selected'}); return false; }
-    if(s.class_pick.length < 1) return false;
+    if(s.race.length < 1) { this.setState({race_error: 'No race selected'}); return false; }
+    if(s.class.length < 1) return false;
     if(s.level > 20 || s.level < 1) return false;
     return s.name.length > 0;
   };
@@ -57,9 +57,9 @@ export default class CharacterCreate extends React.Component {
       this.props.portalStore.createCharacter({
         name: s.name,
         level: s.level,
-        race: s.race_pick,
-        pc_class: s.class_pick,
-        faction: s.faction_pick,
+        race: s.race,
+        pc_class: s.class,
+        faction: s.faction,
       }).then(response => {
         this.setState({
           buttonDisabled: false,
@@ -88,10 +88,6 @@ export default class CharacterCreate extends React.Component {
   render() {
     const {classes} = this.props;
 
-    const character_races = this.props.portalStore.races;
-    const character_classes = this.props.portalStore.classes;
-    const character_factions = this.props.portalStore.factions;
-
     return (
       <NarrowContent>
         <Typography variant="h6">
@@ -104,29 +100,26 @@ export default class CharacterCreate extends React.Component {
               <InputField name={'name'} label={'Character name'}
                           value={this.state.name}
                           onChange={this.handleChange('name')}/>
-              <InputField name={'level'} label={'Character level'}
+              <InputField name={'level'} label={'Character total level'}
                           value={this.state.level}
                           type={'number'}
                           onChange={this.handleChange('level')}/>
 
-              <SelectField name={'race_pick'} label={'Character Race'}
-                           value={this.state.race_pick}
-                           onChange={this.handleChange('race_pick')}
-                           options={character_races}
-                           required={true} error={this.state.race_pick_error}
+              <InputField name={'race'} label={'Character Race'}
+                           value={this.state.race}
+                           onChange={this.handleChange('race')}
+                           required={true} error={this.state.race_error}
               />
 
-              <SelectField name={'class_pick'} label={'Character Class'}
-                           value={this.state.class_pick}
-                           onChange={this.handleChange('class_pick')}
-                           options={character_classes}
-                           required={true} error={this.state.class_pick_error}
+              <InputField name={'class'} label={'Character Class'}
+                           value={this.state.class}
+                           onChange={this.handleChange('class')}
+                           required={true} error={this.state.class_error}
               />
 
-              <SelectField name={'faction_pick'} label={'Character Faction'}
-                           value={this.state.faction_pick}
-                           onChange={this.handleChange('faction_pick')}
-                           options={character_factions}
+              <InputField name={'faction'} label={'Character Faction'}
+                           value={this.state.faction}
+                           onChange={this.handleChange('faction')}
                            blank={true}
               />
 
