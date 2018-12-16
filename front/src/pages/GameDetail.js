@@ -305,6 +305,11 @@ class GameDetail extends Component {
             <Typography variant="h6" className={classes.header}>
                 Signed up players ({this.takenSpots()}/{this.state.game.spots})
             </Typography>
+            <Typography variant='body1'>
+              As a player you can sign up here for a game if there are still spots available. If you change your mind, you
+              can always cancel your sign up by click on the <strong>X</strong> icon next to your name. When you cancel,
+              the spot will be available to other players.
+            </Typography>
             <List>
               {game.players.map(player => this.getUserListItem(player))}
             </List>
