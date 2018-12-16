@@ -30,9 +30,6 @@ export class PortalStore {
   @observable userToken = null;
   @observable authenticated = false;
   @observable navigationStore = new NavigationStore(this);
-  @observable classes = [];
-  @observable races = [];
-  @observable factions = [];
   @observable games = new GamesStore(this);
   @observable adventures = new AdventuresStore(this);
 
@@ -53,9 +50,6 @@ export class PortalStore {
         // refresh token
         this.currentUser = new UserStore(this);
         this.currentUser.fetchData()
-          .then(() => this.fetchClasses().then(data => this.classes = data))
-          .then(() => this.fetchRaces().then(data => this.races = data))
-          .then(() => this.fetchFactions().then(data => this.factions = data))
           .then(() => resolve(), () => { reject() })
           .catch((err) => { reject(err); });
       }
@@ -88,9 +82,6 @@ export class PortalStore {
           Cookies.set(JWT_TOKEN, this.userToken);
           this.currentUser = new UserStore(this);
           this.currentUser.fetchData()
-            .then(() => this.fetchClasses().then(data => this.classes = data))
-            .then(() => this.fetchRaces().then(data => this.races = data))
-            .then(() => this.fetchFactions().then(data => this.factions = data))
             .then(() => resolve(response));
         }
       });
@@ -147,21 +138,6 @@ export class PortalStore {
   @action.bound
   getProfile(id){
     return this.getData('profiles', id);
-  }
-
-  @action.bound
-  fetchClasses(){
-    return this.fetchData('classes');
-  }
-
-  @action.bound
-  fetchRaces(){
-    return this.fetchData('races');
-  }
-
-  @action.bound
-  fetchFactions(){
-    return this.fetchData('factions');
   }
 
   @action.bound

@@ -48,42 +48,12 @@ class Profile(models.Model):
         )
 
 
-class CharacterClass(UUIDModel):
-    name = models.CharField(_('Class Name'), max_length=16)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-
-
-class CharacterRace(UUIDModel):
-    name = models.CharField(_('Race Name'), max_length=16)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-
-
-class CharacterFaction(UUIDModel):
-    name = models.CharField(_('Faction Name'), max_length=16)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-
-
 class PlayerCharacter(UUIDModel):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='characters')
     name = models.CharField(_('Character name'), max_length=255)
-    pc_class = models.ForeignKey(CharacterClass, on_delete=models.CASCADE)
-    race = models.ForeignKey(CharacterRace, on_delete=models.CASCADE)
-    faction = models.ForeignKey(CharacterFaction, on_delete=models.CASCADE, blank=True, null=True)
+    pc_class = models.CharField(_('Character class'), max_length=60, db_index=True, null=True, blank=True)
+    race = models.CharField(_('Character race'), max_length=20, db_index=True, null=True, blank=True)
+    faction = models.CharField(_('Character faction'), max_length=20, db_index=True, null=True, blank=True)
     level = models.PositiveIntegerField(_('Level'), default=1)
     notes = models.TextField(_('Additional notes'), blank=True, null=True)
     created = models.DateTimeField(_('Created'), auto_now_add=True)

@@ -4,46 +4,16 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from ..models import PlayerCharacter, DMNote, Profile, CharacterClass, CharacterRace, CharacterFaction
+from ..models import PlayerCharacter, DMNote, Profile
 
 logger = logging.getLogger(__name__)
 
 
-class CharacterClassSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CharacterClass
-        fields = ('id', 'name')
-
-
-class CharacterRaceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CharacterRace
-        fields = ('id', 'name')
-
-
-class CharacterFactionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CharacterFaction
-        fields = ('id', 'name')
-
-
 class PublicPlayerCharacterSerializer(serializers.ModelSerializer):
-    pc_class = serializers.SerializerMethodField()
-    race = serializers.SerializerMethodField()
-    faction = serializers.SerializerMethodField()
 
     class Meta:
         model = PlayerCharacter
         fields = ('id', 'name', 'pc_class', 'race', 'level', 'faction', 'notes')
-
-    def get_pc_class(self, obj):
-        return obj.pc_class.name if obj.pc_class else ''
-
-    def get_race(self, obj):
-        return obj.race.name if obj.race else ''
-
-    def get_faction(self, obj):
-        return obj.faction.name if obj.faction else ''
 
 
 class PlayerCharacterSerializer(serializers.ModelSerializer):
@@ -55,22 +25,10 @@ class PlayerCharacterSerializer(serializers.ModelSerializer):
 
 
 class PlayerCharacterListSerializer(serializers.ModelSerializer):
-    pc_class = serializers.SerializerMethodField()
-    race = serializers.SerializerMethodField()
-    faction = serializers.SerializerMethodField()
     owner_name = serializers.SerializerMethodField()
 
     def get_owner_name(self, obj):
         return str(obj.owner)
-
-    def get_pc_class(self, obj):
-        return str(obj.pc_class)
-
-    def get_race(self, obj):
-        return str(obj.race)
-
-    def get_faction(self, obj):
-        return str(obj.faction) if obj.faction else None
 
     class Meta:
         model = PlayerCharacter
