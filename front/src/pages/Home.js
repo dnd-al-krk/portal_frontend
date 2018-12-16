@@ -16,7 +16,6 @@ import classNames from 'classnames';
 import allogo from '../images/DnD_ADVL.png';
 import cover from '../images/dnd_cover.jpg';
 import teamIllustration from '../images/ill1.jpg';
-import Image from 'material-ui-image'
 
 
 import {faDiscord, faFacebook} from '@fortawesome/free-brands-svg-icons'
