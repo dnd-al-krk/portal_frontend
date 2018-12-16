@@ -11,15 +11,20 @@ import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabe
 
 
 const styles = (theme) => ({
+  root: {
+    padding: '10px 24px',
+  },
   header: {
-    padding: '10px 30px',
+    marginTop: 24,
+    marginBottom: 12,
     fontSize: 24,
   },
+  info: {
+    marginBottom: 12,
+  },
   infoParagraph: {
-    padding: '10px 20px',
   },
   listFilters: {
-    padding: '10px 20px',
   },
 });
 
@@ -58,9 +63,12 @@ export class FutureGamesList extends React.Component {
         );
     else
       return (
-        <Fragment>
+        <div className={classes.root}>
           <Typography variant='h5' className={classes.header}>
             Incoming game sessions
+          </Typography>
+          <Typography variant='body1' className={classes.info}>
+            Below you can see a list of the game slots for sessions that will be played in the near future. As a player you can pick any available slot with a DM and Adventure to sign up for a game. As a DM you can pick Empty Game Slots and book your game session there.
           </Typography>
           <FormGroup row className={classes.listFilters}>
             <FormControlLabel
@@ -76,7 +84,7 @@ export class FutureGamesList extends React.Component {
             />
           </FormGroup>
           <Games list={this.state.games} displayEmpty={this.state.displayEmptyGames}/>
-        </Fragment>
+        </div>
       )
   }
 }
@@ -111,12 +119,16 @@ export class PastGamesList extends React.Component {
         );
     else
       return (
-        <Fragment>
+        <div className={classes.root}>
           <Typography variant='h5' className={classes.header}>
-            Game sessions archive
+            Games archive
+          </Typography>
+          <Typography variant='body1'>
+            All ended games are listed here. We do not list empty, unused slots. Also remember that you cannot sign out
+            of the ended game as a player or cancel booking on the slot that you already run as a Dungeon Master.
           </Typography>
           <Games list={this.state.games} />
-        </Fragment>
+        </div>
       )
   }
 }
@@ -197,10 +209,15 @@ export class CurrentUserGamesList extends React.Component {
             Your next games
           </Typography>
           {this.state.games.length ? (
-            <Games list={this.state.games} />
+            <Fragment>
+              <Typography variant='body1'>
+                Below we have listed the next game sessions your have signed up for.
+              </Typography>
+              <Games list={this.state.games} />
+            </Fragment>
           ) : (
-            <Typography className={classes.infoParagraph}>
-              You are not playing any game soon. <Link to='/games'>Check incomming games</Link> to join one.
+            <Typography className={classes.infoParagraph} variant='body1'>
+              You are not playing any game soon. <Link to='/games'>Check incomming games</Link> to join one.<br/>
             </Typography>
           )}
 
@@ -241,10 +258,15 @@ export class CurrentDMGamesList extends React.Component {
       return (
         <Fragment>
           <Typography variant='h4' component="h1" className={classes.header}>
-            The next games you run as a DM
+            The next games you run
           </Typography>
           {this.state.games.length ? (
-            <Games list={this.state.games} />
+            <Fragment>
+              <Typography variant='body1'>
+                Below we have listd next games you have booked to run as a Dungeon Master.
+              </Typography>
+              <Games list={this.state.games} />
+            </Fragment>
           ) : (
             <Typography variant='body1' className={classes.infoParagraph}>
               As a DM you are not running any game yet. <Link to='/games'>Check available slots</Link> to run one.
@@ -290,14 +312,15 @@ export class DMNotReportedGamesList extends React.Component {
           <Typography variant='h4' component="h1" className={classes.header}>
             Games awaiting your report
           </Typography>
-          <Typography variant="body1" className={classes.infoParagraph}>
-            Here you will find a list of games you've run, but didn't report yet.
+          <Typography variant="body1" className={classes.info}>
+            After each game you run as a Dungeon Master, you are obligated to fill out the report on the players that
+            were attending your game session. Below you will find games that you haven't reported yet.
           </Typography>
           {this.state.games.length ? (
             <Games list={this.state.games} />
           ) : (
             <Typography variant='body1' className={classes.infoParagraph}>
-              All good. Nothing left to report for now.
+              <strong>All good.</strong> No game to report.
             </Typography>
           )}
 

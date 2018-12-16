@@ -93,6 +93,10 @@ export default class CharacterCreate extends React.Component {
         <Typography variant="h6">
           Add New Character
         </Typography>
+        <Typography variant='body1'>
+          In order to sign up for a game session slot, you need to select one of your characters. Here you can create
+          your character. Provided information may be useful for the Dungeon Master to prepare a game for you.
+        </Typography>
 
         <Grid container spacing={8}>
           <Grid item xs={12}>
@@ -108,19 +112,18 @@ export default class CharacterCreate extends React.Component {
               <InputField name={'race'} label={'Character Race'}
                            value={this.state.race}
                            onChange={this.handleChange('race')}
-                           required={true} error={this.state.race_error}
+                           required={true}
               />
 
               <InputField name={'class'} label={'Character Class'}
                            value={this.state.class}
                            onChange={this.handleChange('class')}
-                           required={true} error={this.state.class_error}
+                           required={true}
               />
 
               <InputField name={'faction'} label={'Character Faction'}
                            value={this.state.faction}
                            onChange={this.handleChange('faction')}
-                           blank={true}
               />
 
               <Button variant={'contained'} className={classes.addButton} onClick={this.addCharacter} type='submit'

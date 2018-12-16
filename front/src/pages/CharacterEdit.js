@@ -48,7 +48,7 @@ export default class CharacterEdit extends React.Component {
           this.setState({
             name: data.name,
             level: data.level,
-            notes: data.notes,
+            notes: data.notes === null ? '': data.notes,
             race: data.race,
             class: data.pc_class,
             faction: data.faction === null ? '': data.faction,
@@ -113,9 +113,6 @@ export default class CharacterEdit extends React.Component {
   render() {
     const {classes} = this.props;
 
-    const character_races = this.props.portalStore.races;
-    const character_classes = this.props.portalStore.classes;
-    const character_factions = this.props.portalStore.factions;
 
     return (
       <NarrowContent>
@@ -126,6 +123,10 @@ export default class CharacterEdit extends React.Component {
             <div>
               <Typography variant="h6">
                 Edit {this.state.name}
+              </Typography>
+              <Typography variant='body1'>
+                In order to sign up for a game session slot, you need to select one of your characters. Here you can edit
+                your character. Provided information may be useful for the Dungeon Master to prepare a game for you.
               </Typography>
 
               <Grid container spacing={8}>
@@ -141,20 +142,18 @@ export default class CharacterEdit extends React.Component {
                   <InputField name={'race'} label={'Character Race'}
                                value={this.state.race}
                                onChange={this.handleChange('race')}
-                               required={true} error={this.state.race_error}
+                               required={true}
                   />
 
                   <InputField name={'class'} label={'Character Class'}
                                value={this.state.class}
                                onChange={this.handleChange('class')}
-                               required={true} error={this.state.class_error}
+                               required={true}
                   />
 
                   <InputField name={'faction'} label={'Character Faction'}
                                value={this.state.faction}
                                onChange={this.handleChange('faction')}
-                               options={character_factions}
-                               blank={true}
                   />
 
                   <InputField name={'notes'} label={'Additional notes / multiclassing / items etc.'}

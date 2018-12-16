@@ -60,3 +60,9 @@ You can run pytest tests with:
 1. The browser will start page automatically (`localhost:3000`)
 
 Build with `npm run build` - it will move static and template files to proper directories.
+
+## License disclaimer
+
+**portAL** is unofficial Fan Content permitted under the Fan Content Policy. Not approved/endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC. 
+
+**Note:** Code itself is available under the open source licence, but part of the repository materials (especially images) are used under the Fan Content Policy and cannot be redistributed or used commercially.
