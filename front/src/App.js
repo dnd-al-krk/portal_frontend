@@ -49,11 +49,11 @@ class App extends Component {
               <PushedDiv>
                 <Grid container spacing={16}>
                   <Hidden smDown>
-                    <Grid item md={3} lg={3}>
+                    <Grid item md={3} lg={2}>
                       <SidebarNavigationList/>
                     </Grid>
                   </Hidden>
-                  <Grid item xs={12} md={9} lg={9}>
+                  <Grid item xs={12} md={9} lg={10}>
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/password-reset/" component={PasswordReset}/>
                     <Route exact path="/password-reset/:token" component={PasswordResetConfirm}/>

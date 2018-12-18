@@ -31,7 +31,6 @@ library.add(faUserPlus);
 
 const styles = theme => ({
   root: {
-    minWidth: '260px',
     backgroundColor: theme.palette.background.paper,
   },
   link: {
