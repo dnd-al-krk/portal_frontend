@@ -19,7 +19,7 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     nickname = models.CharField(_('Nickname'), max_length=255, blank=True, null=True)
-    dci = models.IntegerField(_('DCI'), blank=True, null=True)
+    dci = models.CharField(_('DCI'), max_length=15, blank=True, null=True)
     role = models.CharField(_('Role'), max_length=20, default=ROLE_PLAYER, choices=USER_TYPE)
 
     def __str__(self):

@@ -120,27 +120,27 @@ export default class Register extends React.Component {
             isDone: true,
           }))
         }).catch(error => {
-        const new_state = {
-          emailErrors: null,
-          passwordErrors: null,
-          first_nameErrors: null,
-          last_nameErrors: null,
-          nicknameErrors: null,
-          dciErrors: null,
-        };
-        const data = error.response.data;
-        Reflect.ownKeys(data).forEach(key => {
-          if (data[key].constructor.name.toLowerCase() === "object") {
-            Reflect.ownKeys(data[key]).forEach(innerKey => {
-              new_state[innerKey + 'Errors'] = data[key][innerKey][0];
-            })
-          }
-          else {
-            new_state[key + 'Errors'] = data[key][0];
-          }
-        });
-        new_state.isSigning = false;
-        this.setState(new_state);
+          const new_state = {
+            emailErrors: null,
+            passwordErrors: null,
+            first_nameErrors: null,
+            last_nameErrors: null,
+            nicknameErrors: null,
+            dciErrors: null,
+          };
+          const data = error.response.data;
+          Reflect.ownKeys(data).forEach(key => {
+            if (data[key].constructor.name.toLowerCase() === "object") {
+              Reflect.ownKeys(data[key]).forEach(innerKey => {
+                new_state[innerKey + 'Errors'] = data[key][innerKey][0];
+              })
+            }
+            else {
+              new_state[key + 'Errors'] = data[key][0];
+            }
+          });
+          new_state.isSigning = false;
+          this.setState(new_state);
       });
     }
     else {
@@ -290,10 +290,11 @@ export default class Register extends React.Component {
                   <InputLabel htmlFor="signUp-dci">Your DCI</InputLabel>
                   <Input
                     id="signUp-dci"
-                    type="number"
+                    type="text"
                     value={this.state.dci}
                     onChange={this.handleChange('dci')}
                   />
+                 {this.state.dciErrors && (<FormHelperText id="dci-error-text">{this.state.dciErrors}</FormHelperText>)}
                 </FormControl>
               </Grid>
 
