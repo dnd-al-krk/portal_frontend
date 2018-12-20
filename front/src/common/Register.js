@@ -289,7 +289,7 @@ export default class Register extends React.Component {
                   <InputLabel htmlFor="signUp-dci">Your DCI</InputLabel>
                   <Input
                     id="signUp-dci"
-                    type="text"
+                    type="number"
                     value={this.state.dci}
                     onChange={this.handleChange('dci')}
                   />
