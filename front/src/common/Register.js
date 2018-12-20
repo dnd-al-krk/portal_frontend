@@ -20,6 +20,7 @@ import {SnackbarContentWrapper} from "./InfoSnackbar";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import UndecoratedLink from "./UndecoratedLink";
+import {openUrl} from "../utils";
 
 const styles = (theme) => ({
   textField: {
@@ -305,7 +306,7 @@ export default class Register extends React.Component {
                       aria-describedby="terms-error-text"
                     />
                   }
-                  label={(<div>I agree with <Link to='/terms'>Terms of use</Link></div>)}
+                  label={(<div>I agree with <a href='/terms' onClick={openUrl}>Terms of use</a></div>)}
                 />
                 {this.state.termsErrors && (<FormHelperText id="terms-error-text">You cannot register until you agree to our terms.</FormHelperText>)}
               </Grid>
