@@ -20,6 +20,7 @@ import {SnackbarContentWrapper} from "./InfoSnackbar";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import UndecoratedLink from "./UndecoratedLink";
+import {openUrl} from "../utils";
 
 const styles = (theme) => ({
   textField: {
@@ -119,27 +120,27 @@ export default class Register extends React.Component {
             isDone: true,
           }))
         }).catch(error => {
-        const new_state = {
-          emailErrors: null,
-          passwordErrors: null,
-          first_nameErrors: null,
-          last_nameErrors: null,
-          nicknameErrors: null,
-          dciErrors: null,
-        };
-        const data = error.response.data;
-        Reflect.ownKeys(data).forEach(key => {
-          if (data[key].constructor.name.toLowerCase() === "object") {
-            Reflect.ownKeys(data[key]).forEach(innerKey => {
-              new_state[innerKey + 'Errors'] = data[key][innerKey][0];
-            })
-          }
-          else {
-            new_state[key + 'Errors'] = data[key][0];
-          }
-        });
-        new_state.isSigning = false;
-        this.setState(new_state);
+          const new_state = {
+            emailErrors: null,
+            passwordErrors: null,
+            first_nameErrors: null,
+            last_nameErrors: null,
+            nicknameErrors: null,
+            dciErrors: null,
+          };
+          const data = error.response.data;
+          Reflect.ownKeys(data).forEach(key => {
+            if (data[key].constructor.name.toLowerCase() === "object") {
+              Reflect.ownKeys(data[key]).forEach(innerKey => {
+                new_state[innerKey + 'Errors'] = data[key][innerKey][0];
+              })
+            }
+            else {
+              new_state[key + 'Errors'] = data[key][0];
+            }
+          });
+          new_state.isSigning = false;
+          this.setState(new_state);
       });
     }
     else {
@@ -293,6 +294,7 @@ export default class Register extends React.Component {
                     value={this.state.dci}
                     onChange={this.handleChange('dci')}
                   />
+                 {this.state.dciErrors && (<FormHelperText id="dci-error-text">{this.state.dciErrors}</FormHelperText>)}
                 </FormControl>
               </Grid>
 
@@ -305,7 +307,7 @@ export default class Register extends React.Component {
                       aria-describedby="terms-error-text"
                     />
                   }
-                  label={(<div>I agree with <Link to='/terms'>Terms of use</Link></div>)}
+                  label={(<div>I agree with <a href='/terms' onClick={openUrl}>Terms of use</a></div>)}
                 />
                 {this.state.termsErrors && (<FormHelperText id="terms-error-text">You cannot register until you agree to our terms.</FormHelperText>)}
               </Grid>

@@ -28,6 +28,7 @@ export default class CharacterCreate extends React.Component {
     race_error: '',
     class_error: '',
     faction: '',
+    notes: '',
     buttonDisabled: false,
     buttonText: 'Add character',
     snackbarOpen: false,
@@ -55,11 +56,12 @@ export default class CharacterCreate extends React.Component {
         buttonText: 'Adding...',
       });
       this.props.portalStore.createCharacter({
-        name: s.name,
-        level: s.level,
-        race: s.race,
-        pc_class: s.class,
-        faction: s.faction,
+        'name': s.name,
+        'level': s.level,
+        'race': s.race,
+        'pc_class': s.class,
+        'faction': s.faction,
+        'notes': s.notes,
       }).then(response => {
         this.setState({
           buttonDisabled: false,
@@ -125,6 +127,13 @@ export default class CharacterCreate extends React.Component {
                            value={this.state.faction}
                            onChange={this.handleChange('faction')}
               />
+
+              <InputField name={'notes'} label={'Additional notes / multiclassing / items etc.'}
+                value={this.state.notes}
+                type={'text'}
+                multiline={true}
+                onChange={this.handleChange('notes')}/>
+
 
               <Button variant={'contained'} className={classes.addButton} onClick={this.addCharacter} type='submit'
                       disabled={this.state.buttonDisabled}>

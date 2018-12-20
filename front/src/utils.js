@@ -16,3 +16,8 @@ export const weekdayOf = (date) => {
     weekday[6] = "Saturday";
     return weekday[date.getDay()];
 };
+
+export const openUrl = e => {
+    e.preventDefault();
+    window.open(e.target.href);
+};
