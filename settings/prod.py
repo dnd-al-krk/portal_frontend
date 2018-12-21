@@ -20,7 +20,8 @@ DATABASES = {
 }
 
 ALLOWED_HOSTS += [
-    'alkrk.toady.org'
+    'alkrk.toady.org',
+    'alkrakow.pl',
 ]
 
 # EMAIL SETTINGS
@@ -30,7 +31,7 @@ EMAIL_FROM = EMAIL_HOST_USER = read_env('PORTAL_PROD_EMAIL_USERNAME')
 EMAIL_HOST_PASSWORD = read_env('PORTAL_PROD_EMAIL_PASSWORD')
 EMAIL_USE_SSL = True
 
-ROOT_URL = 'http://alkrk.toady.org'
+ROOT_URL = 'http://alkrakow.pl'
 
 STATIC_ROOT = BASE_DIR + '/public/static/'
 STATIC_URL = '/static/'

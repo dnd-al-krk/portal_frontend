@@ -1,6 +1,6 @@
 {
   "name": "portAL",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.6",
@@ -35,7 +35,7 @@
   "scripts": {
     "start": "REACT_APP_BACKEND_HOST=http://localhost:8000 react-app-rewired start",
     "build": "REACT_APP_BACKEND_HOST=http://localhost:8000 react-app-rewired build && cp build/index.html ../templates/index.html && cp -rf build/static/ ../static/",
-    "build_prod": "REACT_APP_BACKEND_HOST=https://alkrk.toady.org react-app-rewired build && cp build/index.html ../templates/index.html && cp -rf build/static/ ../static/",
+    "build_prod": "REACT_APP_BACKEND_HOST=https://alkrakow.pl react-app-rewired build && cp build/index.html ../templates/index.html && cp -rf build/static/ ../static/",
     "test": "react-app-rewired test --env=jsdom"
   }
 }
