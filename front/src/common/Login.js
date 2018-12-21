@@ -54,7 +54,7 @@ class Login extends React.Component {
     this.setState({
       isSigning: true
     });
-    this.props.portalStore.login(this.state.email, this.state.password)
+    this.props.portalStore.login(this.state.email.toLowerCase, this.state.password)
       .then(() => {
         this.setState(() => ({
           redirectToReferrer: true,
