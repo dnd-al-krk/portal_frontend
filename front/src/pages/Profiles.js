@@ -59,7 +59,7 @@ class Profiles extends React.Component {
 
   profiles_list() {
     if(this.state.profiles){
-      return this.state.profiles.map(profile => <ProfileListItem profile={profile} history={this.props.history}/>)
+      return this.state.profiles.map(profile => <ProfileListItem key={`profile-${profile.id}`} profile={profile} history={this.props.history}/>)
     }
   }
 

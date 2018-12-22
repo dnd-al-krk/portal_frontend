@@ -1,8 +1,15 @@
-import {observable, action, computed} from 'mobx';
+import {observable, action, computed, reaction} from 'mobx';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import {API_HOSTNAME} from "./config";
-import {JWT_TOKEN} from "./constants";
+import {
+  JWT_TOKEN,
+  JWT_TOKEN_IAT,
+  JWT_TOKEN_ORIG_IAT,
+  TOKEN_EXPIRATION_DELTA,
+  TOKEN_REFRESH_EXPIRATION,
+  TOKEN_REFRESH_RATE
+} from "./constants";
 import GamesStore from "./stores/GamesStore";
 import AdventuresStore from "./stores/AdventuresStore";
 
@@ -16,58 +23,148 @@ export const axiosInstance = axios.create({
   }
 });
 
-export function getAxiosInstance(token){
-  return axios.create({
-    headers: {
-      'X-CSRFToken': Cookies.get('csrftoken'),
-      'Authorization': `JWT ${token}`
-    }
-  })
-}
 
 export class PortalStore {
   @observable currentUser = null;
-  @observable userToken = null;
+  @observable token = window.localStorage.getItem(JWT_TOKEN);
+  @observable token_iat = window.localStorage.getItem(JWT_TOKEN_IAT);
+  @observable token_original_iat = window.localStorage.getItem('jwt_orig_iat');
   @observable authenticated = false;
   @observable navigationStore = new NavigationStore(this);
   @observable games = new GamesStore(this);
   @observable adventures = new AdventuresStore(this);
 
-  @action.bound
-  fetchCurrentUser(){
-    if(this.isAuthenticated()){
-      this.currentUser = new UserStore(this);
-      this.currentUser.fetchData();
-    }
+  constructor() {
+    reaction(
+      () => this.token,
+      token => {
+        if (token){
+          window.localStorage.setItem(JWT_TOKEN, token);
+        } else {
+          window.localStorage.removeItem(JWT_TOKEN);
+        }
+      }
+    );
+
+    reaction(
+      () => this.token_iat,
+      token_iat => {
+        if (token_iat) {
+          window.localStorage.setItem(JWT_TOKEN_IAT, token_iat);
+        } else {
+          window.localStorage.removeItem(JWT_TOKEN_IAT);
+        }
+      }
+    );
+
+    reaction(
+      () => this.token_original_iat,
+      token_iat => {
+        if (token_iat) {
+          window.localStorage.setItem(JWT_TOKEN_ORIG_IAT, token_iat);
+        } else {
+          window.localStorage.removeItem(JWT_TOKEN_ORIG_IAT);
+        }
+      }
+    );
   }
 
-  @action.bound
-  autologin(){
-    const token = Cookies.get(JWT_TOKEN);
-    return new Promise((resolve, reject) => {
-      if(token){
-        this.userToken = token;
-        // refresh token
-        this.currentUser = new UserStore(this);
-        this.currentUser.fetchData()
-          .then(() => resolve(), () => { reject() })
-          .catch((err) => { reject(err); });
+  createAxiosInstance() {
+    const instance = axios.create({
+      headers: {
+        'X-CSRFToken': Cookies.get('csrftoken'),
+        'Authorization': `JWT ${this.token}`
       }
-      else{
-        reject();
+    });
+
+    instance.interceptors.response.use(response => {
+       return response;
+    }, error => {
+      if (error.response.status === 401) {
+        console.log('Tokens have expired! Need to sign in again');
         this.signOut();
+        window.location.reload();
+      }
+      return error;
+    });
+
+    return instance;
+  }
+
+  getAxiosInstance(){
+    return new Promise((resolve) => {
+      console.log('loading...', this.token_iat);
+      if(this.tokenShouldRefresh && this.tokenValidIat){
+        console.log('refreshing token!', this.token_iat);
+
+        this.refreshToken().then(() => {
+          resolve(this.createAxiosInstance());
+        }).catch(e => {
+          console.log('Looks like there was an issue with retrieving token data. Resetting state to login.', e);
+          this.signOut();
+          window.location.reload();
+        });
+      }
+      else {
+        if (!this.tokenValidOrigIat) {
+          console.log('Expired refresh! Cannot get any new token until user signs in');
+          this.signOut();
+          window.location.reload();
+        }
+        resolve(this.createAxiosInstance());
       }
     });
   }
 
   @action.bound
-  isAuthenticated(){
-    return this.getToken() !== null;
+  get(url){
+    return this.getAxiosInstance().then(instance => instance.get(`${API_HOSTNAME}${url}`));
   }
 
-  @action.bound
-  getToken(){
-    return this.userToken;
+  @computed get tokenValidIat(){
+    // checks if token is refreshable - maybe it is too late for it to be refreshed?
+    console.log('seconds since refresh: ', new Date().getTime() - this.token_iat );
+    return this.token_iat !== undefined && new Date().getTime() < this.token_iat + TOKEN_EXPIRATION_DELTA;
+  }
+
+  @computed get tokenValidOrigIat(){
+    // checks if tokens can still be refreshed against origin token picking time
+    console.log('orig_iat seconds since start: ', new Date().getTime() - this.token_original_iat );
+    return this.token_original_iat !== undefined && new Date().getTime() < this.token_original_iat + TOKEN_REFRESH_EXPIRATION;
+  }
+
+  @computed get tokenShouldRefresh(){
+    // checks if enough time has passed for the token to be refreshed
+    console.log('iat seconds since start to refresh rate: ', new Date().getTime() - this.token_iat , this.token_iat + TOKEN_REFRESH_RATE);
+    return this.token_iat !== undefined && new Date().getTime() > this.token_iat + TOKEN_REFRESH_RATE;
+  }
+
+  resetToken(){
+    this.token_iat = new Date().getTime();
+  }
+
+  hardResetToken(){
+    this.token_iat = this.token_original_iat = new Date().getTime();
+  }
+
+  @action
+  isAuthenticated(){
+    if(this.currentUser)
+      // console.log(this, this.token !== undefined && this.tokenValidIat && this.currentUser && this.currentUser.profileID !== undefined);
+    return this.token !== undefined && this.tokenValidIat && this.currentUser && this.currentUser.profileID !== undefined;
+  }
+
+  @action refreshToken() {
+    return axiosInstance.post(`${API_HOSTNAME}/token/refresh/`, {'token': this.token, 'orig_iat': this.token_original_iat}).then(response => {
+      this.token = response.data.token;
+      this.resetToken();
+      console.log('refreshing token to: ', this.token);
+    })
+      .catch((e) => {
+        console.log('Failed to refresh... ', e.response);
+        this.signOut();
+        //window.location.reload();
+      });
   }
 
   @action.bound
@@ -77,15 +174,57 @@ export class PortalStore {
         'username': user,
         'password': password,
       }).then((response) => {
+        console.log(response.data);
         if (response.status === 200) {
-          this.userToken = response.data.token;
-          Cookies.set(JWT_TOKEN, this.userToken);
+          this.token = response.data.token;
+          this.hardResetToken();
+
           this.currentUser = new UserStore(this);
-          this.currentUser.fetchData()
-            .then(() => resolve(response));
+          this.currentUser.fetchData().then(() => resolve());
         }
       });
     });
+
+
+  }
+
+  @action.bound
+  signOut(){
+    this.token = undefined;
+    this.token_iat = undefined;
+    this.token_original_iat = undefined;
+    this.currentUser = null;
+  }
+
+
+  @action.bound
+  autologin(){
+    return new Promise((resolve, reject) => {
+      console.log('trying to log in automatically...');
+      if(this.token && new Date().getTime() < this.token_original_iat + TOKEN_EXPIRATION_DELTA){
+        // refresh token
+        console.log('refreshing token on autologin...');
+        this.refreshToken().then(() => {
+          console.log('token refreshed...');
+          this.currentUser = new UserStore(this);
+          this.currentUser.fetchData()
+            .then(() => resolve(), () => { reject() })
+            .catch((err) => { reject(err); });
+        });
+      }
+      else{
+        reject();
+        this.signOut();
+      }
+    });
+  }
+
+  @action.bound
+  fetchCurrentUser(){
+    if(this.isAuthenticated()){
+      this.currentUser = new UserStore(this);
+      this.currentUser.fetchData();
+    }
   }
 
   @action.bound
@@ -104,18 +243,6 @@ export class PortalStore {
   };
 
   @action.bound
-  get(url){
-    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}${url}`);
-  }
-
-  @action.bound
-  signOut(){
-    this.userToken = null;
-    this.currentUser = null;
-    Cookies.remove(JWT_TOKEN);
-  }
-
-  @action.bound
   fetchData(name){
     return this.get(`/${name}/`).then(response => response.data);
   }
@@ -127,7 +254,7 @@ export class PortalStore {
 
   @action.bound
   putData(name, id, data){
-    return getAxiosInstance(this.userToken).put(`${API_HOSTNAME}/${name}/${id}/`, data);
+    return this.getAxiosInstance().then(instance => instance.put(`${API_HOSTNAME}/${name}/${id}/`, data));
   }
 
   @action.bound
@@ -147,31 +274,31 @@ export class PortalStore {
 
   @action.bound
   fetchProfileCharacters(owner){
-    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/characters/?owner=${owner}`).then(response => response.data);
+    return this.get(`/characters/?owner=${owner}`).then(response => response.data);
   }
 
   @action.bound
   getCharacter(id){
-    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/characters/${id}/`).then(response => response.data);
+    return this.get(`/characters/${id}/`).then(response => response.data);
   }
 
   @action.bound
   searchCharacters(search_term){
-    return getAxiosInstance(this.userToken).get(`${API_HOSTNAME}/characters/?search=${search_term}`).then(response => response.data);
+    return this.get(`/characters/?search=${search_term}`).then(response => response.data);
   }
 
   @action.bound
   createCharacter(data){
-    return getAxiosInstance(this.userToken).post(`${API_HOSTNAME}/characters/`, data).then(response => {
+    return this.getAxiosInstance().then(instance => instance.post(`${API_HOSTNAME}/characters/`, data).then(response => {
       if(response.status === 201){
         this.currentUser.charactersCount++;
       }
-    })
+    }));
   }
 
   @action.bound
   saveCharacter(id, data){
-    return getAxiosInstance(this.userToken).put(`${API_HOSTNAME}/characters/${id}/`, data)
+    return this.getAxiosInstance().then(instance => instance.put(`${API_HOSTNAME}/characters/${id}/`, data));
   }
 }
 
@@ -211,13 +338,8 @@ export class UserStore {
   }
 
   @action.bound
-  getToken(){
-    return this.rootStore.getToken();
-  }
-
-  @action.bound
   fetchData(){
-    return getAxiosInstance(this.getToken()).get(`${API_HOSTNAME}/current_user/`)
+    return this.rootStore.get(`/current_user/`)
       .then((response) => {
         const data = response.data;
         this.profileID = data.id;
@@ -236,7 +358,7 @@ export class UserStore {
 
   @action.bound
   saveData(){
-    return getAxiosInstance(this.getToken()).put(`${API_HOSTNAME}/profiles/${this.profileID}/`,
+    return this.rootStore.getAxiosInstance().then(instance => instance.put(`${API_HOSTNAME}/profiles/${this.profileID}/`,
       {
         'id': this.profileID,
         'user': this.userID,
@@ -244,6 +366,6 @@ export class UserStore {
         'dci': this.dci,
     }).catch((err) => {
       this.rootStore.signOut();
-    });
+    }));
   }
 }

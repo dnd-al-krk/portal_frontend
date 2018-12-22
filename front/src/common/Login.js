@@ -1,7 +1,6 @@
 import React from 'react'
 import classNames from 'classnames';
 import {inject, observer} from "mobx-react";
-import {Redirect} from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from "@material-ui/core/Button/Button";
@@ -40,7 +39,6 @@ const styles = (theme) => ({
 @inject('portalStore') @observer
 class Login extends React.Component {
   state = {
-    redirectToReferrer: false,
     isSigning: false,
     email: '',
     password: '',
@@ -54,14 +52,15 @@ class Login extends React.Component {
     this.setState({
       isSigning: true
     });
-    this.props.portalStore.login(this.state.email.toLowerCase, this.state.password)
+    this.props.portalStore.login(this.state.email.toLowerCase(), this.state.password)
       .then(() => {
         this.setState(() => ({
-          redirectToReferrer: true,
           email: '',
           password: '',
           isSigning: false
-        }))
+        }));
+        const { from } = this.props.location.state || { from: { pathname: '/' } };
+        this.props.history.push(from);
       }).catch((error) => {
         if(error.response.status === 400){
           this.setState({
@@ -85,13 +84,6 @@ class Login extends React.Component {
   };
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: '/' } };
-    const { redirectToReferrer } = this.state;
-
-    if (redirectToReferrer === true) {
-      return <Redirect to={from} />
-    }
-
     const {classes} = this.props;
 
     return (

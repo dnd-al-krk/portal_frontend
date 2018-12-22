@@ -83,7 +83,7 @@ export default class PasswordReset extends React.Component {
               </Grid>
             </Grid>
           ): (
-          <form className={classes.container} noValidate autoComplete="off" onSubmit={this.login}>
+          <form className={classes.container} noValidate autoComplete="off">
             <Grid container spacing={24}>
               <Grid item xs={12}>
                 <h1>Reset your password</h1>
