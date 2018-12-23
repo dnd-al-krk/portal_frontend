@@ -77,7 +77,7 @@ class App extends Component {
               </PushedDiv>
               <CookieConsent
                 style={{ background: "#333", opacity: "0.95"}}
-                buttonStyle={{ fontWeight: "bold", background: "#ed1c24", padding: "12px", color: "black"}}
+                buttonStyle={{ fontWeight: "bold", background: "#DF9E00", padding: "12px", color: "black"}}
                 > 
                 We use cookies to offer you a better experience. By continuing to use this website, you consent to the use of cookies in accordance with our Cookie Policy.
               </CookieConsent>
