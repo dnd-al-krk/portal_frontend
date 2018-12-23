@@ -1,35 +1,40 @@
-import {observable} from 'mobx';
+import {computed, observable} from 'mobx';
 import {dateToString, weekdayOf} from "../utils";
+import Api from "../api";
 
 export default class GamesStore {
   @observable root = null;
 
   constructor(root){
-    this.root = root
+    this.root = root;
+  }
+
+  @computed get api(){
+    return this.root.api;
   }
 
   fetch(){
-    return this.root.fetchData('games/list');
+    return this.api.fetchData('games/list');
   }
 
   fetchFuture(){
-    return this.root.fetchData('games/future');
+    return this.api.fetchData('games/future');
   }
 
   fetchPast(){
-    return this.root.fetchData('games/past');
+    return this.api.fetchData('games/past');
   }
 
   fetchFutureForUser(id){
-    return this.root.get(`/games/future/?having_player=${id}`).then(response => response.data);
+    return this.api.get(`/games/future/?having_player=${id}`).then(response => response.data);
   }
 
   fetchFutureForDM(id){
-    return this.root.get(`/games/future/?dm__id=${id}`).then(response => response.data);
+    return this.api.get(`/games/future/?dm__id=${id}`).then(response => response.data);
   }
 
   fetchNotReportedForDM(id){
-    return this.root.get(`/games/past/?dm__id=${id}&reported=false`).then(response => response.data);
+    return this.api.get(`/games/past/?dm__id=${id}&reported=false`).then(response => response.data);
   }
 
   fetchFutureForCurrentUser(){
@@ -45,27 +50,27 @@ export default class GamesStore {
   }
 
   get(id){
-    return this.root.getData('games/list', id);
+    return this.api.getData('games/list', id);
   }
 
   book(id, data){
-    return this.root.putData('games/booking', id, data);
+    return this.api.putData('games/booking', id, data);
   }
 
   cancel(id){
-    return this.root.get(`/games/booking/${id}/cancel/`);
+    return this.api.get(`/games/booking/${id}/cancel/`);
   }
 
   signUp(id, characterId){
-    return this.root.putData('games/list', `${id}/signUp`, {character_id: characterId})
+    return this.api.putData('games/list', `${id}/signUp`, {character_id: characterId})
   }
 
   signOut(id){
-    return this.root.putData('games/list', `${id}/signOut`, {})
+    return this.api.putData('games/list', `${id}/signOut`, {})
   }
 
   sendReport(id, data){
-    return this.root.putData('games/list', `${id}/report`, data)
+    return this.api.putData('games/list', `${id}/report`, data)
   }
 
   static getDMName(game) {

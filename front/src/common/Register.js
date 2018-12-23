@@ -106,7 +106,7 @@ export default class Register extends React.Component {
         nickname: this.state.nickname,
         dci: this.state.dci ? this.state.dci : null,
         user: {
-          email: this.state.email.toLowerCase,
+          email: this.state.email.toLowerCase(),
           password: this.state.password,
           first_name: this.state.first_name,
           last_name: this.state.last_name,
