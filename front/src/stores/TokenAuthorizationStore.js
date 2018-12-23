@@ -65,19 +65,16 @@ export default class TokenAuthorizationStore {
 
   @computed get tokenValidIat(){
     // checks if token is refreshable - maybe it is too late for it to be refreshed?
-    console.log('seconds since refresh: ', new Date().getTime() - this.token_iat );
     return this.token_iat !== undefined && new Date().getTime() < this.token_iat + TOKEN_EXPIRATION_DELTA;
   }
 
   @computed get tokenValidOrigIat(){
     // checks if tokens can still be refreshed against origin token picking time
-    console.log('orig_iat seconds since start: ', new Date().getTime() - this.token_original_iat );
     return this.token_original_iat !== undefined && new Date().getTime() < this.token_original_iat + TOKEN_REFRESH_EXPIRATION;
   }
 
   @computed get tokenShouldRefresh(){
     // checks if enough time has passed for the token to be refreshed
-    console.log('iat seconds since start to refresh rate: ', new Date().getTime() - this.token_iat , this.token_iat + TOKEN_REFRESH_RATE);
     return this.token_iat !== undefined && new Date().getTime() > this.token_iat + TOKEN_REFRESH_RATE;
   }
 
@@ -98,13 +95,11 @@ export default class TokenAuthorizationStore {
     return axiosInstance.post(`${API_HOSTNAME}/token/refresh/`, {'token': this.token, 'orig_iat': this.token_original_iat}).then(response => {
       this.token = response.data.token;
       this.resetToken();
-      console.log('refreshing token to: ', this.token);
       return response;
     })
       .catch((e) => {
-        console.log('Failed to refresh... ', e.response);
         this.signOut();
-        //window.location.reload();
+        window.location.reload();
       });
   }
 
@@ -120,7 +115,6 @@ export default class TokenAuthorizationStore {
        return response;
     }, error => {
       if (error.response.status === 401) {
-        console.log('Tokens have expired! Need to sign in again');
         this.signOut();
         window.location.reload();
       }
@@ -132,21 +126,16 @@ export default class TokenAuthorizationStore {
 
   getAxiosInstance(){
     return new Promise((resolve) => {
-      console.log('loading...', this.token_iat);
       if(this.tokenShouldRefresh && this.tokenValidIat){
-        console.log('refreshing token!', this.token_iat);
-
         this.refreshToken().then(() => {
           resolve(this.createAxiosInstance());
         }).catch(e => {
-          console.log('Looks like there was an issue with retrieving token data. Resetting state to login.', e);
           this.signOut();
           window.location.reload();
         });
       }
       else {
         if (!this.tokenValidOrigIat) {
-          console.log('Expired refresh! Cannot get any new token until user signs in');
           this.signOut();
           window.location.reload();
         }
@@ -160,7 +149,6 @@ export default class TokenAuthorizationStore {
       'username': user,
       'password': password,
     }).then((response) => {
-      console.log(response.data);
       if (response.status === 200) {
         this.token = response.data.token;
         this.hardResetToken();
@@ -180,8 +168,6 @@ export default class TokenAuthorizationStore {
   @action.bound
   autologin(){
     if(this.token && new Date().getTime() < this.token_original_iat + TOKEN_EXPIRATION_DELTA){
-      // refresh token
-      console.log('refreshing token on autologin...');
       return this.refreshToken();
     }
     else{

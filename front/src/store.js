@@ -47,7 +47,6 @@ export class PortalStore {
     return new Promise((resolve, reject) => {
       this.auth.autologin().then(response => {
         if(response !== null){
-          console.log('token refreshed...');
           this.currentUser = new UserStore(this);
           this.currentUser.fetchData()
             .then(() => resolve(response), () => { reject(response) })
