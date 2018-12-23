@@ -81,7 +81,7 @@ class TopAppBar extends React.Component {
     this.setState({
       accountAnchorEl: null,
     });
-    this.props.portalStore.signOut();
+    this.props.portalStore.fullSignOut();
     this.props.history.push('/');
   };
 
