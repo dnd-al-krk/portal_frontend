@@ -1,5 +1,5 @@
 import {Game} from "./GamesStore";
-import {observable} from "mobx";
+import {computed, observable} from "mobx";
 
 
 export default class AdventuresStore {
@@ -9,8 +9,12 @@ export default class AdventuresStore {
     this.root = rootStore;
   }
 
+  @computed get api(){
+    return this.root.api;
+  }
+
   fetch(){
     this.items = [];
-    return this.root.fetchData('adventures');
+    return this.api.fetchData('adventures');
   }
 }

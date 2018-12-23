@@ -2,7 +2,7 @@ import {action, computed, observable} from "mobx";
 import {API_HOSTNAME} from "../config";
 
 export default class UserStore {
-  @observable rootStore;
+  @observable root;
   profileID;
   userID;
   @observable first_name;
@@ -12,8 +12,12 @@ export default class UserStore {
   role;
   @observable charactersCount;
 
-  constructor(rootStore) {
-    this.rootStore = rootStore;
+  constructor(root) {
+    this.root = root;
+  }
+
+  @computed get api(){
+    return this.root.api;
   }
 
   @computed get isDM(){
@@ -22,7 +26,7 @@ export default class UserStore {
 
   @action.bound
   fetchData(){
-    return this.rootStore.get(`/current_user/`)
+    return this.root.api.get(`/current_user/`)
       .then((response) => {
         const data = response.data;
         this.profileID = data.id;
@@ -35,20 +39,20 @@ export default class UserStore {
         this.charactersCount = data.characters_count;
       })
       .catch((err) => {
-        this.rootStore.signOut();
+        this.root.signOut();
       });
   }
 
   @action.bound
   saveData(){
-    return this.rootStore.getAxiosInstance().then(instance => instance.put(`${API_HOSTNAME}/profiles/${this.profileID}/`,
+    return this.api.put(`/profiles/${this.profileID}/`,
       {
         'id': this.profileID,
         'user': this.userID,
         'nickname': this.nickname,
         'dci': this.dci,
     }).catch((err) => {
-      this.rootStore.signOut();
-    }));
+      this.root.signOut();
+    });
   }
 }

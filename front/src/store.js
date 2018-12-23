@@ -6,10 +6,12 @@ import TokenAuthorizationStore from "./stores/TokenAuthorizationStore";
 import {AxiosInstance as axiosInstance} from "axios";
 import UserStore from "./stores/UserStore";
 import NavigationStore from "./stores/NavigationStore";
+import Api from "./api";
 
 
 export class PortalStore {
   @observable auth = new TokenAuthorizationStore(this);
+  @observable api = new Api(this.auth);
   @observable currentUser = null;
   @observable navigationStore = new NavigationStore(this);
   @observable games = new GamesStore(this);
@@ -59,11 +61,6 @@ export class PortalStore {
   }
 
   @action.bound
-  get(url){
-    return this.getAxiosInstance().then(instance => instance.get(`${API_HOSTNAME}${url}`));
-  }
-
-  @action.bound
   fetchCurrentUser(){
     if(this.isAuthenticated()){
       this.currentUser = new UserStore(this);
@@ -87,62 +84,47 @@ export class PortalStore {
   };
 
   @action.bound
-  fetchData(name){
-    return this.get(`/${name}/`).then(response => response.data);
-  }
-
-  @action.bound
-  getData(name, id){
-    return this.get(`/${name}/${id}/`).then(response => response.data);
-  }
-
-  @action.bound
-  putData(name, id, data){
-    return this.getAxiosInstance().then(instance => instance.put(`${API_HOSTNAME}/${name}/${id}/`, data));
-  }
-
-  @action.bound
   fetchProfiles() {
-    return this.fetchData('profiles')
+    return this.api.fetchData('profiles')
   }
 
   @action.bound
   getProfile(id){
-    return this.getData('profiles', id);
+    return this.api.getData('profiles', id);
   }
 
   @action.bound
   fetchCharacters(){
-    return this.fetchData('characters');
+    return this.api.fetchData('characters');
   }
 
   @action.bound
   fetchProfileCharacters(owner){
-    return this.get(`/characters/?owner=${owner}`).then(response => response.data);
+    return this.api.get(`/characters/?owner=${owner}`).then(response => response.data);
   }
 
   @action.bound
   getCharacter(id){
-    return this.get(`/characters/${id}/`).then(response => response.data);
+    return this.api.get(`/characters/${id}/`).then(response => response.data);
   }
 
   @action.bound
   searchCharacters(search_term){
-    return this.get(`/characters/?search=${search_term}`).then(response => response.data);
+    return this.api.get(`/characters/?search=${search_term}`).then(response => response.data);
   }
 
   @action.bound
   createCharacter(data){
-    return this.getAxiosInstance().then(instance => instance.post(`${API_HOSTNAME}/characters/`, data).then(response => {
+    return this.api.post(`/characters/`, data).then(response => {
       if(response.status === 201){
         this.currentUser.charactersCount++;
       }
-    }));
+    });
   }
 
   @action.bound
   saveCharacter(id, data){
-    return this.getAxiosInstance().then(instance => instance.put(`${API_HOSTNAME}/characters/${id}/`, data));
+    return this.api.put(`/characters/${id}/`, data);
   }
 }
 
