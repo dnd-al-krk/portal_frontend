@@ -7,7 +7,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from utils.email import send_email
 from .constants import (ADVENTURE_TYPE_EX, ADVENTURE_TYPE_EN, ADVENTURE_TYPE_EP, ADVENTURE_TYPE_HC, ADVENTURE_TYPE_IA,
-                        ADVENTURE_TYPE_LE, ADVENTURE_TYPE_CCC, ADVENTURE_TYPE_OTHER, ADVENTURE_TYPE_AO)
+                        ADVENTURE_TYPE_LE, ADVENTURE_TYPE_CCC, ADVENTURE_TYPE_OTHER, ADVENTURE_TYPE_AO,
+                        ADVENTURE_TYPE_AL)
 from utils.models import UUIDModel
 
 
@@ -25,6 +26,7 @@ class Table(UUIDModel):
 
 
 ADVENTURE_TYPES = (
+    (ADVENTURE_TYPE_AL, _('AL')),
     (ADVENTURE_TYPE_EN, _('EN')),
     (ADVENTURE_TYPE_EP, _('EP')),
     (ADVENTURE_TYPE_EX, _('EX')),
