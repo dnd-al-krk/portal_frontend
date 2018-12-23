@@ -42,6 +42,11 @@ export class PortalStore {
   }
 
   @action.bound
+  fullSignOut(){
+    this.auth.signOut();
+  }
+
+  @action.bound
   autologin(){
     return new Promise((resolve, reject) => {
       this.auth.autologin().then(response => {
