@@ -1,4 +1,3 @@
-from rest_framework import viewsets, mixins, status
 from django_filters import rest_framework as filters
 from rest_framework import viewsets, mixins, status
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -47,8 +46,7 @@ class DMNoteViewSet(viewsets.ModelViewSet):
         serializer.save(dm=self.request.user.profile)
 
 
-class ProfileViewSet(mixins.UpdateModelMixin,
-                     mixins.RetrieveModelMixin,
+class ProfileViewSet(mixins.RetrieveModelMixin,
                      mixins.ListModelMixin,
                      viewsets.GenericViewSet):
     serializer_class = PublicProfileSerializer
@@ -60,6 +58,12 @@ class ProfileViewSet(mixins.UpdateModelMixin,
 class CurrentUserView(APIView):
     def get(self, request):
         serializer = ProfileSerializer(request.user.profile)
+        return Response(serializer.data)
+
+    def put(self, request):
+        serializer = ProfileSerializer(request.user.profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
         return Response(serializer.data)
 
 

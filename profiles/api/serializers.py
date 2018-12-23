@@ -68,7 +68,9 @@ class ProfileSerializer(serializers.ModelSerializer):
             instance.nickname = validated_data.get('nickname', instance.nickname)
             instance.save()
 
-            UserSerializer().update(instance=instance.user, validated_data=user_data)
+            user_serializer = UserSerializer(instance=instance.user, data=user_data)
+            if user_serializer.is_valid():
+                user_serializer.save()
 
         return instance
 

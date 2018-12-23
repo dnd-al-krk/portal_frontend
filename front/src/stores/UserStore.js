@@ -45,10 +45,13 @@ export default class UserStore {
 
   @action.bound
   saveData(){
-    return this.api.put(`/profiles/${this.profileID}/`,
+    return this.api.put(`/current_user/`,
       {
         'id': this.profileID,
-        'user': this.userID,
+        'user': {
+          'first_name': this.first_name,
+          'last_name': this.last_name,
+        },
         'nickname': this.nickname,
         'dci': this.dci,
     }).catch((err) => {
