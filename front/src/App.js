@@ -27,6 +27,7 @@ import SidebarNavigationList from "./common/SidebarNavigationList";
 import Grid from "@material-ui/core/Grid/Grid";
 import Hidden from "@material-ui/core/Hidden/Hidden";
 import {Terms} from "./common/Terms";
+import CookieConsent from "react-cookie-consent";
 
 
 const portalStore = new PortalStore();
@@ -74,6 +75,12 @@ class App extends Component {
                   </Grid>
                 </Grid>
               </PushedDiv>
+              <CookieConsent
+                style={{ background: "#333", opacity: "0.95"}}
+                buttonStyle={{ fontWeight: "bold", background: "#DF9E00", padding: "12px", color: "black"}}
+                > 
+                We use cookies to offer you a better experience. By continuing to use this website, you consent to the use of cookies in accordance with our Cookie Policy.
+              </CookieConsent>
             </div>
           </Router>
         </Loader>
