@@ -120,7 +120,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 
 class RegisterProfileSerializer(serializers.ModelSerializer):
     user = RegisterUserSerializer(required=True)
-    dci = serializers.IntegerField(required=False)
+    dci = serializers.IntegerField(required=False, allow_null=True)
 
     class Meta:
         model = Profile

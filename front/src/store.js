@@ -2,8 +2,7 @@ import {action, observable} from 'mobx';
 import {API_HOSTNAME} from "./config";
 import GamesStore from "./stores/GamesStore";
 import AdventuresStore from "./stores/AdventuresStore";
-import TokenAuthorizationStore from "./stores/TokenAuthorizationStore";
-import {AxiosInstance as axiosInstance} from "axios";
+import TokenAuthorizationStore, {axiosInstance} from "./stores/TokenAuthorizationStore";
 import UserStore from "./stores/UserStore";
 import NavigationStore from "./stores/NavigationStore";
 import Api from "./api";
@@ -67,17 +66,14 @@ export class PortalStore {
     }
   }
 
-  @action.bound
   register(data){
     return axiosInstance.post(`${API_HOSTNAME}/register/`, data)
   }
 
-  @action.bound
   sendPasswordReset(login){
     return axiosInstance.post(`${API_HOSTNAME}/password_reset/`, {email: login})
   }
 
-  @action.bound
   changePassword(token, password){
     return axiosInstance.post(`${API_HOSTNAME}/password_reset/confirm/`, {token: token, password: password});
   };
