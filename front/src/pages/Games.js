@@ -63,6 +63,9 @@ const styles = theme => ({
   currentDM: {
     backgroundColor: '#DF9E00',
     color: 'white',
+  },
+  date: {
+    fontSize: 18,
   }
 });
 
@@ -129,11 +132,11 @@ export class GameCard extends React.Component {
   };
 
   getDate = () => {
-    const game = this.props.game;
-    return <Fragment>
-        <CalendarIcon style={{fontSize: 14}}/> {GamesStore.getDateString(game)} {GamesStore.getWeekDay(game)}
+    const { game, classes } = this.props;
+    return <div className={classes.date}>
+        <CalendarIcon style={{fontSize: 20, marginBottom: -4}}/> {GamesStore.getDateString(game)} {GamesStore.getWeekDay(game)}
         <strong>{game.timeStart}</strong>
-      </Fragment>;
+      </div>;
   };
 
   gotoGame = (id) => {
