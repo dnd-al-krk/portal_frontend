@@ -86,12 +86,12 @@ export default class TokenAuthorizationStore {
     this.token_iat = this.token_original_iat = new Date().getTime();
   }
 
-  @action
+  @action.bound
   isAuthenticated(){
-    return this.token !== undefined && this.tokenValidIat;
+    return this.token !== undefined && this.tokenValidIat !== undefined;
   }
 
-  @action refreshToken() {
+  @action.bound refreshToken() {
     return axiosInstance.post(`${API_HOSTNAME}/token/refresh/`, {'token': this.token, 'orig_iat': this.token_original_iat}).then(response => {
       this.token = response.data.token;
       this.resetToken();
