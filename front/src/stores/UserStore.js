@@ -3,8 +3,8 @@ import {API_HOSTNAME} from "../config";
 
 export default class UserStore {
   @observable root;
-  profileID;
-  userID;
+  @observable profileID;
+  @observable userID;
   @observable first_name;
   @observable last_name;
   @observable nickname;

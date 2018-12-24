@@ -9,20 +9,25 @@ import Api from "./api";
 
 
 export class PortalStore {
-  @observable auth = new TokenAuthorizationStore(this);
-  @observable api = new Api(this.auth);
+  @observable auth;
+  @observable api;
   @observable currentUser = null;
-  @observable navigationStore = new NavigationStore(this);
-  @observable games = new GamesStore(this);
-  @observable adventures = new AdventuresStore(this);
+  @observable signed = false;
+  @observable navigationStore;
+  @observable games;
+  @observable adventures;
 
-  @action
-  isAuthenticated(){
-    return this.auth.isAuthenticated() && this.currentUser && this.currentUser.profileID !== undefined;
+  constructor(){
+    this.auth = new TokenAuthorizationStore(this);
+    this.api = new Api(this.auth);
+    this.navigationStore = new NavigationStore(this);
+    this.games = new GamesStore(this);
+    this.adventures = new AdventuresStore(this);
   }
 
-  getAxiosInstance(){
-    return this.auth.getAxiosInstance();
+  @action.bound
+  isAuthenticated(){
+    return this.signed;
   }
 
   @action.bound
@@ -30,8 +35,10 @@ export class PortalStore {
     return new Promise((resolve) => {
       this.auth.login(user, password).then(response => {
         this.currentUser = new UserStore(this);
-        this.currentUser.fetchData().then(() => resolve());
-        return response;
+        this.currentUser.fetchData().then(() => {
+          this.signed = true;
+          resolve(response)
+        });
       });
     });
   }
@@ -39,6 +46,7 @@ export class PortalStore {
   @action.bound
   signOut(){
     this.currentUser = null;
+    this.signed = false;
   }
 
   @action.bound
@@ -53,7 +61,9 @@ export class PortalStore {
         if(response !== null){
           this.currentUser = new UserStore(this);
           this.currentUser.fetchData()
-            .then(() => resolve(response), () => { reject(response) })
+            .then(
+              () => { this.signed = true; resolve(response)},
+              () => { reject(response) })
             .catch((err) => { reject(err); });
         }
         else{
@@ -61,14 +71,6 @@ export class PortalStore {
         }
       })
     });
-  }
-
-  @action.bound
-  fetchCurrentUser(){
-    if(this.isAuthenticated()){
-      this.currentUser = new UserStore(this);
-      this.currentUser.fetchData();
-    }
   }
 
   register(data){

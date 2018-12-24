@@ -47,7 +47,7 @@ export default class SidebarNavigationList extends React.Component{
   }
 
   isAuth(){
-    return this.props.portalStore.isAuthenticated();
+    return this.props.portalStore.signed;
   }
 
   render() {

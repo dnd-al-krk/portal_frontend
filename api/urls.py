@@ -7,7 +7,6 @@ from games.api import views as games_views
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register('characters', profiles_views.PlayerCharacterViewSet)
-router.register('notes', profiles_views.DMNoteViewSet)
 router.register('profiles', profiles_views.ProfileViewSet)
 router.register('adventures', games_views.AdventuresViewSet)
 router.register('games/list', games_views.GameSessionViewSet)
