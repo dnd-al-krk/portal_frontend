@@ -195,13 +195,14 @@ If you are completely new to Dungeons & Dragons, the D&D Adventurers League is a
                   </ListItem>
                 </UndecoratedLink>
 
-                <ListItem button>
-                  <ListItemIcon className={classes.communityIcon}>
-                    <FontAwesomeIcon icon={["far","file-pdf"]} />
-                  </ListItemIcon>
-                  <ListItemText primary="Read FAQ">
-                  </ListItemText>
-                </ListItem>
+                {/* TODO: add FAQ pdf link here in the future */}
+                {/*<ListItem button>*/}
+                  {/*<ListItemIcon className={classes.communityIcon}>*/}
+                    {/*<FontAwesomeIcon icon={["far","file-pdf"]} />*/}
+                  {/*</ListItemIcon>*/}
+                  {/*<ListItemText primary="Read FAQ">*/}
+                  {/*</ListItemText>*/}
+                {/*</ListItem>*/}
               </List>
             </div>
           </Grid>
