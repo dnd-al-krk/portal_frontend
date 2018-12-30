@@ -217,7 +217,7 @@ export class CurrentUserGamesList extends React.Component {
             </Fragment>
           ) : (
             <Typography className={classes.infoParagraph} variant='body1'>
-              You are not playing any game soon. <Link to='/games'>Check incomming games</Link> to join one.<br/>
+              You are not playing any game soon. <Link to='/games'>Check incoming games</Link> to join one.<br/>
             </Typography>
           )}
 
@@ -263,7 +263,7 @@ export class CurrentDMGamesList extends React.Component {
           {this.state.games.length ? (
             <Fragment>
               <Typography variant='body1'>
-                Below we have listd next games you have booked to run as a Dungeon Master.
+                Below we have listed next games you have booked to run as a Dungeon Master.
               </Typography>
               <Games list={this.state.games} />
             </Fragment>
