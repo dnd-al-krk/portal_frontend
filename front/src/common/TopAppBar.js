@@ -18,7 +18,6 @@ import SidebarNavigationList from "./SidebarNavigationList";
 import Menu from "@material-ui/core/Menu/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
-import UndecoratedLink from "./UndecoratedLink";
 import {withRouter} from "react-router";
 import Button from "@material-ui/core/Button/Button";
 import Hidden from "@material-ui/core/Hidden/Hidden";
@@ -113,6 +112,7 @@ class TopAppBar extends React.Component {
     );
 
     const accountOpen = Boolean(this.state.accountAnchorEl);
+    const profileID = this.props.portalStore.currentUser.profileID;
 
     return (
       <div className={classes.root}>
@@ -175,11 +175,23 @@ class TopAppBar extends React.Component {
                   open={accountOpen}
                   onClose={this.handleClose('accountAnchorEl')}
                 >
-                  <UndecoratedLink to='/account' className={classes.routeLink}>
-                    <MenuItem onClick={this.handleClose('accountAnchorEl')}>
-                      Account settings
+
+                  <Hidden mdUp>
+                    <MenuItem
+                      component={Link}
+                      to={`/profiles/${profileID}`}
+                      onClick={this.handleClose('accountAnchorEl')}
+                    >
+                      Your Profile
                     </MenuItem>
-                  </UndecoratedLink>
+                  </Hidden>
+                  <MenuItem
+                    component={Link}
+                    to={`/account`}
+                    onClick={this.handleClose('accountAnchorEl')}
+                  >
+                    Account settings
+                  </MenuItem>
                   <MenuItem onClick={this.logout}>Logout</MenuItem>
                 </Menu>
               </div>
