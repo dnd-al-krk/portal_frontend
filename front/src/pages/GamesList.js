@@ -36,6 +36,7 @@ export class FutureGamesList extends React.Component {
     loading: true,
     games: null,
     displayEmptyGames: false,
+    displayFullGames: false,
   };
 
   componentDidMount(){
@@ -82,8 +83,22 @@ export class FutureGamesList extends React.Component {
               }
               label="Display empty game slots"
             />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={this.state.displayFullGames}
+                  onChange={this.handleChange('displayFullGames')}
+                  value="displayFullGames"
+                  color='secondary'
+                />
+              }
+              label="Display full game slots"
+            />
           </FormGroup>
-          <Games list={this.state.games} displayEmpty={this.state.displayEmptyGames}/>
+          <Games list={this.state.games}
+                 displayEmpty={this.state.displayEmptyGames}
+                 displayFull={this.state.displayFullGames}
+          />
         </div>
       )
   }
