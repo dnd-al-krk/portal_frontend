@@ -23,6 +23,7 @@ import {faFile, faFilePdf} from '@fortawesome/free-regular-svg-icons'
 import {Link} from "react-router-dom";
 import Divider from "@material-ui/core/Divider/Divider";
 import {openUrl} from "../utils";
+import {MissingDCINotification} from "../common/MissingDCINotification";
 library.add(faFacebook, faDiscord, faFilePdf, faFile);
 
 const styles = (theme) => ({
@@ -91,6 +92,7 @@ class Home extends React.Component {
           <Grid item xs={12} md={8} lg={9}>
           {this.props.portalStore.currentUser ? (
             <Fragment>
+                <MissingDCINotification/>
                 <CurrentUserGamesList/>
                 {this.props.portalStore.currentUser.isDM && (
                   <Fragment>

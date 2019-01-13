@@ -23,6 +23,7 @@ import {Link} from "react-router-dom";
 import ReportDialog from "../common/ReportDialog";
 import CloseIcon from '@material-ui/icons/Close';
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
+import {MissingDCINotification} from "../common/MissingDCINotification";
 
 const styles = theme => ({
   root: {
@@ -146,10 +147,11 @@ class GameDetail extends Component {
     const players = this.state.game.players.map(player => player.profile.id);
     const player = this.props.portalStore.currentUser.profileID;
     const usersGameSlot = this.state.game.dm && this.state.game.dm.id === player;
+    const hasDCI = !!this.props.portalStore.currentUser.dci;
     const future = this.state.game.ended === false;
     const emptySpot = this.freeSpots() > 0;
     const isDM = this.state.game.dm;
-    return isDM && future && players.indexOf(player) === -1 && !usersGameSlot && emptySpot;
+    return isDM && future && players.indexOf(player) === -1 && !usersGameSlot && hasDCI && emptySpot;
   };
 
   hasCharacters = () => {
@@ -313,7 +315,7 @@ class GameDetail extends Component {
             <List>
               {game.players.map(player => this.getUserListItem(player))}
             </List>
-            {this.canSignUp() && this.hasCharacters() && (
+            {(this.canSignUp() && this.hasCharacters()) ? (
               <Fragment>
                 <Button variant="contained"
                         aria-owns={anchorEl ? 'simple-menu' : null}
@@ -333,6 +335,8 @@ class GameDetail extends Component {
                   ))}
                 </Menu>
               </Fragment>
+            ) : (
+                <MissingDCINotification/>
             )}
             {!this.hasCharacters() && (
               <Fragment>

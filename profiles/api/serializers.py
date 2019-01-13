@@ -52,7 +52,6 @@ class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=True)
     role = serializers.SerializerMethodField()
     characters_count = serializers.SerializerMethodField()
-    dci = serializers.IntegerField(required=False)
 
     class Meta:
         model = Profile
