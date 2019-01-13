@@ -42,6 +42,9 @@ The steps are:
     ```
 
 1. Bootstrap app with `fab devel bootstrap`
+
+If you already have virtualenv created previously simply enter it before starting server: `workon portal`
+
 1. Run server with `fab devel runserver`
 1. Open in the browser `localhost:8000`
 
