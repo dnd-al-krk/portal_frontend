@@ -75,6 +75,9 @@ const styles = (theme) => ({
   textDivider: {
     marginTop: 24,
     marginBottom: 12,
+  },
+  home: {
+    padding: 10,
   }
 });
 
@@ -91,7 +94,7 @@ class Home extends React.Component {
         <Grid container>
           <Grid item xs={12} md={8} lg={9}>
           {this.props.portalStore.currentUser ? (
-            <Fragment>
+            <div className={classes.home}>
                 <MissingDCINotification/>
                 <CurrentUserGamesList/>
                 {this.props.portalStore.currentUser.isDM && (
@@ -100,7 +103,7 @@ class Home extends React.Component {
                     <DMNotReportedGamesList/>
                   </Fragment>
                 )}
-            </Fragment>
+            </div>
           ) : (
             <div className={classes.root}>
               <div className={classes.centered}>
