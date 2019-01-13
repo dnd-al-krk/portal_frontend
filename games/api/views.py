@@ -103,11 +103,13 @@ class GameSessionViewSet(mixins.ListModelMixin,
 
 
 class FutureGameSessionViewSet(GameSessionViewSet):
-    queryset = GameSession.games.future()
+    def get_queryset(self):
+        return GameSession.games.future()
 
 
 class PastGameSessionViewSet(GameSessionViewSet):
-    queryset = GameSession.games.past().exclude(adventure=None)
+    def get_queryset(self):
+        return GameSession.games.past().exclude(adventure=None)
 
 
 class GameSessionBookViewSet(mixins.UpdateModelMixin,
