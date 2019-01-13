@@ -196,14 +196,21 @@ export class GameCard extends React.Component {
 @withRouter
 export default class Games extends React.Component {
 
+  gameFull = (game) => {
+    return Math.max(game.spots - game.players.length, 0) === 0
+  };
+
   render() {
-    const {list, classes, displayEmpty=false} = this.props;
+    const {list, classes, displayEmpty=false, displayFull=true} = this.props;
     return (
       <Fragment>
         <Grid container spacing={8} className={classes.cardsRoot}>
           {list.map(game => (
             <Fragment key={`game-${game.id}`}>
-              {(displayEmpty || game.adventure) ? (
+              {(
+                (displayEmpty || game.adventure) &&
+                (displayFull || !this.gameFull(game))
+              ) ? (
                 <Grid item xs={12} md={6} lg={4} key={`game-list-card-${game.id}`}>
                   <GameCard game={game}/>
                 </Grid>
