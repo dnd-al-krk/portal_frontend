@@ -4,12 +4,9 @@ import Avatar from "@material-ui/core/Avatar/Avatar";
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction";
 import Person from "@material-ui/icons/Person";
+import {Link} from "react-router-dom";
 
 class ProfileListItem extends Component {
-  gotoProfile = (id) => {
-    this.props.history.push(`/profiles/${id}`);
-  };
-
   getName = (profile) => {
     const names = `${profile.first_name} ${profile.last_name}`;
     const nickname = profile.nickname ? ` (${profile.nickname})` : '';
@@ -20,7 +17,10 @@ class ProfileListItem extends Component {
     const {profile, action=null, character=null} = this.props;
 
     return (
-      <ListItem button onClick={() => this.gotoProfile(profile.id)}>
+      <ListItem button
+                component={Link}
+                to={`/profiles/${profile.id}`}
+      >
         <Avatar>
           <Person />
         </Avatar>
