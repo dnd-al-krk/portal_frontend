@@ -9,7 +9,7 @@ import RoomIcon from "@material-ui/icons/Room";
 import PersonIcon from "@material-ui/icons/Person";
 import ExclamationIcon from "@material-ui/icons/Warning";
 import GamesStore from "../stores/GamesStore";
-import {withRouter} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import classNames from 'classnames';
 import Card from "@material-ui/core/Card/Card";
 import CardContent from "@material-ui/core/CardContent/CardContent";
@@ -121,7 +121,6 @@ export class GameInfo extends React.Component {
   }
 }
 
-
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
 @withRouter
@@ -165,7 +164,9 @@ export class GameCard extends React.Component {
 
     return <Card className={classNames(this.getItemClassNames(game), classes.card)} key={`game-list-card-${game.id}`}>
           <CardActionArea
-            onClick={() => { !!game.adventure && this.gotoGame(game.id)}}
+            component={Link}
+            to={`/games/game/${game.id}`}
+            // onClick={() => { !!game.adventure && this.gotoGame(game.id)}}
             disabled={ !game.adventure }
           >
             <CardHeader

@@ -147,7 +147,8 @@ class TopAppBar extends React.Component {
               <div className={classes.rightNav}>
                 <Hidden xsDown>
                   <IconButton
-                    onClick={() => this.props.history.push('/characters/create')}
+                    component={Link}
+                    to={`/characters/create`}
                     color="inherit"
                   >
                     <PersonAddIcon />
