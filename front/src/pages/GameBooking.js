@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import Typography from "@material-ui/core/Typography/Typography";
 import {WideContent} from "../common/Content";
 import Spinner from "../common/LoadingDiv";
@@ -12,6 +12,7 @@ import classNames from 'classnames';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
 import {dateToString, weekdayOf} from "../utils";
+import {MissingDCINotification} from "../common/MissingDCINotification";
 
 
 const styles = theme => ({
@@ -190,6 +191,8 @@ class GameBooking extends Component {
           <Typography variant='h5' className={classes.header}>
             Booking slot for a game
           </Typography>
+
+          <MissingDCINotification/>
           <Typography variant="body1" className={classes.header}>
             <span className={classes.info}>
               <CalendarIcon className={classes.infoIcon}/>{this.gameDate()}
