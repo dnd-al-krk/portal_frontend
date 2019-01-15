@@ -112,9 +112,9 @@ class TopAppBar extends React.Component {
     );
 
     const accountOpen = Boolean(this.state.accountAnchorEl);
-    const profileID = null;
-    if(this.isAuthenticated()){
-      const profileID = this.props.portalStore.currentUser.profileID;
+    let profileID = false;
+    if(!!this.isAuthenticated()){
+      profileID = this.props.portalStore.currentUser.profileID;
     }
 
 
@@ -147,7 +147,7 @@ class TopAppBar extends React.Component {
               </div>
             )}
 
-            {profileID && (
+            {this.isAuthenticated() && (
               <div className={classes.rightNav}>
                 <Hidden xsDown>
                   <IconButton
