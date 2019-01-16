@@ -46,7 +46,7 @@ The steps are:
 If you already have virtualenv created previously simply enter it before starting server: `workon portal`
 
 1. Run server with `fab devel runserver`
-1. Open in the browser `localhost:8000`
+1. Open in the browser `http://localhost:8000/admin/` to access admin interface and provide any starting data.
 
 ### Testing
 
@@ -60,9 +60,9 @@ You can run pytest tests with:
 1. Enter repo dir and inside the `front` dir 
 1. Run `npm install`
 1. Run `npm run start`
-1. The browser will start page automatically (`localhost:3000`)
+1. The browser will start page automatically (`localhost:3000`) -- this is the interface for the user
 
-Build with `npm run build` - it will move static and template files to proper directories.
+Build with `npm run build` - it will move static and template files to proper directories and thus you will be able to access user interface also under `http://localhost:8000/`
 
 ## License disclaimer
 
