@@ -14,7 +14,7 @@ The steps are:
 1. Clone this repo
 1. cd to repo (with `manage.py` file)
 1. Create virtualenv with virtualenvwrapper: `mkvirtualenv portal`
-1. Install requirements `pip install -r requirements.txt`
+1. Install requirements `pip install -r requirements/devel.txt`
 1. Create file `fabric_config.py` with contents (adjust if something is different in your config):
 
     ```python
