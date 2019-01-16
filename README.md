@@ -41,12 +41,12 @@ The steps are:
 
     ```
 
-1. Bootstrap app with `fab devel bootstrap`
-
-If you already have virtualenv created previously simply enter it before starting server: `workon portal`
-
+1. Bootstrap app with `fab devel bootstrap` -- this command is run once only on the first setup. It will let you create superuser for instance, which you will use two steps later. 
 1. Run server with `fab devel runserver`
 1. Open in the browser `http://localhost:8000/admin/` to access admin interface and provide any starting data.
+
+
+*Note*: If you already have virtualenv created previously simply enter it before starting server: `workon portal`
 
 ### Testing
 
