@@ -1,0 +1,26 @@
+version: '3.5'
+
+services:
+  backend:
+    volumes:
+      - .:/code
+      - pip:/usr/local/lib/python3.7/site-packages
+    command: devel_web
+    ports:
+      - "8000:8000"
+    depends_on:
+      - email
+  frontend:
+    environment:
+      - NODE_ENV=development
+    command: npm start
+    volumes:
+      - ./front:/code/front
+    ports:
+      - "3000:3000"
+  email:
+    image: python:3.7
+    command: python -m smtpd -n -c DebuggingServer 0.0.0.0:1025
+
+volumes:
+  pip:
