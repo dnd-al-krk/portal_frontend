@@ -4,7 +4,7 @@ services:
   backend:
     volumes:
       - .:/code
-      - pip:/home/back/.local/lib/python3.7/site-packages
+      - pip:/usr/local/lib/python3.7/site-packages
     command: devel_web
     ports:
       - "8000:8000"
