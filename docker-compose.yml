@@ -15,9 +15,6 @@ services:
       context: .
       dockerfile: ./docker/frontend/Dockerfile
     command: npm run build_prod
-    volumes:
-      - ./templates:/code/templates
-      - ./static:/code/static
   db:
     image: postgres:10.1-alpine
     volumes:

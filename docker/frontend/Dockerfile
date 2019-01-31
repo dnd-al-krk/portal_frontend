@@ -1,14 +1,17 @@
-FROM node:9.6.1
+FROM node:10.15.1
 
 RUN mkdir /code
-RUN mkdir /code/front
-RUN mkdir /code/templates
 RUN mkdir /code/static
+COPY . /code/
+
+RUN useradd --create-home --home-dir /home/front front
+
+RUN chown -R front:front /code
+
+USER front
+
 WORKDIR /code/front
 
 ENV PATH /code/front/node_modules/.bin:$PATH
-
-COPY ./front/ /code/front/
-
 
 RUN npm install --silent

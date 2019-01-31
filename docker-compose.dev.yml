@@ -15,7 +15,8 @@ services:
       - NODE_ENV=development
     command: npm start
     volumes:
-      - ./front:/code/front
+      - .:/code
+      - node_modules:/code/front/node_modules
     ports:
       - "3000:3000"
   email:
@@ -24,3 +25,4 @@ services:
 
 volumes:
   pip:
+  node_modules:
