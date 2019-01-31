@@ -11,7 +11,7 @@ services:
     depends_on:
       - email
     environment:
-      - DJANGO_SETTINGS_MODULES=settings.docker_devel
+      - DJANGO_SETTINGS_MODULE=settings.docker_devel
   frontend:
     environment:
       - NODE_ENV=development
