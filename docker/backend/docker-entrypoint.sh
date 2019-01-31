@@ -14,6 +14,7 @@ prod_web(){
 }
 
 bootstrap(){
+    pip install -r requirements/docker.txt
     pip install -r requirements/devel.txt
     dropdb -U postgres -h db postgres
     createdb -U postgres -h db postgres
