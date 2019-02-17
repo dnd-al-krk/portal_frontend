@@ -39,10 +39,10 @@ ADVENTURE_TYPES = (
 )
 
 ADVENTURE_TIERS = (
-    (ADVENTURE_TIER1, _('Trier 1')),
-    (ADVENTURE_TIER2, _('Trier 2')),
-    (ADVENTURE_TIER3, _('Trier 3')),
-    (ADVENTURE_TIER4, _('Trier 4')),
+    (ADVENTURE_TIER1, _('Tier 1')),
+    (ADVENTURE_TIER2, _('Tier 2')),
+    (ADVENTURE_TIER3, _('Tier 3')),
+    (ADVENTURE_TIER4, _('Tier 4')),
 )
 
 

@@ -231,7 +231,7 @@ class GameDetail extends Component {
         <Grid container spacing={8}>
           <Grid item xs={12} md={6}>
             <Typography variant="h5" className={classes.header}>
-              {game.adventure.title_display}
+              {game.adventure.title_display} {game.adventure.tier !== null ? `(${game.adventure.tier})` : ``}
             </Typography>
             <Typography variant="body1" className={classes.info}>
                 <CalendarIcon className={classes.infoIcon}/>{this.gameDate(game)}

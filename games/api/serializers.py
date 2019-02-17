@@ -6,13 +6,17 @@ from ..models import Adventure, GameSession, GameSessionPlayerSignUp
 
 class AdventureSerializer(serializers.ModelSerializer):
     title_display = serializers.SerializerMethodField()
+    tier = serializers.SerializerMethodField()
 
     class Meta:
         model = Adventure
-        fields = ('id', 'title', 'season', 'number', 'type', 'title_display')
+        fields = ('id', 'title', 'season', 'number', 'tier', 'type', 'title_display')
 
     def get_title_display(self, adventure):
         return str(adventure)
+
+    def get_tier(self, adventure):
+        return adventure.get_tier_display()
 
 
 class GameSessionPlayerSignUpSerializer(serializers.ModelSerializer):

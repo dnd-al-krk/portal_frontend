@@ -171,8 +171,10 @@ export class GameCard extends React.Component {
           >
             <CardHeader
               title={<Typography variant="subtitle1" style={{fontSize: 18}}><FontAwesomeIcon icon='dice-d20'/> {
-                this.isEmpty() ? 'Empty slot' : game.adventure.title_display
-              }</Typography>}
+                  this.isEmpty() ? 'Empty slot' : game.adventure.title_display
+                }
+                { !this.isEmpty() && game.adventure.tier !== null ? `(${game.adventure.tier})` : `` }
+              </Typography>}
               subheader={this.getDate()}
             />
             <CardContent>
