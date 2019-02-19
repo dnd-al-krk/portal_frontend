@@ -3,9 +3,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import {inject, observer} from "mobx-react";
 import Grid from "@material-ui/core/Grid/Grid";
 import Typography from "@material-ui/core/Typography/Typography";
-import CalendarIcon from '@material-ui/icons/CalendarToday';
-import TimeIcon from '@material-ui/icons/AccessTime';
-import LocationIcon from '@material-ui/icons/LocationOn';
 import {dateToString, weekdayOf} from "../utils";
 import Spinner from "../common/LoadingDiv";
 import Avatar from "@material-ui/core/Avatar/Avatar";
@@ -27,11 +24,9 @@ import {MissingDCINotification} from "../common/MissingDCINotification";
 
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faAngleDoubleUp, faMapMarker, faCalendarAlt, faChair, faDiceD20, faClock} from '@fortawesome/free-solid-svg-icons'
+import {faAngleDoubleUp, faCalendarAlt, faClock, faMapMarker} from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components';
 
-library.add(faChair);
-library.add(faDiceD20);
 library.add(faAngleDoubleUp);
 library.add(faCalendarAlt);
 library.add(faClock);
