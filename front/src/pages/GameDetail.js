@@ -54,9 +54,6 @@ const styles = theme => ({
   header: {
     marginBottom: 10
   },
-  info: {
-    marginBottom: 5
-  },
   infoIcon: {
     fontSize: 14,
     marginRight: 10
