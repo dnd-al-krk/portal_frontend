@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from utils.email import send_email
 from .constants import (ADVENTURE_TYPE_EX, ADVENTURE_TYPE_EN, ADVENTURE_TYPE_EP, ADVENTURE_TYPE_HC, ADVENTURE_TYPE_IA,
                         ADVENTURE_TYPE_LE, ADVENTURE_TYPE_CCC, ADVENTURE_TYPE_OTHER, ADVENTURE_TYPE_AO,
-                        ADVENTURE_TYPE_AL)
+                        ADVENTURE_TYPE_AL, ADVENTURE_TIER1, ADVENTURE_TIER2, ADVENTURE_TIER3, ADVENTURE_TIER4)
 from utils.models import UUIDModel
 
 
@@ -38,10 +38,18 @@ ADVENTURE_TYPES = (
     (ADVENTURE_TYPE_OTHER, _('Other')),
 )
 
+ADVENTURE_TIERS = (
+    (ADVENTURE_TIER1, _('Tier 1')),
+    (ADVENTURE_TIER2, _('Tier 2')),
+    (ADVENTURE_TIER3, _('Tier 3')),
+    (ADVENTURE_TIER4, _('Tier 4')),
+)
+
 
 class Adventure(UUIDModel):
     season = models.PositiveIntegerField(_('Season'), blank=True, null=True)
     number = models.PositiveIntegerField(_('Number'), blank=True, null=True)
+    tier = models.CharField(_('Tier'), max_length=6, blank=True, null=True, choices=ADVENTURE_TIERS)
     title = models.CharField(_('Title'), max_length=255)
     type = models.IntegerField(_('Type'), choices=ADVENTURE_TYPES, default=ADVENTURE_TYPE_EX)
 
@@ -53,6 +61,9 @@ class Adventure(UUIDModel):
     def __str__(self):
         if self.type == ADVENTURE_TYPE_OTHER:
             return self.title
+
+        if self.type == ADVENTURE_TYPE_CCC:
+            return f'CCC-{self.title}'
 
         return 'DD{type}{season}{number} - {title}'.format(
             type=self.get_type(),

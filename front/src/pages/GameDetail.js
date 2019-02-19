@@ -3,9 +3,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import {inject, observer} from "mobx-react";
 import Grid from "@material-ui/core/Grid/Grid";
 import Typography from "@material-ui/core/Typography/Typography";
-import CalendarIcon from '@material-ui/icons/CalendarToday';
-import TimeIcon from '@material-ui/icons/AccessTime';
-import LocationIcon from '@material-ui/icons/LocationOn';
 import {dateToString, weekdayOf} from "../utils";
 import Spinner from "../common/LoadingDiv";
 import Avatar from "@material-ui/core/Avatar/Avatar";
@@ -25,15 +22,32 @@ import CloseIcon from '@material-ui/icons/Close';
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import {MissingDCINotification} from "../common/MissingDCINotification";
 
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faAngleDoubleUp, faCalendarAlt, faClock, faMapMarker} from '@fortawesome/free-solid-svg-icons'
+import styled from 'styled-components';
+
+library.add(faAngleDoubleUp);
+library.add(faCalendarAlt);
+library.add(faClock);
+library.add(faMapMarker);
+
+
+const InfoTypography = styled(Typography)`
+  && {
+    margin-bottom: 10px;
+    font-size: 1em;
+  }
+  
+`;
+
+
 const styles = theme => ({
   root: {
     padding: 20
   },
   header: {
     marginBottom: 10
-  },
-  info: {
-    marginBottom: 5
   },
   infoIcon: {
     fontSize: 14,
@@ -233,15 +247,18 @@ class GameDetail extends Component {
             <Typography variant="h5" className={classes.header}>
               {game.adventure.title_display}
             </Typography>
-            <Typography variant="body1" className={classes.info}>
-                <CalendarIcon className={classes.infoIcon}/>{this.gameDate(game)}
-            </Typography>
-            <Typography variant="body1" className={classes.info}>
-                <TimeIcon className={classes.infoIcon}/> {this.gameTime(game)}
-            </Typography>
-            <Typography variant="body1" className={classes.info}>
-                <LocationIcon className={classes.infoIcon}/> {game.table_name}
-            </Typography>
+            <InfoTypography variant="body1">
+              <FontAwesomeIcon icon="angle-double-up" /> {game.adventure.tier !== null ? `${game.adventure.tier}` : ``}
+            </InfoTypography>
+            <InfoTypography variant="body1" >
+                <FontAwesomeIcon icon="calendar-alt" /> {this.gameDate(game)}
+            </InfoTypography>
+            <InfoTypography variant="body1">
+                <FontAwesomeIcon icon="clock" /> {this.gameTime(game)}
+            </InfoTypography>
+            <InfoTypography variant="body1">
+                <FontAwesomeIcon icon="map-marker" /> {game.table_name}
+            </InfoTypography>
             <Typography variant="h6" className={classes.header}>
                 Dungeon Master
             </Typography>

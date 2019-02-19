@@ -11,7 +11,7 @@ class TableAdmin(admin.ModelAdmin):
 
 @admin.register(Adventure)
 class AdventureAdmin(admin.ModelAdmin):
-    list_display = ['title', 'type', 'season', 'number']
+    list_display = ['__str__', 'type', 'tier', 'season', 'number']
     list_filter = ['season', 'type']
 
 
