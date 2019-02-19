@@ -141,7 +141,7 @@ export class GameCard extends React.Component {
     return <SubheadingDiv>
         <FontAwesomeIcon icon='calendar-alt'/> {GamesStore.getDateString(game)} {GamesStore.getWeekDay(game)}
         <strong>{game.timeStart}</strong>
-        { game && game.adventure.tier !== null ? (<TierDiv><FontAwesomeIcon icon="angle-double-up" /> {game.adventure.tier}</TierDiv>) : `` }
+        { game.adventure && game.adventure.tier !== null ? (<TierDiv><FontAwesomeIcon icon="angle-double-up" /> {game.adventure.tier}</TierDiv>) : `` }
       </SubheadingDiv>;
   };
 
