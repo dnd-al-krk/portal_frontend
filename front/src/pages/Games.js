@@ -4,7 +4,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Button from "@material-ui/core/Button/Button";
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import Chip from "@material-ui/core/Chip/Chip";
-import CalendarIcon from "@material-ui/icons/Event";
 import RoomIcon from "@material-ui/icons/Room";
 import PersonIcon from "@material-ui/icons/Person";
 import ExclamationIcon from "@material-ui/icons/Warning";
@@ -17,16 +16,26 @@ import CardActions from "@material-ui/core/CardActions/CardActions";
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardHeader from "@material-ui/core/CardHeader/CardHeader";
 
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faChair, faDiceD20
-} from '@fortawesome/free-solid-svg-icons'
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faAngleDoubleUp, faCalendarAlt, faChair, faDiceD20} from '@fortawesome/free-solid-svg-icons'
 import Typography from "@material-ui/core/Typography/Typography";
 import Grid from "@material-ui/core/Grid/Grid";
+import styled from 'styled-components';
 
 library.add(faChair);
 library.add(faDiceD20);
+library.add(faAngleDoubleUp);
+library.add(faCalendarAlt);
+
+const TierDiv = styled.div`
+  margin-top: 5px;
+`;
+
+const SubheadingDiv = styled.div`
+  font-size: 18px;
+  margin-top: 10px
+`;
 
 const styles = theme => ({
   root: {
@@ -63,9 +72,6 @@ const styles = theme => ({
   currentDM: {
     backgroundColor: '#DF9E00',
     color: 'white',
-  },
-  date: {
-    fontSize: 18,
   }
 });
 
@@ -132,14 +138,11 @@ export class GameCard extends React.Component {
 
   getDate = () => {
     const { game, classes } = this.props;
-    return <div className={classes.date}>
-        <CalendarIcon style={{fontSize: 20, marginBottom: -4}}/> {GamesStore.getDateString(game)} {GamesStore.getWeekDay(game)}
+    return <SubheadingDiv>
+        <FontAwesomeIcon icon='calendar-alt'/> {GamesStore.getDateString(game)} {GamesStore.getWeekDay(game)}
         <strong>{game.timeStart}</strong>
-      </div>;
-  };
-
-  gotoGame = (id) => {
-    this.props.history.push(`/games/game/${id}`);
+        { game && game.adventure.tier !== null ? (<TierDiv><FontAwesomeIcon icon="angle-double-up" /> {game.adventure.tier}</TierDiv>) : `` }
+      </SubheadingDiv>;
   };
 
   gotoGameBooking = (e) => {
@@ -166,14 +169,12 @@ export class GameCard extends React.Component {
           <CardActionArea
             component={Link}
             to={`/games/game/${game.id}`}
-            // onClick={() => { !!game.adventure && this.gotoGame(game.id)}}
             disabled={ !game.adventure }
           >
             <CardHeader
               title={<Typography variant="subtitle1" style={{fontSize: 18}}><FontAwesomeIcon icon='dice-d20'/> {
                   this.isEmpty() ? 'Empty slot' : game.adventure.title_display
                 }
-                { !this.isEmpty() && game.adventure.tier !== null ? `(${game.adventure.tier})` : `` }
               </Typography>}
               subheader={this.getDate()}
             />
