@@ -34,6 +34,18 @@ Their passwords are the same as login.
 
 The fixtures also provide necessary data to start development process. You have past and future game sessions, example adventures and game session DM bookings or signups from players. All you need to get started.
 
+## Development guidelines
+
+- We are deeloping for python 3.6+
+- We try to stick with fairly recent django version
+- We stick to PEP-8 except lines length which can be up to 120 chars (PyCharm standard)
+
+We are using [black](https://github.com/ambv/black) formatter to standarize code in the project. To use it fully:
+1. Create local virtualenv (see manual instalation below) and install black with `pip install black`
+1. Install [pre-commit](https://pre-commit.com/)
+1. Run `$ pre-commit install`
+1. 
+
 # Manual Installation without Docker
 
 ## Backend
