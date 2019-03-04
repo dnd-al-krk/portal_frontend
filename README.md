@@ -43,8 +43,7 @@ The fixtures also provide necessary data to start development process. You have 
 We are using [black](https://github.com/ambv/black) formatter to standarize code in the project. To use it fully:
 1. Create local virtualenv (see manual instalation below) and install black with `pip install black`
 1. Install [pre-commit](https://pre-commit.com/)
-1. Run `$ pre-commit install`
-1. 
+1. Run `$ pre-commit install` - this will install pre-commit hook to your git repository that will check code with black on commit
 
 # Manual Installation without Docker
 
