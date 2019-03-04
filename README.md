@@ -3,9 +3,38 @@ portAL - Adventure's League community management service
 
 # Requirements
 
-This project is developed for Python 3.5.3 (or newer). 
+In order to run and develop this project you need [docker](https://docs.docker.com/) and [docker compose](https://docs.docker.com/compose/) installed in your system. Nothing else is required.
 
-# Installation
+# Development
+
+To start developing the project:
+
+1. Clone the repository to your directory
+1. Run `$ cp docker-compose.dev.yml docker-compose.override.yml` -- this will create your own docker compose file for development. You can adjust it to your needs.
+1. Run `$ docker-compose build` - this will build necessary docker images.
+1. Run `$ docker-compose run backend bootstrap` - this will create necessary files, migrate db and import fixtures
+
+To start development run `docker-compose up`. You can now open front-end in the browser under `localhost:3000` and backend under `localhost:8000`.
+
+## Pre-generated users
+
+Fixtures for the project provide basic users for each type: admin, DM and player.
+
+Admin credentials are:
+- username: admin@domain.com
+- password: portal123
+
+There are also added numerous of players/DM accounts created:
+- dmX@domain.com (e.g. dm1@domain.com)
+- userX@doman.com (e.g. user1@doman.com)
+
+Their passwords are the same as login.
+
+## Pre-genrated data
+
+The fixtures also provide necessary data to start development process. You have past and future game sessions, example adventures and game session DM bookings or signups from players. All you need to get started.
+
+# Manual Installation without Docker
 
 ## Backend
 
@@ -19,7 +48,7 @@ The steps are:
 
     ```python
     import os
-    
+
     from fabric.decorators import task
     from fabric.utils import _AttributeDict
 
@@ -33,15 +62,15 @@ The steps are:
 
             self.project_root = os.path.dirname(os.path.abspath(__file__))
             self.DJANGO_SETTINGS_MODULE = 'settings.{environment}'.format(**self)
-    
-            
+
+
     @task
     def devel():
         env.update(DevelConfig())
 
     ```
 
-1. Bootstrap app with `fab devel bootstrap` -- this command is run once only on the first setup. It will let you create superuser for instance, which you will use two steps later. 
+1. Bootstrap app with `fab devel bootstrap` -- this command is run once only on the first setup. It will let you create superuser for instance, which you will use two steps later.
 1. Run server with `fab devel runserver`
 1. Open in the browser `http://localhost:8000/admin/` to access admin interface and provide any starting data.
 
@@ -57,7 +86,7 @@ You can run pytest tests with:
 ## Frontend
 
 1. Clone this repo if not cloned yet
-1. Enter repo dir and inside the `front` dir 
+1. Enter repo dir and inside the `front` dir
 1. Run `npm install`
 1. Run `npm run start`
 1. The browser will start page automatically (`localhost:3000`) -- this is the interface for the user
@@ -66,6 +95,6 @@ Build with `npm run build` - it will move static and template files to proper di
 
 ## License disclaimer
 
-**portAL** is unofficial Fan Content permitted under the Fan Content Policy. Not approved/endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC. 
+**portAL** is unofficial Fan Content permitted under the Fan Content Policy. Not approved/endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.
 
 **Note:** Code itself is available under the open source licence, but part of the repository materials (especially images) are used under the Fan Content Policy and cannot be redistributed or used commercially.
