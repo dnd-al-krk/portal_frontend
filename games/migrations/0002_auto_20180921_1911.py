@@ -5,14 +5,14 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('games', '0001_initial'),
-    ]
+    dependencies = [("games", "0001_initial")]
 
     operations = [
         migrations.AlterField(
-            model_name='adventure',
-            name='type',
-            field=models.IntegerField(choices=[(1, 'EX'), (2, 'EN'), (3, 'EP'), (4, 'CCC'), (5, 'Other')], default=1, verbose_name='Type'),
-        ),
+            model_name="adventure",
+            name="type",
+            field=models.IntegerField(
+                choices=[(1, "EX"), (2, "EN"), (3, "EP"), (4, "CCC"), (5, "Other")], default=1, verbose_name="Type"
+            ),
+        )
     ]

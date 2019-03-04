@@ -11,44 +11,37 @@ from .serializers import AdventureSerializer, GameSessionSerializer, GameSession
 from ..models import Adventure, GameSession, GameSessionPlayerSignUp
 
 
-class AdventuresViewSet(mixins.ListModelMixin,
-                        mixins.RetrieveModelMixin,
-                        viewsets.GenericViewSet):
+class AdventuresViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     serializer_class = AdventureSerializer
     queryset = Adventure.objects.all()
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticated]
     filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)
     filter_class = AdventureFilter
-    search_fields = ('title', )
-    ordering_fields = ('season', 'number', 'title',)
-    ordering = ('season', 'number', 'title', )
+    search_fields = ("title",)
+    ordering_fields = ("season", "number", "title")
+    ordering = ("season", "number", "title")
 
 
-class GameSessionViewSet(mixins.ListModelMixin,
-                         mixins.RetrieveModelMixin,
-                         mixins.UpdateModelMixin,
-                         viewsets.GenericViewSet):
+class GameSessionViewSet(
+    mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
+):
     serializer_class = GameSessionSerializer
     queryset = GameSession.games.all()
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticated]
     filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)
     filter_class = GameSessionFilter
-    search_fields = (
-        'table__name',
-        'dm__user__first_name', 'dm__user__last_name', 'dm__nickname',
-        'adventure__title',
-    )
-    ordering_fields = ('date', )
-    ordering = 'date'
+    search_fields = ("table__name", "dm__user__first_name", "dm__user__last_name", "dm__nickname", "adventure__title")
+    ordering_fields = ("date",)
+    ordering = "date"
 
-    @action(methods=['PUT'], detail=True)
+    @action(methods=["PUT"], detail=True)
     def signUp(self, request, *args, **kwargs):
 
         instance = self.get_object()
         profile = request.user.profile
         print(profile.id)
         try:
-            character_id = request.data['character_id']
+            character_id = request.data["character_id"]
             print(character_id)
             character = profile.characters.get(id=character_id)
             print(character)
@@ -58,14 +51,10 @@ class GameSessionViewSet(mixins.ListModelMixin,
         if not instance.can_sign_up(profile):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        GameSessionPlayerSignUp.objects.create(
-            game=instance,
-            player=profile,
-            character=character,
-        )
+        GameSessionPlayerSignUp.objects.create(game=instance, player=profile, character=character)
         return Response()
 
-    @action(methods=['PUT'], detail=True)
+    @action(methods=["PUT"], detail=True)
     def signOut(self, request, *args, **kwargs):
         instance = self.get_object()
         profile = request.user.profile
@@ -74,10 +63,7 @@ class GameSessionViewSet(mixins.ListModelMixin,
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            signup = GameSessionPlayerSignUp.objects.get(
-                game=instance,
-                player=profile
-            )
+            signup = GameSessionPlayerSignUp.objects.get(game=instance, player=profile)
             signup.delete()
 
             instance.checkMinimumPlayers()
@@ -85,7 +71,7 @@ class GameSessionViewSet(mixins.ListModelMixin,
         except GameSessionPlayerSignUp.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=['PUT'], detail=True)
+    @action(methods=["PUT"], detail=True)
     def report(self, request, *args, **kwargs):
         data = request.data
         instance = self.get_object()
@@ -93,8 +79,8 @@ class GameSessionViewSet(mixins.ListModelMixin,
         if dm != instance.dm:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        players = data.get('players')
-        extra_players = data.get('extra_players', None)
+        players = data.get("players")
+        extra_players = data.get("extra_players", None)
         GameSessionPlayerSignUp.objects.filter(game=instance).update(reported=False)
         GameSessionPlayerSignUp.objects.filter(player_id__in=players, game=instance).update(reported=True)
         instance.report(extra_players)
@@ -112,11 +98,10 @@ class PastGameSessionViewSet(GameSessionViewSet):
         return GameSession.games.past().exclude(adventure=None)
 
 
-class GameSessionBookViewSet(mixins.UpdateModelMixin,
-                             viewsets.GenericViewSet):
+class GameSessionBookViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
     serializer_class = GameSessionBookSerializer
     queryset = GameSession.games.all()
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticated]
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -131,7 +116,7 @@ class GameSessionBookViewSet(mixins.UpdateModelMixin,
     def perform_update(self, serializer):
         serializer.save(dm=self.request.user.profile)
 
-    @action(methods=['GET'], detail=True)
+    @action(methods=["GET"], detail=True)
     def cancel(self, request, *args, **kwargs):
         """
         Cancels game run by the owner DM.

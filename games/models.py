@@ -6,80 +6,90 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from utils.email import send_email
-from .constants import (ADVENTURE_TYPE_EX, ADVENTURE_TYPE_EN, ADVENTURE_TYPE_EP, ADVENTURE_TYPE_HC, ADVENTURE_TYPE_IA,
-                        ADVENTURE_TYPE_LE, ADVENTURE_TYPE_CCC, ADVENTURE_TYPE_OTHER, ADVENTURE_TYPE_AO,
-                        ADVENTURE_TYPE_AL, ADVENTURE_TIER1, ADVENTURE_TIER2, ADVENTURE_TIER3, ADVENTURE_TIER4)
+from .constants import (
+    ADVENTURE_TYPE_EX,
+    ADVENTURE_TYPE_EN,
+    ADVENTURE_TYPE_EP,
+    ADVENTURE_TYPE_HC,
+    ADVENTURE_TYPE_IA,
+    ADVENTURE_TYPE_LE,
+    ADVENTURE_TYPE_CCC,
+    ADVENTURE_TYPE_OTHER,
+    ADVENTURE_TYPE_AO,
+    ADVENTURE_TYPE_AL,
+    ADVENTURE_TIER1,
+    ADVENTURE_TIER2,
+    ADVENTURE_TIER3,
+    ADVENTURE_TIER4,
+)
 from utils.models import UUIDModel
 
 
 class Table(UUIDModel):
-    name = models.CharField(_('Table name'), max_length=100)
-    max_spots = models.PositiveIntegerField(_('Maximum spots'), default=1)
+    name = models.CharField(_("Table name"), max_length=100)
+    max_spots = models.PositiveIntegerField(_("Maximum spots"), default=1)
 
     class Meta:
-        verbose_name = _('Table')
-        verbose_name_plural = _('Tables')
-        ordering = ['id']
+        verbose_name = _("Table")
+        verbose_name_plural = _("Tables")
+        ordering = ["id"]
 
     def __str__(self):
         return self.name
 
 
 ADVENTURE_TYPES = (
-    (ADVENTURE_TYPE_AL, _('AL')),
-    (ADVENTURE_TYPE_EN, _('EN')),
-    (ADVENTURE_TYPE_EP, _('EP')),
-    (ADVENTURE_TYPE_EX, _('EX')),
-    (ADVENTURE_TYPE_HC, _('HC')),
-    (ADVENTURE_TYPE_IA, _('IA')),
-    (ADVENTURE_TYPE_LE, _('LE')),
-    (ADVENTURE_TYPE_CCC, _('CCC')),
-    (ADVENTURE_TYPE_AO, _('AO')),
-    (ADVENTURE_TYPE_OTHER, _('Other')),
+    (ADVENTURE_TYPE_AL, _("AL")),
+    (ADVENTURE_TYPE_EN, _("EN")),
+    (ADVENTURE_TYPE_EP, _("EP")),
+    (ADVENTURE_TYPE_EX, _("EX")),
+    (ADVENTURE_TYPE_HC, _("HC")),
+    (ADVENTURE_TYPE_IA, _("IA")),
+    (ADVENTURE_TYPE_LE, _("LE")),
+    (ADVENTURE_TYPE_CCC, _("CCC")),
+    (ADVENTURE_TYPE_AO, _("AO")),
+    (ADVENTURE_TYPE_OTHER, _("Other")),
 )
 
 ADVENTURE_TIERS = (
-    (ADVENTURE_TIER1, _('Tier 1')),
-    (ADVENTURE_TIER2, _('Tier 2')),
-    (ADVENTURE_TIER3, _('Tier 3')),
-    (ADVENTURE_TIER4, _('Tier 4')),
+    (ADVENTURE_TIER1, _("Tier 1")),
+    (ADVENTURE_TIER2, _("Tier 2")),
+    (ADVENTURE_TIER3, _("Tier 3")),
+    (ADVENTURE_TIER4, _("Tier 4")),
 )
 
 
 class Adventure(UUIDModel):
-    season = models.PositiveIntegerField(_('Season'), blank=True, null=True)
-    number = models.PositiveIntegerField(_('Number'), blank=True, null=True)
-    tier = models.CharField(_('Tier'), max_length=6, blank=True, null=True, choices=ADVENTURE_TIERS)
-    title = models.CharField(_('Title'), max_length=255)
-    type = models.IntegerField(_('Type'), choices=ADVENTURE_TYPES, default=ADVENTURE_TYPE_EX)
+    season = models.PositiveIntegerField(_("Season"), blank=True, null=True)
+    number = models.PositiveIntegerField(_("Number"), blank=True, null=True)
+    tier = models.CharField(_("Tier"), max_length=6, blank=True, null=True, choices=ADVENTURE_TIERS)
+    title = models.CharField(_("Title"), max_length=255)
+    type = models.IntegerField(_("Type"), choices=ADVENTURE_TYPES, default=ADVENTURE_TYPE_EX)
 
     class Meta:
-        verbose_name = _('Adventure')
-        verbose_name_plural = _('Adventures')
-        ordering = ('season', 'number', 'title')
+        verbose_name = _("Adventure")
+        verbose_name_plural = _("Adventures")
+        ordering = ("season", "number", "title")
 
     def __str__(self):
         if self.type == ADVENTURE_TYPE_OTHER:
             return self.title
 
         if self.type == ADVENTURE_TYPE_CCC:
-            return f'CCC-{self.title}'
+            return f"CCC-{self.title}"
 
-        return 'DD{type}{season}{number} - {title}'.format(
-            type=self.get_type(),
-            season=self.get_season(),
-            number=self.get_number(),
-            title=self.title
+        return "DD{type}{season}{number} - {title}".format(
+            type=self.get_type(), season=self.get_season(), number=self.get_number(), title=self.title
         )
 
     def get_season(self):
-        return str(self.season) + '-' if self.season is not None else ''
+        return str(self.season) + "-" if self.season is not None else ""
 
     def get_number(self):
-        return str(self.number) if self.number is not None else ''
+        return str(self.number) if self.number is not None else ""
 
     def get_type(self):
-        return self.get_type_display() if self.type != ADVENTURE_TYPE_OTHER else ''
+        return self.get_type_display() if self.type != ADVENTURE_TYPE_OTHER else ""
 
 
 class GameSessionQuerySet(models.QuerySet):
@@ -108,47 +118,53 @@ class GameSessionActiveGamesManager(models.Manager):
 
 
 class GameSession(UUIDModel):
-    date = models.DateField(_('Date'))
-    table = models.ForeignKey(Table, related_name='game_sessions', on_delete=models.CASCADE)
-    dm = models.ForeignKey('profiles.Profile', related_name='game_sessions', on_delete=models.SET_NULL, blank=True,
-                           null=True)
-    players = models.ManyToManyField('profiles.Profile', related_name='played_sessions', blank=True, through='games.GameSessionPlayerSignUp')
-    adventure = models.ForeignKey(Adventure, related_name='game_sessions', on_delete=models.SET_NULL, blank=True,
-                                  null=True)
-    spots = models.PositiveIntegerField(_('Number of spots'), default=5)
-    notes = models.CharField(_('Additional notes'), max_length=255, blank=True, null=True)
-    time_start = models.TimeField(_('Starting time'), blank=True, null=True)
-    time_end = models.TimeField(_('Ending time'), blank=True, null=True)
-    active = models.BooleanField(_('Active'), default=False)
-    reported = models.BooleanField(_('Reported'), default=False)
-    report_time = models.DateTimeField(_('Reporting time'), blank=True, null=True)
-    extra_players = models.CharField(_('Additional players'), max_length=255, blank=True, null=True)
+    date = models.DateField(_("Date"))
+    table = models.ForeignKey(Table, related_name="game_sessions", on_delete=models.CASCADE)
+    dm = models.ForeignKey(
+        "profiles.Profile", related_name="game_sessions", on_delete=models.SET_NULL, blank=True, null=True
+    )
+    players = models.ManyToManyField(
+        "profiles.Profile", related_name="played_sessions", blank=True, through="games.GameSessionPlayerSignUp"
+    )
+    adventure = models.ForeignKey(
+        Adventure, related_name="game_sessions", on_delete=models.SET_NULL, blank=True, null=True
+    )
+    spots = models.PositiveIntegerField(_("Number of spots"), default=5)
+    notes = models.CharField(_("Additional notes"), max_length=255, blank=True, null=True)
+    time_start = models.TimeField(_("Starting time"), blank=True, null=True)
+    time_end = models.TimeField(_("Ending time"), blank=True, null=True)
+    active = models.BooleanField(_("Active"), default=False)
+    reported = models.BooleanField(_("Reported"), default=False)
+    report_time = models.DateTimeField(_("Reporting time"), blank=True, null=True)
+    extra_players = models.CharField(_("Additional players"), max_length=255, blank=True, null=True)
 
     objects = models.Manager.from_queryset(GameSessionQuerySet)()
     games = GameSessionActiveGamesManager.from_queryset(GameSessionQuerySet)()
 
-
     class Meta:
-        verbose_name = _('Game Session')
-        verbose_name_plural = _('Game Sessions')
-        ordering = ('-date', 'table',)
+        verbose_name = _("Game Session")
+        verbose_name_plural = _("Game Sessions")
+        ordering = ("-date", "table")
 
     def __str__(self):
-        return '{date} / {table} / {adventure}'.format(
-            date=self.date,
-            table=self.table,
-            adventure=str(self.adventure)
-        )
+        return "{date} / {table} / {adventure}".format(date=self.date, table=self.table, adventure=str(self.adventure))
 
     def can_sign_up(self, profile: Profile):
         # TODO: Add test to cover this logic
-        return self.dm is not None and not self.ended and self.dm.id != profile.id and \
-               self.players.count() < self.spots and profile not in self.players.all()
+        return (
+            self.dm is not None
+            and not self.ended
+            and self.dm.id != profile.id
+            and self.players.count() < self.spots
+            and profile not in self.players.all()
+        )
 
     @property
     def ended(self):
         t = timezone.now()
-        return t.date() > self.date or (self.time_end is not None and t.date() == self.date and t.time() > self.time_end)
+        return t.date() > self.date or (
+            self.time_end is not None and t.date() == self.date and t.time() > self.time_end
+        )
 
     def has_player(self, profile: Profile):
         return profile in self.players.all()
@@ -163,32 +179,32 @@ class GameSession(UUIDModel):
         """
         if self.players.count() < 3:
             send_email(
-                'Not enough players in the game session',
-                'emails/game_not_enough_players.html',
-                {'game': self},
-                bcc=[player.user.email for player in self.players.all()] + [self.dm.user.email]
+                "Not enough players in the game session",
+                "emails/game_not_enough_players.html",
+                {"game": self},
+                bcc=[player.user.email for player in self.players.all()] + [self.dm.user.email],
             )
 
     def get_absolute_url(self):
-        return settings.ROOT_URL + '/games/game/' + str(self.id)
+        return settings.ROOT_URL + "/games/game/" + str(self.id)
 
     def cancel(self):
         self.dm = None
         self.save()
 
         send_email(
-            'Game session cancelled',
-            'emails/game_cancelled.html',
-            {'game': self},
-            bcc=[player.user.email for player in self.players.all()]
+            "Game session cancelled",
+            "emails/game_cancelled.html",
+            {"game": self},
+            bcc=[player.user.email for player in self.players.all()],
         )
 
     def booked_again(self):
         send_email(
-            'Game session has a new DM',
-            'emails/game_rebooked.html',
-            {'game': self},
-            bcc=[player.user.email for player in self.players.all()]
+            "Game session has a new DM",
+            "emails/game_rebooked.html",
+            {"game": self},
+            bcc=[player.user.email for player in self.players.all()],
         )
 
     def report(self, extra_players=None, save=True):
@@ -196,12 +212,12 @@ class GameSession(UUIDModel):
         self.extra_players = extra_players
         self.report_time = timezone.now()
         if save:
-            self.save(update_fields=['reported', 'report_time', 'extra_players'])
+            self.save(update_fields=["reported", "report_time", "extra_players"])
 
 
 class GameSessionPlayerSignUp(models.Model):
     game = models.ForeignKey(GameSession, on_delete=models.CASCADE)
-    player = models.ForeignKey('profiles.Profile', on_delete=models.CASCADE)
-    created = models.DateTimeField(_('Created'), auto_now_add=True)
-    character = models.ForeignKey('profiles.PlayerCharacter', null=True, blank=True, on_delete=models.SET_NULL)
-    reported = models.NullBooleanField(_('Reported'), default=None)
+    player = models.ForeignKey("profiles.Profile", on_delete=models.CASCADE)
+    created = models.DateTimeField(_("Created"), auto_now_add=True)
+    character = models.ForeignKey("profiles.PlayerCharacter", null=True, blank=True, on_delete=models.SET_NULL)
+    reported = models.NullBooleanField(_("Reported"), default=None)

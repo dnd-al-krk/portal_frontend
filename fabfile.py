@@ -11,7 +11,7 @@ from fabric_config import *
 
 @contextmanager
 def virtualenv():
-    with prefix('source ' + os.path.join(env.env_path, 'bin/activate')):
+    with prefix("source " + os.path.join(env.env_path, "bin/activate")):
         yield
 
 
@@ -37,16 +37,17 @@ def run_or_local(*args, **kwargs):
 
 # == GIT OPERATIONS ==
 
+
 @task
 def fetch():
     with cd_project():
-        run('git fetch')
+        run("git fetch")
 
 
 @task
 def pull():
     with cd_project():
-        run('git pull')
+        run("git pull")
 
 
 @task
@@ -59,11 +60,9 @@ def remove_pyc():
 def manage(command, **kwargs):
     with cd_project():
         run_or_local(
-            '{}/bin/python manage.py {} --settings={}'.format(
-                env.env_path,
-                command,
-                env.DJANGO_SETTINGS_MODULE),
-            **kwargs)
+            "{}/bin/python manage.py {} --settings={}".format(env.env_path, command, env.DJANGO_SETTINGS_MODULE),
+            **kwargs
+        )
 
 
 @task
@@ -79,15 +78,15 @@ def runserver():
     """
     Runs local app
     """
-    manage('runserver 0.0.0.0:8000')
+    manage("runserver 0.0.0.0:8000")
 
 
 @task
-def test(dirs=''):
+def test(dirs=""):
     """
     Runs local tests
     """
-    manage('test {}'.format(dirs))
+    manage("test {}".format(dirs))
 
 
 @task
@@ -96,34 +95,34 @@ def bootstrap(keep_db=False):
     Sets up local workspace
     """
     if not env.local:
-        print(magenta('THIS COMMAND SHOULD BE RUN ONLY ON LOCAL INSTANCE'))
+        print(magenta("THIS COMMAND SHOULD BE RUN ONLY ON LOCAL INSTANCE"))
     if not keep_db:
-        local('rm {}'.format('db.sqlite3'))
-    manage('migrate')
-    manage('createsuperuser')
+        local("rm {}".format("db.sqlite3"))
+    manage("migrate")
+    manage("createsuperuser")
 
 
 @task
 def deploy():
-    if env.environment == 'prod':
-        if not confirm('Deploying to prod. Are you sure?', default=False):
+    if env.environment == "prod":
+        if not confirm("Deploying to prod. Are you sure?", default=False):
             return
 
     fetch()
     pull()
 
-    with cd('front'):
-        run('npm install')
-        run('npm run build_prod')
+    with cd("front"):
+        run("npm install")
+        run("npm run build_prod")
 
     with cd_project():
-        run('cp -r static/ public/static/')
-        run('rm -r static')
+        run("cp -r static/ public/static/")
+        run("rm -r static")
 
     with virtualenv():
-        run('pip install -r requirements/{}.txt'.format(env.environment))
+        run("pip install -r requirements/{}.txt".format(env.environment))
 
-    manage('migrate')
-    manage('collectstatic')
+    manage("migrate")
+    manage("collectstatic")
     remove_pyc()
     restart()

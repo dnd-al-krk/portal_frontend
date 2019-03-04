@@ -7,24 +7,29 @@ from rest_framework.views import APIView
 
 from .filters import PlayerCharacterFilter
 from .permissions import IsOwnerOrReadOnly, IsDMOwnerOrReadOnly, OnlyDMCanRead, IsProfileOwnerOrReadOnly
-from .serializers import (PlayerCharacterSerializer, DMNoteSerializer, ProfileSerializer, PlayerCharacterListSerializer,
-                          RegisterProfileSerializer, PublicProfileSerializer)
+from .serializers import (
+    PlayerCharacterSerializer,
+    DMNoteSerializer,
+    ProfileSerializer,
+    PlayerCharacterListSerializer,
+    RegisterProfileSerializer,
+    PublicProfileSerializer,
+)
 from ..models import PlayerCharacter, DMNote, Profile
 
 
 class PlayerCharacterViewSet(viewsets.ModelViewSet):
     serializer_class = PlayerCharacterSerializer
     queryset = PlayerCharacter.objects.all()
-    permission_classes = [IsAuthenticated,
-                          IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)
     filter_class = PlayerCharacterFilter
-    search_fields = ('name', 'owner__nickname', 'owner__user__first_name', 'owner__user__last_name')
-    ordering_fields = ('name', 'level', 'created', 'modified')
-    ordering = '-created'
+    search_fields = ("name", "owner__nickname", "owner__user__first_name", "owner__user__last_name")
+    ordering_fields = ("name", "level", "created", "modified")
+    ordering = "-created"
 
     def get_serializer_class(self):
-        if self.action == 'list':
+        if self.action == "list":
             return PlayerCharacterListSerializer
         return PlayerCharacterSerializer
 
@@ -38,21 +43,16 @@ class PlayerCharacterViewSet(viewsets.ModelViewSet):
 class DMNoteViewSet(viewsets.ModelViewSet):
     serializer_class = DMNoteSerializer
     queryset = DMNote.objects.all()
-    permission_classes = [IsAuthenticated,
-                          IsDMOwnerOrReadOnly,
-                          OnlyDMCanRead]
+    permission_classes = [IsAuthenticated, IsDMOwnerOrReadOnly, OnlyDMCanRead]
 
     def perform_create(self, serializer):
         serializer.save(dm=self.request.user.profile)
 
 
-class ProfileViewSet(mixins.RetrieveModelMixin,
-                     mixins.ListModelMixin,
-                     viewsets.GenericViewSet):
+class ProfileViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = PublicProfileSerializer
     queryset = Profile.objects.all()
-    permission_classes = [IsAuthenticated,
-                          IsProfileOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsProfileOwnerOrReadOnly]
 
 
 class CurrentUserView(APIView):

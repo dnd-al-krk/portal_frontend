@@ -6,20 +6,11 @@ import django.db.models.manager
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('games', '0006_auto_20181005_0837'),
-    ]
+    dependencies = [("games", "0006_auto_20181005_0837")]
 
     operations = [
-        migrations.AlterModelManagers(
-            name='gamesession',
-            managers=[
-                ('games', django.db.models.manager.Manager()),
-            ],
-        ),
+        migrations.AlterModelManagers(name="gamesession", managers=[("games", django.db.models.manager.Manager())]),
         migrations.AddField(
-            model_name='gamesession',
-            name='active',
-            field=models.BooleanField(default=False, verbose_name='Active'),
+            model_name="gamesession", name="active", field=models.BooleanField(default=False, verbose_name="Active")
         ),
     ]

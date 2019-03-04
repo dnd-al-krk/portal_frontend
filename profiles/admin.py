@@ -12,13 +12,13 @@ from .models import Profile, PlayerCharacter, DMNote
 class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
-    verbose_name_plural = _('Profiles')
+    verbose_name_plural = _("Profiles")
     max_num = 1
     min_num = 1
 
 
 class UserAdmin(BaseUserAdmin):
-    inlines = (ProfileInline, )
+    inlines = (ProfileInline,)
 
 
 admin.site.unregister(User)
@@ -27,28 +27,30 @@ admin.site.register(User, UserAdmin)
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'role', 'dci']
-    actions = ['make_dm', 'make_player']
+    list_display = ["__str__", "role", "dci"]
+    actions = ["make_dm", "make_player"]
 
     def make_dm(self, request, queryset):
         updated = queryset.update(role=ROLE_DM)
         self.message_user(request, _("{} successfully changed roles to DM.").format(updated))
-    make_dm.short_description = _('Change role to DM')
+
+    make_dm.short_description = _("Change role to DM")
 
     def make_player(self, request, queryset):
         updated = queryset.update(role=ROLE_PLAYER)
         self.message_user(request, _("{} successfully changed roles to Player.").format(updated))
-    make_player.short_description = _('Change role to Player')
+
+    make_player.short_description = _("Change role to Player")
 
 
 @admin.register(PlayerCharacter)
 class PlayerCharacterAdmin(admin.ModelAdmin):
-    list_display = ['name', 'level', 'race', 'pc_class', 'faction']
-    search_fields = ['name', ]
-    list_filter = ['level', 'race', 'pc_class', 'faction']
+    list_display = ["name", "level", "race", "pc_class", "faction"]
+    search_fields = ["name"]
+    list_filter = ["level", "race", "pc_class", "faction"]
 
 
 @admin.register(DMNote)
 class DMNoteAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'dm', 'player', 'created']
-    list_filter = ['created']
+    list_display = ["__str__", "dm", "player", "created"]
+    list_filter = ["created"]

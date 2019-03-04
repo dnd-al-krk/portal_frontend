@@ -6,25 +6,35 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('profiles', '0004_auto_20180825_1642'),
-        ('games', '0005_auto_20180922_0906'),
-    ]
+    dependencies = [("profiles", "0004_auto_20180825_1642"), ("games", "0005_auto_20180922_0906")]
 
     operations = [
         migrations.CreateModel(
-            name='GameSessionPlayerSignUp',
+            name="GameSessionPlayerSignUp",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True, verbose_name='Created')),
-                ('character', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='profiles.PlayerCharacter')),
-                ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='games.GameSession')),
-                ('player', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='profiles.Profile')),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("created", models.DateTimeField(auto_now_add=True, verbose_name="Created")),
+                (
+                    "character",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="profiles.PlayerCharacter",
+                    ),
+                ),
+                ("game", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="games.GameSession")),
+                ("player", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="profiles.Profile")),
             ],
         ),
         migrations.AddField(
-            model_name='gamesession',
-            name='players',
-            field=models.ManyToManyField(blank=True, related_name='played_sessions', through='games.GameSessionPlayerSignUp', to='profiles.Profile'),
+            model_name="gamesession",
+            name="players",
+            field=models.ManyToManyField(
+                blank=True,
+                related_name="played_sessions",
+                through="games.GameSessionPlayerSignUp",
+                to="profiles.Profile",
+            ),
         ),
     ]
