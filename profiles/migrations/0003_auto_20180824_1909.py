@@ -6,19 +6,24 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('profiles', '0002_profile_nickname'),
-    ]
+    dependencies = [("profiles", "0002_profile_nickname")]
 
     operations = [
         migrations.AlterField(
-            model_name='playercharacter',
-            name='owner',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='characters', to='profiles.Profile'),
+            model_name="playercharacter",
+            name="owner",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, related_name="characters", to="profiles.Profile"
+            ),
         ),
         migrations.AlterField(
-            model_name='profile',
-            name='role',
-            field=models.CharField(choices=[('dm', 'Dungeon Master'), ('player', 'Player')], default='player', max_length=20, verbose_name='Role'),
+            model_name="profile",
+            name="role",
+            field=models.CharField(
+                choices=[("dm", "Dungeon Master"), ("player", "Player")],
+                default="player",
+                max_length=20,
+                verbose_name="Role",
+            ),
         ),
     ]

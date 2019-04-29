@@ -1,2 +1,2 @@
-ROLE_PLAYER = 'player'
-ROLE_DM = 'dm'
+ROLE_PLAYER = "player"
+ROLE_DM = "dm"

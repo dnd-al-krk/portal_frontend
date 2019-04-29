@@ -5,18 +5,10 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('profiles', '0006_auto_20181213_0711'),
-    ]
+    dependencies = [("profiles", "0006_auto_20181213_0711")]
 
     operations = [
-        migrations.DeleteModel(
-            name='CharacterClass',
-        ),
-        migrations.DeleteModel(
-            name='CharacterFaction',
-        ),
-        migrations.DeleteModel(
-            name='CharacterRace',
-        ),
+        migrations.DeleteModel(name="CharacterClass"),
+        migrations.DeleteModel(name="CharacterFaction"),
+        migrations.DeleteModel(name="CharacterRace"),
     ]

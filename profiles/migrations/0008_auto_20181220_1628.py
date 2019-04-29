@@ -5,19 +5,19 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('profiles', '0007_auto_20181213_0719'),
-    ]
+    dependencies = [("profiles", "0007_auto_20181213_0719")]
 
     operations = [
         migrations.AlterField(
-            model_name='playercharacter',
-            name='faction',
-            field=models.CharField(blank=True, db_index=True, max_length=50, null=True, verbose_name='Character faction'),
+            model_name="playercharacter",
+            name="faction",
+            field=models.CharField(
+                blank=True, db_index=True, max_length=50, null=True, verbose_name="Character faction"
+            ),
         ),
         migrations.AlterField(
-            model_name='playercharacter',
-            name='race',
-            field=models.CharField(blank=True, db_index=True, max_length=40, null=True, verbose_name='Character race'),
+            model_name="playercharacter",
+            name="race",
+            field=models.CharField(blank=True, db_index=True, max_length=40, null=True, verbose_name="Character race"),
         ),
     ]

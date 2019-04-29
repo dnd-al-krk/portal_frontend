@@ -5,19 +5,31 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('games', '0004_auto_20180921_1914'),
-    ]
+    dependencies = [("games", "0004_auto_20180921_1914")]
 
     operations = [
         migrations.AlterField(
-            model_name='adventure',
-            name='type',
-            field=models.IntegerField(choices=[(1, 'EN'), (2, 'EP'), (3, 'EX'), (4, 'HC'), (5, 'IA'), (6, 'LE'), (7, 'CCC'), (8, 'AO'), (9, 'Other')], default=3, verbose_name='Type'),
+            model_name="adventure",
+            name="type",
+            field=models.IntegerField(
+                choices=[
+                    (1, "EN"),
+                    (2, "EP"),
+                    (3, "EX"),
+                    (4, "HC"),
+                    (5, "IA"),
+                    (6, "LE"),
+                    (7, "CCC"),
+                    (8, "AO"),
+                    (9, "Other"),
+                ],
+                default=3,
+                verbose_name="Type",
+            ),
         ),
         migrations.AlterField(
-            model_name='gamesession',
-            name='spots',
-            field=models.PositiveIntegerField(default=5, verbose_name='Number of spots'),
+            model_name="gamesession",
+            name="spots",
+            field=models.PositiveIntegerField(default=5, verbose_name="Number of spots"),
         ),
     ]

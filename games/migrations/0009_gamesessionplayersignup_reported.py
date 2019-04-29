@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('games', '0008_auto_20181202_1524'),
-    ]
+    dependencies = [("games", "0008_auto_20181202_1524")]
 
     operations = [
         migrations.AddField(
-            model_name='gamesessionplayersignup',
-            name='reported',
-            field=models.NullBooleanField(default=None, verbose_name='Reported'),
-        ),
+            model_name="gamesessionplayersignup",
+            name="reported",
+            field=models.NullBooleanField(default=None, verbose_name="Reported"),
+        )
     ]

@@ -8,7 +8,7 @@ class AdventureFactory(factory.DjangoModelFactory):
     class Meta:
         model = Adventure
 
-    title = 'Super Adventure'
+    title = "Super Adventure"
 
 
 class TableFactory(factory.DjangoModelFactory):

@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('games', '0003_auto_20180921_1913'),
-    ]
+    dependencies = [("games", "0003_auto_20180921_1913")]
 
     operations = [
         migrations.AlterField(
-            model_name='gamesession',
-            name='spots',
-            field=models.PositiveIntegerField(default=1, verbose_name='Number of spots'),
-        ),
+            model_name="gamesession",
+            name="spots",
+            field=models.PositiveIntegerField(default=1, verbose_name="Number of spots"),
+        )
     ]

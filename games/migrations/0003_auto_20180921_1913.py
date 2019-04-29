@@ -5,13 +5,10 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('games', '0002_auto_20180921_1911'),
-    ]
+    dependencies = [("games", "0002_auto_20180921_1911")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='table',
-            options={'ordering': ['id'], 'verbose_name': 'Table', 'verbose_name_plural': 'Tables'},
-        ),
+            name="table", options={"ordering": ["id"], "verbose_name": "Table", "verbose_name_plural": "Tables"}
+        )
     ]
