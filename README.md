@@ -1,5 +1,9 @@
 # portal
+
 portAL - Adventure's League community management service
+
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+
 
 # Requirements
 
@@ -30,14 +34,14 @@ There are also added numerous of players/DM accounts created:
 
 Their passwords are the same as login.
 
-## Pre-genrated data
+## Pre-generated data
 
 The fixtures also provide necessary data to start development process. You have past and future game sessions, example adventures and game session DM bookings or signups from players. All you need to get started.
 
 ## Development guidelines
 
 - We are deeloping for python 3.6+
-- We try to stick with fairly recent django version
+- We try to stick with fairly recent python/django versions
 - We stick to PEP-8 except lines length which can be up to 120 chars (PyCharm standard)
 
 We are using [black](https://github.com/ambv/black) formatter to standarize code in the project. To use it fully:
@@ -45,7 +49,16 @@ We are using [black](https://github.com/ambv/black) formatter to standarize code
 1. Install [pre-commit](https://pre-commit.com/)
 1. Run `$ pre-commit install` - this will install pre-commit hook to your git repository that will check code with black on commit
 
-# Manual Installation without Docker
+## Testing
+
+You can run pytest tests with: `docker-compose run backend pytest`
+
+## Continuous Integration
+
+We are using TravisCI to maintain project code quality on high level. 
+Currently CI checks if pytest and black formatting passes. We check against python 3.6, 3.7 and 3.8-dev. This is done automatically, but in order to merge Pull Request, these checks have to pass. 
+
+# Manual Installation without Docker (not recommended)
 
 ## Backend
 
