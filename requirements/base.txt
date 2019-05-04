@@ -1,8 +1,0 @@
-django==2.0.9
-djangorestframework==3.8.2
-django-extensions==2.0.7
-djangorestframework-jwt==1.11.0
-django-rest-passwordreset==0.9.7
-django-filter==2.0.0
-gunicorn==19.9.0
-black==18.9b0

@@ -1,8 +1,0 @@
--r base.txt
-
-fabric3==1.13.1.post1
-pytest==3.6.3
-pytest-django==3.3.3
-pytest-mock==1.10.0
-django-cors-headers==2.4.0
-pytest-factoryboy==2.0.1
