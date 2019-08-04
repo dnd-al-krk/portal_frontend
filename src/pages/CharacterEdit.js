@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid/Grid";
 import {inject, observer} from "mobx-react";
 import Button from "@material-ui/core/Button/Button";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
-import {InputField, SelectField} from "../common/Fields";
+import {InputField, SelectField, CheckBox} from "../common/Fields";
 import Spinner from "../common/LoadingDiv";
 
 const styles = (theme) => ({
@@ -32,6 +32,7 @@ export default class CharacterEdit extends React.Component {
     race_error: '',
     class_error: '',
     faction: '',
+    dead: 0,
     buttonDisabled: false,
     buttonText: 'Save changes',
     snackbarOpen: false,
@@ -53,6 +54,7 @@ export default class CharacterEdit extends React.Component {
             class: data.pc_class,
             faction: data.faction === null ? '': data.faction,
             loading: false,
+            dead: data.dead
           })
         }
       )
@@ -61,6 +63,10 @@ export default class CharacterEdit extends React.Component {
 
   handleChange = prop => event => {
     this.setState({ [prop]: event.target.value });
+  };
+
+  handleCheckBoxChange = prop => event => {
+    this.setState( {[prop]: event.target.checked } )
   };
 
   isFormValid = () => {
@@ -85,6 +91,7 @@ export default class CharacterEdit extends React.Component {
         'race': s.race,
         'pc_class': s.class,
         'faction': s.faction,
+        'dead': s.dead,
       }).then(response => {
         this.setState({
           buttonDisabled: false,
@@ -161,6 +168,10 @@ export default class CharacterEdit extends React.Component {
                               type={'text'}
                               multiline={true}
                               onChange={this.handleChange('notes')}/>
+
+                  <CheckBox label={'Is character dead'} name={'dead'} 
+                              onChange={this.handleCheckBoxChange('dead')} 
+                              checked={this.state.dead}/>
 
                   <Button variant={'contained'} className={classes.addButton} onClick={this.saveCharacter}
                           disabled={this.state.buttonDisabled}>

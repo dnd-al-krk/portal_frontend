@@ -101,8 +101,8 @@ export class PortalStore {
   }
 
   @action.bound
-  fetchProfileCharacters(owner){
-    return this.api.get(`/characters/?owner=${owner}`).then(response => response.data);
+  fetchProfileCharacters(owner,dead){
+    return this.api.get(`/characters/?owner=${owner}&dead=${dead}`).then(response => response.data);
   }
 
   @action.bound

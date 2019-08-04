@@ -46,6 +46,28 @@ export  class InputField extends React.Component {
 }
 
 @withStyles(styles, {withTheme: true})
+export class CheckBox extends React.Component {
+  render(){
+
+    const {classes, name, label, onChange, value, type, checked, ...rest} = this.props;
+
+    return (
+        <div>
+            <label>{label}</label>
+            <input type = "checkbox" 
+              name={label}
+              id={`character-create-${name}`}
+              onChange={onChange}
+              label={label}
+              checked={checked}
+              {...rest}
+            />
+        </div>
+    )
+  }
+}
+
+@withStyles(styles, {withTheme: true})
 export class SelectField extends React.Component {
   render() {
 
