@@ -6,8 +6,10 @@ import Grid from "@material-ui/core/Grid/Grid";
 import {inject, observer} from "mobx-react";
 import Button from "@material-ui/core/Button/Button";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
-import {InputField, SelectField, CheckBox} from "../common/Fields";
+import {InputField, SelectField} from "../common/Fields";
 import Spinner from "../common/LoadingDiv";
+import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 
 const styles = (theme) => ({
   addButton: {
@@ -32,7 +34,7 @@ export default class CharacterEdit extends React.Component {
     race_error: '',
     class_error: '',
     faction: '',
-    dead: 0,
+    dead: false,
     buttonDisabled: false,
     buttonText: 'Save changes',
     snackbarOpen: false,
@@ -169,9 +171,13 @@ export default class CharacterEdit extends React.Component {
                               multiline={true}
                               onChange={this.handleChange('notes')}/>
 
-                  <CheckBox label={'Is character dead'} name={'dead'} 
+                  <FormControlLabel control={
+                    <Checkbox name={'dead'} 
                               onChange={this.handleCheckBoxChange('dead')} 
                               checked={this.state.dead}/>
+                    }
+                    label={'Killed in Action'}
+                  />
 
                   <Button variant={'contained'} className={classes.addButton} onClick={this.saveCharacter}
                           disabled={this.state.buttonDisabled}>
