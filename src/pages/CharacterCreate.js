@@ -29,6 +29,7 @@ export default class CharacterCreate extends React.Component {
     class_error: '',
     faction: '',
     notes: '',
+    dead: false,
     buttonDisabled: false,
     buttonText: 'Add character',
     snackbarOpen: false,

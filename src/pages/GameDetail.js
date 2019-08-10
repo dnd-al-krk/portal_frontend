@@ -115,7 +115,7 @@ class GameDetail extends Component {
   };
 
   fetchCharacters = () => {
-    return this.props.portalStore.fetchProfileCharacters(this.props.portalStore.currentUser.profileID);
+    return this.props.portalStore.fetchProfileCharacters(this.props.portalStore.currentUser.profileID, false);
   };
 
   gameDate = (game) => {

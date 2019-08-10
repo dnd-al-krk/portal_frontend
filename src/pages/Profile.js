@@ -72,25 +72,29 @@ export default class Profile extends React.Component {
           this.setState({
             profile: null,
           })
-
         }
       )
       .then(
-        () => this.props.portalStore.fetchProfileCharacters(this.state.id).then(
-          (characters) => {
-            this.setState({
-              characters: characters,
-            })
-          }
+        () => Promise.all([
+            this.props.portalStore.fetchProfileCharacters(this.state.id, false),
+            this.props.portalStore.fetchProfileCharacters(this.state.id, true)
+        ]
+        ).then( 
+            (char_array) => { 
+              this.setState({
+                characters: char_array[0],
+                dead_characters: char_array[1],
+              })
+            }
         )
       )
-      .then(
-        () => {
-          this.setState({
-            loading: false,
-          })
-        }
-      );
+      .then( 
+        () => { 
+            this.setState( { 
+                loading: false 
+            } ) 
+        } 
+     );
   }
 
   gotoCharacterCreate = () => {
@@ -127,6 +131,14 @@ export default class Profile extends React.Component {
                     Characters
                   </Typography>
                   <CharactersList characters={this.state.characters} use_by={false}/>
+                </Fragment>
+              )}
+              {this.state.dead_characters.length > 0 && (
+                <Fragment>
+                  <Typography variant="h6">
+                    Fallen Characters
+                  </Typography>
+                  <CharactersList characters={this.state.dead_characters} use_by={false}/>
                 </Fragment>
               )}
               {this.props.portalStore.currentUser.profileID === profile.id && (
