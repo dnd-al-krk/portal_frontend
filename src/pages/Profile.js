@@ -72,33 +72,29 @@ export default class Profile extends React.Component {
           this.setState({
             profile: null,
           })
-
         }
       )
       .then(
-        () => this.props.portalStore.fetchProfileCharacters(this.state.id,0).then(
-          (characters) => {
-            this.setState({
-              characters: characters,
-            })
-          }
+        () => Promise.all([
+            this.props.portalStore.fetchProfileCharacters(this.state.id, false),
+            this.props.portalStore.fetchProfileCharacters(this.state.id, true)
+        ]
+        ).then( 
+            (char_array) => { 
+              this.setState({
+                characters: char_array[0],
+                dead_characters: char_array[1],
+              })
+            }
         )
       )
-      .then(
-        () => this.props.portalStore.fetchProfileCharacters(this.state.id,1).then(
-            (dead_characters) => {
-                this.setState({
-                    dead_characters: dead_characters
-                })
-            })
-        )
-      .then(
-        () => {
-          this.setState({
-            loading: false,
-          })
-        }
-      );
+      .then( 
+        () => { 
+            this.setState( { 
+                loading: false 
+            } ) 
+        } 
+     );
   }
 
   gotoCharacterCreate = () => {

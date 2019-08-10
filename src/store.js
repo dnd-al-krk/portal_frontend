@@ -101,7 +101,7 @@ export class PortalStore {
   }
 
   @action.bound
-  fetchProfileCharacters(owner,dead){
+  fetchProfileCharacters(owner, dead){
 
     var dead_str = (typeof dead !== 'undefined') ? `&dead=${dead ? 1 : 0}` : ``;
     
