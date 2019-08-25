@@ -21,8 +21,8 @@ export default class Api {
   }
 
 
-  fetchData(name){
-    return this.get(`/${name}/`).then(response => response.data);
+  fetchData(name, params=''){
+    return this.get(`/${name}/?${params}`).then(response => response.data);
   }
 
   getData(name, id){

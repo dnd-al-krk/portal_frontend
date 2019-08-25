@@ -21,8 +21,8 @@ export default class GamesStore {
     return this.api.fetchData('games/future');
   }
 
-  fetchPast(){
-    return this.api.fetchData('games/past');
+  fetchPast(extraParams){
+    return this.api.fetchData('games/past', `ordering=-date,-time_end,-time_end&${extraParams}`);
   }
 
   fetchFutureForUser(id){
