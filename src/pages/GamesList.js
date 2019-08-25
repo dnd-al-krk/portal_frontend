@@ -112,19 +112,42 @@ export class PastGamesList extends React.Component {
   state = {
     loading: true,
     games: null,
+    displayMyDames: false,
+    displayMyDMGames: false
+  };
+
+  fetchData = () => {
+    const user_id = this.props.portalStore.currentUser.profileID;
+    let extraParams = ``;
+    if(this.state.displayMyGames) {
+      extraParams += `having_player=${user_id}&`
+    }
+    if(this.state.displayMyDMGames) {
+      extraParams += `dm__id=${user_id}&`
+    }
+    console.log('Update: ', this.state);
+    this.props.portalStore.games.fetchPast(extraParams).then((games) => {
+      this.setState({
+        games: games,
+        loading: false,
+      })
+    })
   };
 
   componentDidMount(){
     this.setState({
       loading: true,
     });
-    this.props.portalStore.games.fetchPast().then((games) => {
-      this.setState({
-        games: games,
-        loading: false,
-      })
-    })
+    this.fetchData();
   }
+
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.checked,
+      loading: true,
+      games: null
+    }, () => this.fetchData());
+  };
 
   render(){
     const {classes} = this.props;
@@ -138,6 +161,30 @@ export class PastGamesList extends React.Component {
           <Typography variant='h5' className={classes.header}>
             Games archive
           </Typography>
+          <FormGroup row className={classes.listFilters}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={this.state.displayMyGames}
+                  onChange={this.handleChange('displayMyGames')}
+                  value="displayMyGames"
+                  color='secondary'
+                />
+              }
+              label="Display only your game slots"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={this.state.displayMyDMGames}
+                  onChange={this.handleChange('displayMyDMGames')}
+                  value="displayMyDMGames"
+                  color='secondary'
+                />
+              }
+              label="Display only games you ran"
+            />
+          </FormGroup>
           <Typography variant='body1'>
             All ended games are listed here. We do not list empty, unused slots. Also remember that you cannot sign out
             of the ended game as a player or cancel booking on the slot that you already run as a Dungeon Master.
