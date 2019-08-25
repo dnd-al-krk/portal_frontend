@@ -173,17 +173,19 @@ export class PastGamesList extends React.Component {
               }
               label="Display only your game slots"
             />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.state.displayMyDMGames}
-                  onChange={this.handleChange('displayMyDMGames')}
-                  value="displayMyDMGames"
-                  color='secondary'
-                />
-              }
-              label="Display only games you ran"
-            />
+            {this.props.portalStore.currentUser.isDM && (
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={this.state.displayMyDMGames}
+                    onChange={this.handleChange('displayMyDMGames')}
+                    value="displayMyDMGames"
+                    color='secondary'
+                  />
+                }
+                label="Display only games you ran"
+              />
+            )}
           </FormGroup>
           <Typography variant='body1'>
             All ended games are listed here. We do not list empty, unused slots. Also remember that you cannot sign out
