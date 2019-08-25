@@ -22,7 +22,7 @@ export default class GamesStore {
   }
 
   fetchPast(){
-    return this.api.fetchData('games/past');
+    return this.api.fetchData('games/past', 'ordering=-date,-time_end,-time_end');
   }
 
   fetchFutureForUser(id){
