@@ -1,6 +1,6 @@
 {
   "name": "portAL",
-  "version": "0.2.0",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.6",
