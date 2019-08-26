@@ -35,8 +35,8 @@ export class FutureGamesList extends React.Component {
   state = {
     loading: true,
     games: null,
-    displayEmptyGames: false,
-    displayFullGames: false,
+    displayEmptyGames: ( sessionStorage.getItem('selector_displayEmptyGames') === 'true' ? true : false ),
+    displayFullGames:  ( sessionStorage.getItem('selector_displayFullGames') === 'true' ? true : false ),
   };
 
   componentDidMount(){
@@ -47,13 +47,18 @@ export class FutureGamesList extends React.Component {
       this.setState({
         games: games,
         loading: false,
-        displayEmptyGames: this.props.portalStore.currentUser.isDM,
       })
+      if ( !sessionStorage.getItem('selector_displayEmptyGames') ) {
+        this.setState({
+          displayEmptyGames: this.props.portalStore.currentUser.isDM
+        })
+      }
     })
   }
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.checked });
+    sessionStorage.setItem( 'selector_' + name, event.target.checked.toString() );
   };
 
   render(){
@@ -112,9 +117,14 @@ export class PastGamesList extends React.Component {
   state = {
     loading: true,
     games: null,
-    displayMyDames: false,
-    displayMyDMGames: false
+    displayMyGames:     sessionStorage.getItem('selector_displayMyGames')   === 'true' ? true : false,
+    displayMyDMGames:   sessionStorage.getItem('selector_displayMyDMGames') === 'true' ? true : false
   };
+
+  common_selectors = {
+    'displayMyGames':['displayMyDMGames'],
+    'displayMyDMGames':['displayMyGames']
+  }
 
   fetchData = () => {
     const user_id = this.props.portalStore.currentUser.profileID;
@@ -142,11 +152,19 @@ export class PastGamesList extends React.Component {
   }
 
   handleChange = name => event => {
-    this.setState({
+    var hash_of_state = {
       [name]: event.target.checked,
       loading: true,
       games: null
-    }, () => this.fetchData());
+    };
+    if (event.target.checked && this.common_selectors[name]) {
+        for (var depend in this.common_selectors[name]) {
+            hash_of_state[this.common_selectors[name][depend]] = false;
+            sessionStorage.setItem( 'selector_' + this.common_selectors[name][depend], "false" );
+        }
+    }
+    this.setState(hash_of_state, () => this.fetchData());
+    sessionStorage.setItem( 'selector_' + name, event.target.checked.toString() );
   };
 
   render(){
