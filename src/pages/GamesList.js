@@ -8,6 +8,7 @@ import Link from "react-router-dom/es/Link";
 import Switch from "@material-ui/core/Switch/Switch";
 import FormGroup from "@material-ui/core/FormGroup/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import {BoolStorage} from "../common/PortalUtils"
 
 
 const styles = (theme) => ({
@@ -28,6 +29,8 @@ const styles = (theme) => ({
   },
 });
 
+console.log( Boolean("0") )
+
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
 export class FutureGamesList extends React.Component {
@@ -35,8 +38,8 @@ export class FutureGamesList extends React.Component {
   state = {
     loading: true,
     games: null,
-    displayEmptyGames: ( sessionStorage.getItem('selector_displayEmptyGames') === 'true' ? true : false ),
-    displayFullGames:  ( sessionStorage.getItem('selector_displayFullGames') === 'true' ? true : false ),
+    displayEmptyGames: BoolStorage.get('selector_displayEmptyGames'),
+    displayFullGames:  BoolStorage.get('selector_displayFullGames'),
   };
 
   componentDidMount(){
@@ -48,7 +51,7 @@ export class FutureGamesList extends React.Component {
         games: games,
         loading: false,
       })
-      if ( !sessionStorage.getItem('selector_displayEmptyGames') ) {
+      if ( !BoolStorage.exits('selector_displayEmptyGames') ) {
         this.setState({
           displayEmptyGames: this.props.portalStore.currentUser.isDM
         })
@@ -58,7 +61,7 @@ export class FutureGamesList extends React.Component {
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.checked });
-    sessionStorage.setItem( 'selector_' + name, event.target.checked.toString() );
+    BoolStorage.set(name,'selector',event.target.checked);
   };
 
   render(){
@@ -117,8 +120,8 @@ export class PastGamesList extends React.Component {
   state = {
     loading: true,
     games: null,
-    displayMyGames:     sessionStorage.getItem('selector_displayMyGames')   === 'true' ? true : false,
-    displayMyDMGames:   sessionStorage.getItem('selector_displayMyDMGames') === 'true' ? true : false
+    displayMyGames:     BoolStorage.get('selector_displayMyGames'),
+    displayMyDMGames:   BoolStorage.get('selector_displayMyDMGames'),
   };
 
   common_selectors = {
@@ -160,11 +163,11 @@ export class PastGamesList extends React.Component {
     if (event.target.checked && this.common_selectors[name]) {
         for (var depend in this.common_selectors[name]) {
             hash_of_state[this.common_selectors[name][depend]] = false;
-            sessionStorage.setItem( 'selector_' + this.common_selectors[name][depend], "false" );
+            BoolStorage.set(this.common_selectors[name][depend],'selector',false)
         }
     }
     this.setState(hash_of_state, () => this.fetchData());
-    sessionStorage.setItem( 'selector_' + name, event.target.checked.toString() );
+    BoolStorage.set(name,'selector',event.target.checked);
   };
 
   render(){
