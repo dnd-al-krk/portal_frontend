@@ -29,8 +29,6 @@ const styles = (theme) => ({
   },
 });
 
-console.log( Boolean("0") )
-
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
 export class FutureGamesList extends React.Component {
