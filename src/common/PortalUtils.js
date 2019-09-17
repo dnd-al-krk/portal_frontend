@@ -6,7 +6,7 @@ export var BoolStorage = {
     get: function(name) {
         return sessionStorage.getItem(name) === '1'
     },
-    exits: function(name) {
+    exist: function(name) {
         return !!sessionStorage.getItem(name);
     }
 }

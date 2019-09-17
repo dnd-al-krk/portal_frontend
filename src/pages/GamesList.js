@@ -49,7 +49,7 @@ export class FutureGamesList extends React.Component {
         games: games,
         loading: false,
       })
-      if ( !BoolStorage.exits('selector_displayEmptyGames') ) {
+      if ( !BoolStorage.exist('selector_displayEmptyGames') ) {
         this.setState({
           displayEmptyGames: this.props.portalStore.currentUser.isDM
         })
