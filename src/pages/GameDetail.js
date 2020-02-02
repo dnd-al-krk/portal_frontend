@@ -259,6 +259,9 @@ class GameDetail extends Component {
             <InfoTypography variant="body1">
                 <FontAwesomeIcon icon="map-marker" /> {game.table_name}
             </InfoTypography>
+            <InfoTypography variant="body1">
+                { game.table_extra_notes !== "" && <Fragment><strong>Table note: </strong> {game.table_extra_notes}</Fragment> }
+            </InfoTypography>
             <Typography variant="h6" className={classes.header}>
                 Dungeon Master
             </Typography>
