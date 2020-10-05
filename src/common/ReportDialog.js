@@ -35,6 +35,7 @@ class ReportDialog extends Component {
     players: [],
     extraPlayers: '',
     selectAll: false,
+    extraPlayers: '',
   };
 
   componentWillMount(){
@@ -77,8 +78,10 @@ class ReportDialog extends Component {
       .map(player => player.id);
     this.props.portalStore.games.sendReport(
       game.id,
-      {players: players_list,
-        extra_players: this.state.extraPlayers !== '' ? this.state.extraPlayers : null
+      {
+        players: players_list,
+        extra_players: this.state.extraPlayers !== '' ? this.state.extraPlayers : null,
+        report_notes: this.state.reportNotes
       })
       .then(response => {
         this.handleClose(true);
@@ -150,6 +153,15 @@ class ReportDialog extends Component {
                   value={this.state.extraPlayers}
                   helperText="If there were extra players at the table, enter only their DCIs comma-separated"
                   onChange={(event) => this.setState({extraPlayers: event.target.value})}
+                  margin="normal"
+                />
+              <TextField
+                  id="name"
+                  label="Extra notes"
+                  className={classes.textField}
+                  value={this.state.reportNotes}
+                  helperText="Extra report notes"
+                  onChange={(event) => this.setState({reportNotes: event.target.value})}
                   margin="normal"
                 />
             </FormGroup>
