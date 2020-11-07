@@ -291,6 +291,17 @@ class GameDetail extends Component {
               {game.notes}
             </Typography>
             {game.dm && game.dm.id === this.props.portalStore.currentUser.profileID &&
+            (
+            <Fragment>
+              <Typography variant="h6" className={classes.header}>
+                  Extra Report Notes
+              </Typography>
+              <Typography variant="body1" className={classes.notes}>
+                {game.report_notes}
+              </Typography>
+            </Fragment>
+            )}
+            {game.dm && game.dm.id === this.props.portalStore.currentUser.profileID &&
             (!this.state.game.ended || !this.state.game.reported) &&
             (
               <Fragment>
