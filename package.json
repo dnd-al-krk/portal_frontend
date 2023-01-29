@@ -36,7 +36,7 @@
   "scripts": {
     "start": "REACT_APP_BACKEND_HOST=http://localhost:8000 react-app-rewired start",
     "build": "REACT_APP_BACKEND_HOST=http://localhost:8000 react-app-rewired build",
-    "build_prod": "REACT_APP_BACKEND_HOST=https://api.alkrakow.pl react-app-rewired build",
+    "build_prod": "REACT_APP_BACKEND_HOST=https://api.rpgkrakow.pl react-app-rewired build *****",
     "test": "react-app-rewired test --env=jsdom"
   }
 }

@@ -48,7 +48,14 @@ const styles = (theme) => ({
     marginBottom: 12
   },
   info: {
-    marginBottom: 12
+    marginBottom: 12,
+    fontSize: "1.3em"
+  },
+  marginTop: {
+    marginTop: 20
+  },
+  disclaimer: {
+    fontSize: "1em"
   },
   strong: {
     fontWeight: 'bold',
@@ -107,63 +114,90 @@ class Home extends React.Component {
           ) : (
             <div className={classes.root}>
               <div className={classes.centered}>
-                <img src={allogo} className={classes.ALLogo}/>
+                {/*<img src={allogo} className={classes.ALLogo}/>*/}
                 <Typography variant="h4" className={classes.mainHeader}>
-                  Welcome to the League in Kraków!
+                  Witamy w Dungeons & Dragons®: Organized Play Kraków!
                 </Typography>
               </div>
-              <Typography variant="body1" className={classNames(classes.info, classes.strong)}>
-                This is the official website of the Dungeons &amp; Dragons Adventurers League Kraków group. Here you will find other
-                players and Dungeon Masters from Kraków, who are playing together D&D 5e games <a href="http://locator.wizards.com/#brand=magic&a=location&p=Krak%C3%B3w,+Poland&c=50.06465009999999,19.94497990000002&massmarket=no&loc=376610&orgid=14492&addrid=376610" onClick={openUrl}>under the official WPN</a>
+              <Typography variant="body1" className={classNames(classes.info)}>
+                <strong>Dungeons & Dragons®: Organized Play Kraków (w skrócie OPK)</strong> to społeczność,
+                która umożliwia krakowskim miłośnikom tej najpopularniejszej na świecie gry fabularnej bezpłatne
+                uczestniczenie w sesjach bez potrzeby skomplikowanego zgrywania terminów oraz podejmowania
+                długoterminowych zobowiązań.&nbsp;
+                <strong>Nasza społeczność skierowana jest zarówno do weteranów, jak i początkujących graczy.</strong>&nbsp;
+                Wzorując się w dużym stopniu na koncepcji Adventurers League, nasi gracze, Mistrzynie i Mistrzowie
+                Podziemi rozgrywają różnorodne przygody w stale zmieniających się drużynach. Wszyscy,
+                którzy dbają o sympatyczną atmosferę przy stole i dobrą zabawę współgraczy są u nas mile widziani!
+
+                {/*This is the official website of the Dungeons &amp; Dragons Adventurers League Kraków group. Here you will find other*/}
+                {/*players and Dungeon Masters from Kraków, who are playing together D&D 5e games <a href="http://locator.wizards.com/#brand=magic&a=location&p=Krak%C3%B3w,+Poland&c=50.06465009999999,19.94497990000002&massmarket=no&loc=376610&orgid=14492&addrid=376610" onClick={openUrl}>under the official WPN</a>*/}
               </Typography>
-              <Typography variant="h5" className={classNames(classes.textHeader)}>
-                What is the Adventurers League?
-              </Typography>
+              {/*<Typography variant="h5" className={classNames(classes.textHeader)}>*/}
+              {/*  What is the Adventurers League?*/}
+              {/*</Typography>*/}
               <Typography variant="body1" className={classes.info}>
-                The D&D Adventurers League is an ongoing official campaign for Dungeons & Dragons (fifth edition rules) and a diverse and vibrant community of gamers. You can play D&D Adventurers League games literally anywhere – at your friendly local game shop, at conventions, and even in the privacy of your own home. Unique to organized play, the heroes you create in the Adventurers League follow you wherever you go, making friends and memories in the Forgotten Realms as you do the same at the table.
+                <strong>System rozgrywek OPK nie jest skomplikowany.</strong> Nasze Mistrzynie oraz Mistrzowie Podziemi ogłaszają
+                terminy sesji, oraz dopuszczalne poziomy postaci, które w danej sesji mogą uczestniczyć, a gracze
+                po prostu się na nie zapisują w sposób ograniczony tylko ilością miejsca przy stole. Chociaż wiele
+                z rozgrywanych u nas przygód łączy się w pewne cykle fabularne, każda z nich stanowi zamkniętą historię.
+                Kolejne przygody niekoniecznie są ze sobą powiązane, jednak łącznikiem między nimi stają
+                się uczestniczący w nich bohaterowie. Każda postać uczestnika OPK zaczyna na pierwszym poziomie
+                jako początkujący awanturnik, ale w miarę pokonywania kolejnych przeciwności nabiera barwy i historii,
+                nawiązuje relacje z innymi postaciami oraz zdobywa coraz potężniejszy ekwipunek i rozwija
+                się mechanicznie.
               </Typography>
-              <Typography variant="body1" className={classes.info}>
-If you are completely new to Dungeons & Dragons, the D&D Adventurers League is a wonderful way to introduce yourself to this storytelling game. New players and old will find these links most useful when starting as a player in the Adventurers League:
-              </Typography>
-              <Typography variant="body1" className={classes.info}>
-                <a href="http://dndadventurersleague.org/start-here/playing/" onClick={openUrl}>Read more at the official Adventurers League website.</a>
-              </Typography>
+
               <img src={cover} className={classes.cover}/>
-              <Typography variant="h5" className={classes.textHeader}>
-                Games in Kraków
+
+              <Typography variant="body1" className={classNames(classes.info, classes.marginTop)}>
+                Nasze sesje prowadzone są według oficjalnych zasad 5 edycji systemu Dungeons & Dragons®.
+                Najczęściej gramy w <a href="https://goo.gl/maps/vZBcutQYdH4EfBFL9">R'lyeh Cafe w pobliżu krakowskiego Dworca Głównego</a>,&nbsp;
+                aczkolwiek zdarzają się również sesje online <a href="https://discord.gg/BWYKVxk">na naszym serwerze Discord</a>.
               </Typography>
               <Typography variant="body1" className={classes.info}>
-                We are running organized play regularly every week. Our games are hosted mainly on Tuesdays, Saturdays and Sundays. All games are hosted by <a href="https://www.facebook.com/rlyehcafe/" onClick={openUrl}>R'lyeh Cafe</a> and organized by our community with help of <a href="https://dragonus.pl/" onClick={openUrl}>Dragonus Store</a>. Are new-comers are always welcome. You don't need to know the game rules, you don't need to be tabletop RPG player yet. Our players and DMs are open to help you with the first steps.
+                <strong>U nas wystarczy zapisać się na grę i przyjść na sesję w pasującym terminie</strong>.
+                Dzięki takiemu podejściu, nikt nie musi rezygnować z gry z powodu braku stałej ekipy, czy też czasu.
+                Uczestniczyć można dowolnie często: czy to raz na pół roku, czy też dwa razy na tydzień (choć nie zawsze możemy zagwarantować
+                tyle sesji, ile pragnęliby gracze). Jest to również <strong>jedyna w swoim rodzaju okazja na zapoznanie się
+                z szerokim gronem graczy oraz różnymi stylami gry i prowadzenia</strong>. Dla starych wyjadaczy, nowinką może
+                być konieczność współdziałania w zróżnicowanych drużynach Nigdy nie wiesz, jakie postaci towarzyszy
+                Twój bohater napotka na kolejnej sesji.
               </Typography>
               <Typography variant="body1" className={classes.info}>
-                Join our community <a href="https://www.facebook.com/groups/ALKrakow/" onClick={openUrl}>group on facebook</a> or <a href="https://discord.gg/BWYKVxk" onClick={openUrl}>drop a message on our Discord server</a>. There's always someone available and willing  to help you on the start. Although we mainly play in Polish, we also run games in English.
-              </Typography>
-              <Typography variant="h5" className={classes.textHeader}>
-                What is this service for?
-              </Typography>
-              <img src={teamIllustration} className={classes.imageRight}/>
-              <Typography variant="body1" className={classes.info}>
-                <strong>D&D AL Kraków portAL</strong> is a service where you can join our games by signing up for a game slots. Each DM in our community can take a free slot and run an Adventurers League adventure game session for the League players. All the spots booked for DMs are available for players for the sign up. Just pick the game slot with adventure you want to play and sign up for the game.
+                <strong>Szczególnie zapraszamy osoby początkujące</strong>, które chciałyby uczestniczyć w swojej pierwszej sesji D&D,
+                nauczyć się w praktyce zasad i nawiązać kontakty z krakowską społecznością graczy. Zapewniamy życzliwą
+                atmosferę, cierpliwość i świadomość debiutanckich trudności. Chętnie podpowiemy różne rozwiązania,
+                pomożemy stworzyć postać i wytłumaczymy wszelkie niejasności.
               </Typography>
               <Typography variant="body1" className={classes.info}>
-                To start, simply <Link to="/register">register</Link> and activate your account. Further steps are described on each page.
+                <strong>OPK jest też idealnym środowiskiem, by spróbować swoich sił w prowadzeniu przygód</strong> lub udoskonalić
+                swoje umiejętności mistrzowania. Bardziej doświadczeni prowadzący chętnie wspomogą dołączających
+                do ich grona. Podobnie, jak w przypadku graczy, poprowadzenie przygody nie oznacza żadnych zobowiązań.
+                Kolejną możesz poprowadzić za tydzień, albo za kilka miesięcy. I nie przeszkadza to w równoczesnym
+                uczestniczeniu w innych sesjach OPK w roli gracza!
               </Typography>
               <Typography variant="body1" className={classes.info}>
-                <strong>portAL</strong> service was created as an open source community driven project which purpose is to help AL players to easily join the game and for the community to automate some organizational work. portAL is in continuous development and new features will come in the next months. You can support this project. For details <a href="https://github.com/dnd-al-krk/portal" onClick={openUrl}>visit project github page</a>.
+                <strong>Dołączcie do naszych stołów</strong>. W tym serwisie możecie się zarejestrować jako
+                gracze OPK i zapisać na sesje. Jeśli chcecie dokładniej zapoznać się z zasadami gry i rozwoju postaci
+                w OPK – <a target="_blank" href="https://docs.google.com/document/d/1HT_HKIQKt0G-kceR2pzLUHKfyrnXVdwBUXl6qOLl9cI/edit?usp=sharing">
+                możecie je zobaczyć w osobnym dokumencie</a>. Zapraszamy też do aktywnego
+                udziału w życiu społeczności <a target="_blank" href="https://discord.gg/BWYKVxk">na naszym Discordzie</a> oraz
+                na <a target="_blank" href="https://www.facebook.com/groups/ALKrakow/">grupie w serwisie Facebook</a>.
               </Typography>
-              <Typography variant="h5" className={classes.textHeader}>
-                Looking for groups in other cities?
-              </Typography>
-              <Typography variant="body1" className={classes.info}>
-                D&D Adventurers League is an organized play running in multiple cities around the globe. If you are not from Kraków, but found us somehow, you can always go to the <a href="http://locator.wizards.com/#brand=dnd" onClick={openUrl}>Wizards Locator</a> to find store and games near your location.
+
+              <Divider className={classes.textDivider}/>
+              <Typography variant="body1" className={classNames(classes.info, classes.centered, classes.disclaimer)}>
+                This website is not affiliated with, endorsed, sponsored, or specifically approved
+                by Wizards of the Coast LLC. This (Web site) may use the trademarks and other intellectual
+                property of Wizards of the Coast LLC, which is permitted under Wizards'
+                &nbsp;<a href="https://company.wizards.com/en/legal/fancontentpolicy">Fan Site Policy</a>.
+                For example, Dungeons & Dragons® is a trademark(s) of Wizards of the Coast. For more information
+                about Wizards of the Coast or any of Wizards' trademarks or other intellectual property,
+                please visit their website at (www.wizards.com).
               </Typography>
               <Divider className={classes.textDivider}/>
               <Typography variant="body1" className={classNames(classes.info, classes.centered)}>
-                <em><strong>D&D AL Kraków website and portAL</strong> is unofficial Fan Content permitted under the Fan Content Policy. Not approved/endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.</em>
-              </Typography>
-              <Divider className={classes.textDivider}/>
-              <Typography variant="body1" className={classNames(classes.info, classes.centered)}>
-                <strong>portAL</strong> is proudly hosted by <a href="http://toady.org" onClick={openUrl}>Toady</a>.
+                <strong>D&D: Organized Play Kraków</strong> is proudly hosted by <a href="http://toady.org" onClick={openUrl}>Toady - the interactive DM screen for 5e</a>.
               </Typography>
             </div>
           )}
@@ -187,6 +221,30 @@ If you are completely new to Dungeons & Dragons, the D&D Adventurers League is a
                     <FontAwesomeIcon icon={["fab","discord"]} />
                   </ListItemIcon>
                   <ListItemText primary="Discord Server">
+                  </ListItemText>
+                </ListItem>
+
+                <ListItem button onClick={() => window.open('https://docs.google.com/document/d/1HT_HKIQKt0G-kceR2pzLUHKfyrnXVdwBUXl6qOLl9cI/edit?usp=sharing')}>
+                  <ListItemIcon className={classes.communityIcon}>
+                    <FontAwesomeIcon icon={["far","file"]} />
+                  </ListItemIcon>
+                  <ListItemText primary="Zasady OPK">
+                  </ListItemText>
+                </ListItem>
+
+                <ListItem button onClick={() => window.open('https://docs.google.com/document/d/1oDx-bksg-GraW7YCtp8DUFwG2c4AfSwZtIWN3uYQwPc/edit?usp=sharing')}>
+                  <ListItemIcon className={classes.communityIcon}>
+                    <FontAwesomeIcon icon={["far","file"]} />
+                  </ListItemIcon>
+                  <ListItemText primary="FAQ do zasad OPK">
+                  </ListItemText>
+                </ListItem>
+
+                <ListItem button onClick={() => window.open('https://drive.google.com/file/d/1koge3GjzgO2NhUpk2quZmOWFo7VPGzNA/view?usp=drivesdk')}>
+                  <ListItemIcon className={classes.communityIcon}>
+                    <FontAwesomeIcon icon={["far","file"]} />
+                  </ListItemIcon>
+                  <ListItemText primary="Katalog przygód">
                   </ListItemText>
                 </ListItem>
 

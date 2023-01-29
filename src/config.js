@@ -5,7 +5,7 @@ const working_hostname = window && window.location && window.location.hostname;
 if(working_hostname === 'localhost'){
   backendHost = 'http://localhost:8000'
 }
-else if(working_hostname === 'https://alkrakow.pl') {
+else if(working_hostname === 'https://alkrakow.toady.pl' || working_hostname === 'https://dndkrakow.pl' || working_hostname === 'https://rpgkrakow.pl') {
   backendHost = working_hostname
 }
 else{
