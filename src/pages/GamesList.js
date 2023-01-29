@@ -8,6 +8,7 @@ import Link from "react-router-dom/es/Link";
 import Switch from "@material-ui/core/Switch/Switch";
 import FormGroup from "@material-ui/core/FormGroup/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
+import {BoolStorage} from "../common/PortalUtils"
 
 
 const styles = (theme) => ({
@@ -35,8 +36,8 @@ export class FutureGamesList extends React.Component {
   state = {
     loading: true,
     games: null,
-    displayEmptyGames: false,
-    displayFullGames: false,
+    displayEmptyGames: BoolStorage.get('selector_displayEmptyGames'),
+    displayFullGames:  BoolStorage.get('selector_displayFullGames'),
   };
 
   componentDidMount(){
@@ -47,13 +48,18 @@ export class FutureGamesList extends React.Component {
       this.setState({
         games: games,
         loading: false,
-        displayEmptyGames: this.props.portalStore.currentUser.isDM,
       })
+      if ( !BoolStorage.exist('selector_displayEmptyGames') ) {
+        this.setState({
+          displayEmptyGames: this.props.portalStore.currentUser.isDM
+        })
+      }
     })
   }
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.checked });
+    BoolStorage.set(name,'selector',event.target.checked);
   };
 
   render(){
@@ -112,9 +118,14 @@ export class PastGamesList extends React.Component {
   state = {
     loading: true,
     games: null,
-    displayMyDames: false,
-    displayMyDMGames: false
+    displayMyGames:     BoolStorage.get('selector_displayMyGames'),
+    displayMyDMGames:   BoolStorage.get('selector_displayMyDMGames'),
   };
+
+  common_selectors = {
+    'displayMyGames':['displayMyDMGames'],
+    'displayMyDMGames':['displayMyGames']
+  }
 
   fetchData = () => {
     const user_id = this.props.portalStore.currentUser.profileID;
@@ -142,11 +153,19 @@ export class PastGamesList extends React.Component {
   }
 
   handleChange = name => event => {
-    this.setState({
+    var hash_of_state = {
       [name]: event.target.checked,
       loading: true,
       games: null
-    }, () => this.fetchData());
+    };
+    if (event.target.checked && this.common_selectors[name]) {
+        for (var depend in this.common_selectors[name]) {
+            hash_of_state[this.common_selectors[name][depend]] = false;
+            BoolStorage.set(this.common_selectors[name][depend],'selector',false)
+        }
+    }
+    this.setState(hash_of_state, () => this.fetchData());
+    BoolStorage.set(name,'selector',event.target.checked);
   };
 
   render(){
