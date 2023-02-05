@@ -133,7 +133,7 @@ class GameDetail extends Component {
   };
 
   gameDM = (dm) => {
-    return `${dm.first_name} ${dm.last_name}`
+    return `${dm.first_name} ${dm.last_name} (${dm.nickname})`
   };
 
   getUserListItem = (player) => {
