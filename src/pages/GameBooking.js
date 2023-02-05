@@ -199,6 +199,7 @@ class GameBooking extends Component {
             </span>
           </Typography>
           <form onSubmit={this.bookGame}>
+
             <SelectField name={'adventure'} label={'Select Adventure'}
                          value={this.state.adventure}
                          onChange={this.handleChange('adventure')}
