@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 
 import Drawer from '@material-ui/core/Drawer';
 
-import al_krakow_logo from '../images/al_krakow_logo.png';
+import opk_krakow_logo from '../images/opk_krakow_logo.png';
 
 import SidebarNavigationList from "./SidebarNavigationList";
 import Menu from "@material-ui/core/Menu/Menu";
@@ -133,7 +133,7 @@ class TopAppBar extends React.Component {
 
             <Typography variant="h6" color="inherit">
               <Link to="/" className={ classes.link }>
-                <img src={ al_krakow_logo } className={classes.logo} alt="logo" />
+                <img src={ opk_krakow_logo } className={classes.logo} alt="logo" />
               </Link>
             </Typography>
 
