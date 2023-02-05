@@ -1,18 +1,17 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Button from "@material-ui/core/Button/Button";
-import {inject, observer} from "mobx-react/index";
-import Typography from "@material-ui/core/Typography/Typography";
 import {NarrowContent} from "../common/Content";
 import {Link} from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
+import Grid from '@material-ui/core/Grid';
+import withStyles from "@material-ui/core/styles/withStyles";
+import {inject, observer} from "mobx-react";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+
 
 const styles = theme => ({
   textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: '90%',
+    width: '100%',
   },
   paperContainer: {
     maxWidth: '800px',
@@ -78,56 +77,54 @@ class Account extends React.Component {
     return (
       <NarrowContent>
         <form className={classes.container} noValidate autoComplete="off">
-          <div className={classes.paperContainer}>
-            <Grid container spacing={24}>
-              <Grid item xs={12}>
-                <Typography variant="h6">Change account settings</Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  id="name"
-                  label="First Name"
-                  className={classes.textField}
-                  value={this.state.first_name}
-                  onChange={(event) => this.setState({first_name: event.target.value})}
-                  margin="normal"
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  id="name"
-                  label="Last Name"
-                  className={classes.textField}
-                  value={this.state.last_name}
-                  onChange={(event) => this.setState({last_name: event.target.value})}
-                  margin="normal"
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  id="name"
-                  label="Nickname"
-                  className={classes.textField}
-                  value={this.state.nickname}
-                  onChange={(event) => this.setState({nickname: event.target.value})}
-                  margin="normal"
-                />
-              </Grid>
-              <Grid item xs={12} className={classes.submitRow}>
-                <Button variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        disabled={this.state.is_saving}
-                        onClick={(event) => this.saveData()}>
-                  { this.state.save_text }
-                </Button>
-              </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="h6">Change account settings</Typography>
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="h6">Password change</Typography>
-              <p>Due to security reasons you cannot change your password here. In order to do so, use <Link to="/password-reset">Password Reset Page</Link></p>
-              </Grid>
-          </div>
+              <TextField
+                id="name"
+                label="Nickname"
+                className={classes.textField}
+                value={this.state.nickname}
+                onChange={(event) => this.setState({nickname: event.target.value})}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                id="name"
+                label="First Name"
+                className={classes.textField}
+                value={this.state.first_name}
+                onChange={(event) => this.setState({first_name: event.target.value})}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                id="name"
+                label="Last Name"
+                className={classes.textField}
+                value={this.state.last_name}
+                onChange={(event) => this.setState({last_name: event.target.value})}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={12} className={classes.submitRow}>
+              <Button variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      disabled={this.state.is_saving}
+                      onClick={(event) => this.saveData()}>
+                { this.state.save_text }
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6">Password change</Typography>
+          <p>Due to security reasons you cannot change your password here. In order to do so, use <Link to="/password-reset">Password Reset Page</Link></p>
+          </Grid>
         </form>
       </NarrowContent>
     );

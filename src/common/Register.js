@@ -3,39 +3,37 @@ import classNames from 'classnames';
 import {inject, observer} from "mobx-react";
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from "@material-ui/core/Button/Button";
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import Input from "@material-ui/core/Input/Input";
-import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Button from "@material-ui/core/Button";
 import {NarrowContent} from "./Content";
-import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import Link from "react-router-dom/es/Link";
 import {SnackbarContentWrapper} from "./InfoSnackbar";
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 import {openUrl} from "../utils";
 import {ErrorMessageSnackbar} from "./ErrorMessageSnackbar";
+import IconButton from '@material-ui/core/IconButton';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
 
 const styles = (theme) => ({
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: '100%',
+  textFieldWrapper: {
+    padding: theme.spacing(1),
   },
-  paperContainer: {
-    maxWidth: '800px',
-    margin: '0 auto',
-    padding: '20px',
+  withoutLabel: {
+    marginTop: theme.spacing(3),
+  },
+  textField: {
+    width: '100%',
   },
   submitRow: {
     textAlign: 'right',
-  },
-  inputMargin: {
-    margin: `0`,
   },
   whiteUrl: {
     color: '#fff',
@@ -53,7 +51,6 @@ export class RegisterActive extends React.Component {
       <div>
         <SnackbarContentWrapper
           variant="success"
-          className={classes.margin}
           message={(<div>Your account has been activated. <Link to="/login" className={classes.whiteUrl}>You can now login</Link></div>)}/>
       </div>
     )
@@ -175,33 +172,34 @@ export default class Register extends React.Component {
     return (
       <NarrowContent>
         {!this.state.isDone && (
-          <form className={classes.container} noValidate autoComplete="off" onSubmit={this.signup}>
-            <Grid container spacing={24}>
+          <form className={classes.container}  noValidate autoComplete="off" onSubmit={this.signup}>
+            <Grid container spacing={2}>
               <Grid item xs={12}>
                 <h1>Sign up</h1>
                 <p>Register in order to access D&D Adventurers League Krakow system and start playing.</p>
               </Grid>
-              {this.state.nonFieldErrors && (<Grid item xs={12}>
-                <ErrorMessageSnackbar message={this.state.nonFieldErrors}/>
-              </Grid>)}
+              {this.state.nonFieldErrors && (
+                <Grid item xs={12}>
+                  <ErrorMessageSnackbar message={this.state.nonFieldErrors}/>
+                </Grid>
+              )}
               <Grid item xs={12}>
-                <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                  <InputLabel htmlFor="signUp-email">E-mail</InputLabel>
-                  <Input
-                    id="signUp-email"
-                    type="text"
-                    error={!!this.state.emailErrors}
-                    aria-describedby="email-error-text"
-                    value={this.state.email}
-                    onChange={this.handleChange('email')}
-                  />
-                  {this.state.emailErrors && (<FormHelperText id="email-error-text">{this.state.emailErrors}</FormHelperText>)}
-                </FormControl>
+                <TextField
+                  className={classes.textField}
+                  id="signUp-email"
+                  label="E-mail address"
+                  error={!!this.state.emailErrors}
+                  aria-describedby="email-error-text"
+                  value={this.state.email}
+                  onChange={this.handleChange('email')}
+                  variant="outlined"
+                  helperText={this.state.emailErrors ? this.state.emailErrors : ""}
+                />
               </Grid>
               <Grid item xs={12} md={6}>
-                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                <FormControl className={classNames(classes.margin, classes.textField)} variant="outlined">
                   <InputLabel htmlFor="signUp-password">Password</InputLabel>
-                  <Input
+                  <OutlinedInput
                     id="signUp-password"
                     type={this.state.showPassword ? 'text' : 'password'}
                     value={this.state.password}
@@ -214,6 +212,7 @@ export default class Register extends React.Component {
                           aria-label="Toggle password visibility"
                           onClick={this.handleClickShowPassword}
                           onMouseDown={this.handleMouseDownPassword}
+                          edge="end"
                         >
                           {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
@@ -224,69 +223,69 @@ export default class Register extends React.Component {
                 </FormControl>
               </Grid>
               <Grid item xs={12} md={6}>
-                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                <FormControl className={classNames(classes.margin, classes.textField)} variant="outlined">
                   <InputLabel htmlFor="signUp-password-confirm">Repeat Password</InputLabel>
-                  <Input
+                  <OutlinedInput
                     id="signUp-password-confirm"
                     type={this.state.showPassword ? 'text' : 'password'}
                     value={this.state.passwordConfirm}
                     onChange={this.handleChange('passwordConfirm')}
                     error={this.diffPasswords()}
-                    aria-describedby="first-name-error-text"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
-                          aria-label="Toggle password visibility"
+                          aria-label="toggle password visibility"
                           onClick={this.handleClickShowPassword}
                           onMouseDown={this.handleMouseDownPassword}
+                          edge="end"
                         >
                           {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     }
                   />
-                   {this.diffPasswords() && (<FormHelperText id="first-name-error-text">Passwords don't match!</FormHelperText>)}
+                  {this.diffPasswords() && (<FormHelperText id="first-name-error-text">Passwords don't match!</FormHelperText>)}
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                  <InputLabel htmlFor="signUp-nickname">Nickname</InputLabel>
-                  <Input
-                    id="signUp-nickname"
-                    type="text"
-                    value={this.state.nickname}
-                    onChange={this.handleChange('nickname')}
-                  />
-                </FormControl>
+                <TextField
+                  id="signUp-nickname"
+                  className={classes.textField}
+                  type="text"
+                  label="Nickname"
+                  value={this.state.nickname}
+                  onChange={this.handleChange('nickname')}
+                  variant="outlined"
+                />
               </Grid>
 
-              <Grid item xs={12} md={6}>
-                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                  <InputLabel htmlFor="signUp-first-name">First name</InputLabel>
-                  <Input
-                    id="signUp-first-name"
-                    type="text"
-                    error={!!this.state.first_nameErrors}
-                    aria-describedby="last-name-error-text"
-                    value={this.state.first_name}
-                    onChange={this.handleChange('first_name')}
-                  />
-                 {this.state.first_nameErrors && (<FormHelperText id="last-name-error-text">{this.state.first_nameErrors}</FormHelperText>)}
-                </FormControl>
+              <Grid item xs={12} md={6} className={classes.textFieldWrapper}>
+                <TextField
+                  id="signUp-first-name"
+                  type="text"
+                  label="First name"
+                  className={classes.textField}
+                  error={!!this.state.first_nameErrors}
+                  aria-describedby="last-name-error-text"
+                  value={this.state.first_name}
+                  onChange={this.handleChange('first_name')}
+                  variant="outlined"
+                  helperText={this.state.first_nameErrors ? this.state.first_nameErrors : ""}
+                />
               </Grid>
-              <Grid item xs={12} md={6}>
-                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                  <InputLabel htmlFor="signUp-last-name">Last name</InputLabel>
-                  <Input
-                    id="signUp-last-name"
-                    type="text"
-                    error={!!this.state.last_nameErrors}
-                    aria-describedby="name-error-text"
-                    value={this.state.last_name}
-                    onChange={this.handleChange('last_name')}
-                  />
-                 {this.state.last_nameErrors && (<FormHelperText id="name-error-text">{this.state.last_nameErrors}</FormHelperText>)}
-                </FormControl>
+              <Grid item xs={12} md={6} className={classes.textFieldWrapper}>
+                <TextField
+                  id="signUp-last-name"
+                  type="text"
+                  label="Last name"
+                  className={classes.textField}
+                  error={!!this.state.last_nameErrors}
+                  aria-describedby="name-error-text"
+                  value={this.state.last_name}
+                  onChange={this.handleChange('last_name')}
+                  helperText={this.state.last_nameErrors ? this.state.last_nameErrors : ""}
+                  variant="outlined"
+                />
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
@@ -301,7 +300,7 @@ export default class Register extends React.Component {
                 />
                 {this.state.termsErrors && (<FormHelperText id="terms-error-text">You cannot register until you agree to our terms.</FormHelperText>)}
               </Grid>
-              <Grid item xs={12} className={classes.submitRow}>
+              <Grid item xs={12}>
                 <Button variant="contained"
                         color="primary"
                         type="submit"
@@ -319,7 +318,7 @@ export default class Register extends React.Component {
           </form>
         )}
         {this.state.isDone && (
-          <Grid container spacing={24}>
+          <Grid container spacing={1}>
             <Grid item xs={12}>
               <h1>Sign up</h1>
               <p>All set! We have sent you activation e-mail. You won't be able to login until you click the link it contains.</p>

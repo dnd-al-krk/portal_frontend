@@ -1,21 +1,16 @@
 import React from 'react'
 import classNames from 'classnames';
 import {inject, observer} from "mobx-react";
-import {Redirect} from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from "@material-ui/core/Button/Button";
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import Input from "@material-ui/core/Input/Input";
+import Button from "@material-ui/core/Button";
 import {NarrowContent} from "../common/Content";
 import Link from "react-router-dom/es/Link";
+import TextField from "@material-ui/core/TextField";
 
 
 const styles = (theme) => ({
   textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
     width: '100%',
   },
   paperContainer: {
@@ -76,7 +71,7 @@ export default class PasswordReset extends React.Component {
     return (
       <NarrowContent>
         {this.state.done ? (
-            <Grid container spacing={24}>
+            <Grid container spacing={4}>
               <Grid item xs={12}>
                 <h1>Reset your password</h1>
                 <p>Check your e-mail. We have sent you password reset link.</p>
@@ -84,22 +79,22 @@ export default class PasswordReset extends React.Component {
             </Grid>
           ): (
           <form className={classes.container} noValidate autoComplete="off">
-            <Grid container spacing={24}>
+            <Grid container spacing={4}>
               <Grid item xs={12}>
                 <h1>Reset your password</h1>
                 <p>If you have forgotten your password, you can reset it. Put your login e-mail address below. We will
                   send you password reset link to it.</p>
               </Grid>
               <Grid item xs={12}>
-                <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                  <InputLabel htmlFor="signIn-email">E-mail</InputLabel>
-                  <Input
-                    id="signIn-email"
-                    type="text"
-                    value={this.state.email}
-                    onChange={this.handleChange('email')}
-                  />
-                </FormControl>
+                <TextField
+                  id="signIn-email"
+                  type="text"
+                  label="Email address"
+                  value={this.state.email}
+                  onChange={this.handleChange('email')}
+                  variant="outlined"
+                  className={classes.textField}
+                />
               </Grid>
               <Grid item xs={12} className={classes.errors}>
                 {this.state.errors}

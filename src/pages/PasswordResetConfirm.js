@@ -3,28 +3,21 @@ import classNames from 'classnames';
 import {inject, observer} from "mobx-react";
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from "@material-ui/core/Button/Button";
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import Input from "@material-ui/core/Input/Input";
-import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
-import IconButton from "@material-ui/core/IconButton/IconButton";
+import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {NarrowContent} from "../common/Content";
-import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import Link from "react-router-dom/es/Link";
 
 const styles = (theme) => ({
   textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
     width: '100%',
-  },
-  paperContainer: {
-    maxWidth: '800px',
-    margin: '0 auto',
-    padding: '20px',
   },
   submitRow: {
     textAlign: 'right',
@@ -102,15 +95,15 @@ export default class PasswordResetConfirm extends React.Component {
       <NarrowContent>
         {!this.state.done ? (
           <form className={classes.container} noValidate autoComplete="off" onSubmit={this.signup}>
-            <Grid container spacing={24}>
+            <Grid container spacing={4}>
               <Grid item xs={12}>
                 <h1>Password change</h1>
                 <p>Put new password below to change it.</p>
               </Grid>
               <Grid item xs={12} md={6}>
-                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                 <FormControl className={classNames(classes.inputMargin, classes.textField)} variant="outlined">
                   <InputLabel htmlFor="signUp-password">Password</InputLabel>
-                  <Input
+                  <OutlinedInput
                     id="signUp-password"
                     type={this.state.showPassword ? 'text' : 'password'}
                     value={this.state.password}
@@ -123,6 +116,7 @@ export default class PasswordResetConfirm extends React.Component {
                           aria-label="Toggle password visibility"
                           onClick={this.handleClickShowPassword}
                           onMouseDown={this.handleMouseDownPassword}
+                          edge="end"
                         >
                           {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
@@ -133,21 +127,21 @@ export default class PasswordResetConfirm extends React.Component {
                 </FormControl>
               </Grid>
               <Grid item xs={12} md={6}>
-                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                 <FormControl className={classNames(classes.inputMargin, classes.textField)} variant="outlined">
                   <InputLabel htmlFor="signUp-password-confirm">Repeat Password</InputLabel>
-                  <Input
+                  <OutlinedInput
                     id="signUp-password-confirm"
                     type={this.state.showPassword ? 'text' : 'password'}
                     value={this.state.passwordConfirm}
                     onChange={this.handleChange('passwordConfirm')}
                     error={this.diffPasswords()}
-                    aria-describedby="first-name-error-text"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
                           aria-label="Toggle password visibility"
                           onClick={this.handleClickShowPassword}
                           onMouseDown={this.handleMouseDownPassword}
+                          edge="end"
                         >
                           {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
