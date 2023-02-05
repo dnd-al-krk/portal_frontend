@@ -3,22 +3,20 @@ import classNames from 'classnames';
 import {inject, observer} from "mobx-react";
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from "@material-ui/core/Button/Button";
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import Input from "@material-ui/core/Input/Input";
-import InputAdornment from "@material-ui/core/InputAdornment/InputAdornment";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Button from "@material-ui/core/Button";
 import {NarrowContent} from "./Content";
 import Link from "react-router-dom/es/Link";
-
+import IconButton from '@material-ui/core/IconButton';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const styles = (theme) => ({
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
     width: '100%',
   },
   paperContainer: {
@@ -89,26 +87,26 @@ class Login extends React.Component {
     return (
       <NarrowContent>
         <form className={classes.container} noValidate autoComplete="off" onSubmit={this.login}>
-          <Grid container spacing={24}>
+          <Grid container spacing={2}>
             <Grid item xs={12}>
               <h1>Sign in</h1>
               <p>Sign in to access your profile and available games.</p>
             </Grid>
             <Grid item xs={12} md={6}>
-              <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                <InputLabel htmlFor="signIn-email">E-mail</InputLabel>
-                <Input
-                  id="signIn-email"
-                  type="text"
-                  value={this.state.email}
-                  onChange={this.handleChange('email')}
-                />
-              </FormControl>
+              <TextField
+                id="signIn-email"
+                type="text"
+                label="E-mail address"
+                className={classes.textField}
+                value={this.state.email}
+                onChange={this.handleChange('email')}
+                variant="outlined"
+              />
             </Grid>
             <Grid item xs={12} md={6}>
-               <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+               <FormControl className={classNames(classes.margin, classes.textField)} variant="outlined">
                 <InputLabel htmlFor="signIn-password">Password</InputLabel>
-                <Input
+                <OutlinedInput
                   id="signIn-password"
                   type={this.state.showPassword ? 'text' : 'password'}
                   value={this.state.password}
@@ -119,6 +117,7 @@ class Login extends React.Component {
                         aria-label="Toggle password visibility"
                         onClick={this.handleClickShowPassword}
                         onMouseDown={this.handleMouseDownPassword}
+                        edge="end"
                       >
                         {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>

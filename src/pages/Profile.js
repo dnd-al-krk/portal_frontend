@@ -24,8 +24,8 @@ const styles = theme => ({
     height: 50,
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     width: '90%',
   },
   paperContainer: {
@@ -121,7 +121,7 @@ export default class Profile extends React.Component {
                 {profile.first_name} {profile.last_name} ({profile.nickname})
               </Typography>
               <Typography variant="body1">
-                {profile.role} | DCI: {profile.dci}
+                {profile.role}
               </Typography>
             </Grid>
             <Grid item xs={12} className={classes.charactersList}>

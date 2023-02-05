@@ -1,61 +1,37 @@
-import React, {Component, Fragment} from 'react';
-import Typography from "@material-ui/core/Typography/Typography";
-import {WideContent} from "../common/Content";
+import React, {Component} from 'react';
+import Typography from "@material-ui/core/Typography";
+import {NarrowContent, WideContent} from "../common/Content";
 import Spinner from "../common/LoadingDiv";
+import Grid from '@material-ui/core/Grid';
 import withStyles from "@material-ui/core/styles/withStyles";
 import {inject, observer} from "mobx-react";
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import {SelectField} from "../common/Fields";
-import TextField from "@material-ui/core/TextField/TextField";
-import Button from "@material-ui/core/Button/Button";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 import classNames from 'classnames';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
 import {dateToString, weekdayOf} from "../utils";
-import {MissingDCINotification} from "../common/MissingDCINotification";
+import Autocomplete from '@material-ui/lab/Autocomplete'
 
 
 const styles = theme => ({
   header: {
-    marginBottom: theme.spacing.unit,
+    marginBottom: theme.spacing(1),
+  },
+  subheader: {
+    marginBottom: theme.spacing(4),
   },
   info: {
-    marginRight: 10
+    marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(4)
   },
   infoIcon: {
     fontSize: 14,
     marginRight: 5,
   },
-  formControl: {
-    width: '100%',
-  },
   textField: {
-    marginRight: theme.spacing.unit,
     width: '100%',
-  },
-  field: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },
-  timeControl: {
-    width: 200,
-    marginBottom: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },
-  notesControl: {
-    width: '100%',
-    marginBottom: theme.spacing.unit,
-  },
-  button: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },
-  spotsControl: {
-    marginLeft: theme.spacing.unit,
-  },
-  endTimeControl: {
-    marginRight: theme.spacing.unit,
-  },
+  }
 });
 
 @withStyles(styles, {withTheme: true})
@@ -64,7 +40,8 @@ class GameBooking extends Component {
 
   state = {
     adventures: [],
-    adventure: '',
+    adventure_name: '',
+    adventure_id: '',
     startTime: '',
     endTime: '',
     spots: 0,
@@ -102,7 +79,8 @@ class GameBooking extends Component {
             spots: game.spots,
             gameID: this.props.match.params.id,
             game: game,
-            adventure: game.adventure.id,
+            adventure_id: game.adventure.id,
+            adventure_name: game.adventure.title_display,
             notes: game.notes,
             formValid: true,
           })
@@ -126,7 +104,7 @@ class GameBooking extends Component {
     const data = {
       time_start: this.state.startTime,
       time_end: this.state.endTime ? this.state.endTime : null,
-      adventure: this.state.adventure,
+      adventure: this.state.adventure_id,
       notes: this.state.notes,
       spots: this.state.spots,
     };
@@ -150,11 +128,18 @@ class GameBooking extends Component {
     this.setState({
       [prop]: value,
     });
-    if(prop === 'adventure')
-      this.setState({
-        formValid: value !== '',
-      })
   };
+
+  handleAdventureSelected = (event, value) => {
+    if (value) {
+      this.setState({
+        adventure_id: value.id,
+      })
+    }
+    this.setState({
+      formValid: value !== null,
+    })
+}
 
   handleSpotsChange = event => {
     const new_value = event.target.value;
@@ -186,14 +171,13 @@ class GameBooking extends Component {
           </WideContent>
         )
       }
+
       return (
-        <WideContent>
+        <NarrowContent>
           <Typography variant='h5' className={classes.header}>
             Booking slot for a game
           </Typography>
-
-          <MissingDCINotification/>
-          <Typography variant="body1" className={classes.header}>
+          <Typography variant="body1" className={classNames(classes.header, classes.subheader)}>
             <span className={classes.info}>
               <CalendarIcon className={classes.infoIcon}/>{this.gameDate()}
             </span>
@@ -201,79 +185,92 @@ class GameBooking extends Component {
               <LocationIcon className={classes.infoIcon}/> {this.state.game.table_name}
             </span>
           </Typography>
-          <form onSubmit={this.bookGame}>
-            <SelectField name={'adventure'} label={'Select Adventure'}
-                         value={this.state.adventure}
-                         onChange={this.handleChange('adventure')}
-                         options={this.state.adventures.map(adventure => ({id: adventure.id, name: adventure.title_display}))}
-                         required={true}
-            />
-            <FormControl className={classNames([classes.field, classes.timeControl])}>
-              <TextField
-                id="startTime"
-                label="Starting time"
-                type="time"
-                onChange={this.handleChange('startTime')}
-                value={this.state.startTime}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 900, // 15 min
-                }}
-              />
-            </FormControl>
-            <FormControl className={classNames([classes.field, classes.timeControl, classes.endTimeControl])}>
-              <TextField
-                id="endTime"
-                label="Estimated end time"
-                type="time"
-                onChange={this.handleChange('endTime')}
-                value={this.state.endTime}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 900, // 15 min
-                }}
-              />
-            </FormControl>
-            <FormControl className={classNames([classes.field, classes.spotsControl])}>
-              <TextField
-                id="spots"
-                label="Maximum players spots"
-                onChange={this.handleSpotsChange}
-                type="number"
-                helperText={`Maximum spots for the table: ${this.state.game.max_spots}`}
-                value={this.state.spots}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </FormControl>
-            <FormControl className={classNames([classes.field, classes.notesControl])}>
-              <TextField
-                id="notes"
-                label="Notes for players"
-                type="text"
-                value={this.state.notes}
-                onChange={this.handleChange('notes')}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </FormControl>
-            <Button variant="contained" color="secondary" className={classes.button}
-                    type='submit'
-                    onClick={this.bookGame} disabled={!this.state.formValid}>
-              Book game slot
-            </Button>
+          <form className={classes.container} onSubmit={this.bookGame}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Autocomplete
+                  className={classNames([classes.adventureControl])}
+                  options={this.state.adventures.map(adventure => ({id: adventure.id, name: adventure.title_display}))}
+                  getOptionLabel={(option) => option.name }
+                  id="adventure_combo_box"
+                  defaultValue={{id: this.state.adventure_id, name: this.state.adventure_name}}
+                  disableCloseOnSelect
+                  onChange={this.handleAdventureSelected}
+                  renderInput={(params) => <TextField {...params} label="Select adventure" variant="outlined"/>}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  id="startTime"
+                  label="Starting time"
+                  type="time"
+                  onChange={this.handleChange('startTime')}
+                  value={this.state.startTime}
+                  variant="outlined"
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    step: 900, // 15 min
+                  }}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  id="endTime"
+                  label="Estimated end time"
+                  type="time"
+                  variant="outlined"
+                  onChange={this.handleChange('endTime')}
+                  value={this.state.endTime}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    step: 900, // 15 min
+                  }}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  id="spots"
+                  label="Maximum players spots"
+                  onChange={this.handleSpotsChange}
+                  type="number"
+                  variant="outlined"
+                  helperText={`Maximum spots for the table: ${this.state.game.max_spots}`}
+                  value={this.state.spots}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="notes"
+                  label="Notes for players"
+                  type="text"
+                  variant="outlined"
+                  value={this.state.notes}
+                  onChange={this.handleChange('notes')}
+                  className={classes.textField}
+                  multiline={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+              <Button variant="contained" color="secondary" className={classes.button}
+                      type='submit'
+                      onClick={this.bookGame} disabled={!this.state.formValid}>
+                Book game slot
+              </Button>
+            </Grid>
           </form>
-        </WideContent>
+        </NarrowContent>
       );
   }
 }

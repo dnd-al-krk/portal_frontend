@@ -208,7 +208,7 @@ export default class Games extends React.Component {
     const {list, classes, displayEmpty=false, displayFull=true} = this.props;
     return (
       <Fragment>
-        <Grid container spacing={8} className={classes.cardsRoot}>
+        <Grid container spacing={4} className={classes.cardsRoot}>
           {list.map(game => (
             <Fragment key={`game-${game.id}`}>
               {(

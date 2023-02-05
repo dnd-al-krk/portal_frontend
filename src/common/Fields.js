@@ -11,15 +11,15 @@ import classNames from 'classnames';
 
 const styles = (theme) => ({
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     width: '100%',
   },
   margin: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
   },
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
     minWidth: 120,
   },
 });
