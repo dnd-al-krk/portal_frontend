@@ -190,7 +190,7 @@ export class GameCard extends React.Component {
               </Button>
             )}
           </CardActions>
-        </Card> `  asfasf `
+        </Card>
   }
 }
 
