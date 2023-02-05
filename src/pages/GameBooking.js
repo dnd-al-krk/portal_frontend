@@ -12,6 +12,7 @@ import classNames from 'classnames';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
 import {dateToString, weekdayOf} from "../utils";
+import Autocomplete from '@material-ui/lab/Autocomplete'
 
 
 const styles = theme => ({
@@ -35,6 +36,10 @@ const styles = theme => ({
   field: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
+  },
+  adventureControl: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   timeControl: {
     width: 200,
@@ -63,7 +68,8 @@ class GameBooking extends Component {
 
   state = {
     adventures: [],
-    adventure: '',
+    adventure_name: '',
+    adventure_id: '',
     startTime: '',
     endTime: '',
     spots: 0,
@@ -101,7 +107,8 @@ class GameBooking extends Component {
             spots: game.spots,
             gameID: this.props.match.params.id,
             game: game,
-            adventure: game.adventure.id,
+            adventure_id: game.adventure.id,
+            adventure_name: game.adventure.title_display,
             notes: game.notes,
             formValid: true,
           })
@@ -125,7 +132,7 @@ class GameBooking extends Component {
     const data = {
       time_start: this.state.startTime,
       time_end: this.state.endTime ? this.state.endTime : null,
-      adventure: this.state.adventure,
+      adventure: this.state.adventure_id,
       notes: this.state.notes,
       spots: this.state.spots,
     };
@@ -149,11 +156,18 @@ class GameBooking extends Component {
     this.setState({
       [prop]: value,
     });
-    if(prop === 'adventure')
-      this.setState({
-        formValid: value !== '',
-      })
   };
+
+  handleAdventureSelected = (event, value) => {
+    if (value) {
+      this.setState({
+        adventure_id: value.id,
+      })
+    }
+    this.setState({
+      formValid: value !== null,
+    })
+}
 
   handleSpotsChange = event => {
     const new_value = event.target.value;
@@ -185,6 +199,7 @@ class GameBooking extends Component {
           </WideContent>
         )
       }
+
       return (
         <WideContent>
           <Typography variant='h5' className={classes.header}>
@@ -199,12 +214,15 @@ class GameBooking extends Component {
             </span>
           </Typography>
           <form onSubmit={this.bookGame}>
-
-            <SelectField name={'adventure'} label={'Select Adventure'}
-                         value={this.state.adventure}
-                         onChange={this.handleChange('adventure')}
-                         options={this.state.adventures.map(adventure => ({id: adventure.id, name: adventure.title_display}))}
-                         required={true}
+            <Autocomplete
+              className={classNames([classes.adventureControl])}
+              options={this.state.adventures.map(adventure => ({id: adventure.id, name: adventure.title_display}))}
+              getOptionLabel={(option) => option.name }
+              id="adventure_combo_box"
+              defaultValue={{id: this.state.adventure_id, name: this.state.adventure_name}}
+              disableCloseOnSelect
+              onChange={this.handleAdventureSelected}
+              renderInput={(params) => <TextField {...params} label="Select adventure" variant="outlined"/>}
             />
             <FormControl className={classNames([classes.field, classes.timeControl])}>
               <TextField
