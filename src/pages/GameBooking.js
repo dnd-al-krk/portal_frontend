@@ -16,7 +16,7 @@ import {dateToString, weekdayOf} from "../utils";
 
 const styles = theme => ({
   header: {
-    marginBottom: theme.spacing.unit,
+    marginBottom: theme.spacing(1),
   },
   info: {
     marginRight: 10
@@ -29,31 +29,31 @@ const styles = theme => ({
     width: '100%',
   },
   textField: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     width: '100%',
   },
   field: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
   timeControl: {
     width: 200,
-    marginBottom: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginBottom: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
   notesControl: {
     width: '100%',
-    marginBottom: theme.spacing.unit,
+    marginBottom: theme.spacing(1),
   },
   button: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
   spotsControl: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
   },
   endTimeControl: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
   },
 });
 
