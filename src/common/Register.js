@@ -1,10 +1,8 @@
 import React from 'react'
 import classNames from 'classnames';
 import {inject, observer} from "mobx-react";
-import {Redirect} from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Paper from "@material-ui/core/Paper/Paper";
 import Button from "@material-ui/core/Button/Button";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
@@ -19,8 +17,8 @@ import Link from "react-router-dom/es/Link";
 import {SnackbarContentWrapper} from "./InfoSnackbar";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import UndecoratedLink from "./UndecoratedLink";
 import {openUrl} from "../utils";
+import {ErrorMessageSnackbar} from "./ErrorMessageSnackbar";
 
 const styles = (theme) => ({
   textField: {
@@ -75,7 +73,6 @@ export default class Register extends React.Component {
     first_name: '',
     last_name: '',
     nickname: '',
-    dci: '',
     terms: null,
     emailErrors: null,
     passwordErrors: null,
@@ -83,7 +80,7 @@ export default class Register extends React.Component {
     last_nameErrors: null,
     nicknameErrors: null,
     termsErrors: false,
-    dciErrors: null,
+    nonFieldErrors: null,
     signupText: 'Sign up',
     showPassword: false,
   };
@@ -104,7 +101,6 @@ export default class Register extends React.Component {
       });
       this.props.portalStore.register({
         nickname: this.state.nickname,
-        dci: this.state.dci ? this.state.dci : null,
         user: {
           email: this.state.email.toLowerCase(),
           password: this.state.password,
@@ -126,7 +122,7 @@ export default class Register extends React.Component {
             first_nameErrors: null,
             last_nameErrors: null,
             nicknameErrors: null,
-            dciErrors: null,
+            nonFieldErrors: null,
           };
           const data = error.response.data;
           Reflect.ownKeys(data).forEach(key => {
@@ -139,6 +135,9 @@ export default class Register extends React.Component {
               new_state[key + 'Errors'] = data[key][0];
             }
           });
+          if (data["user"] && data["user"]["non_field_errors"]) {
+            new_state.nonFieldErrors = data["user"]["non_field_errors"]
+          }
           new_state.isSigning = false;
           this.setState(new_state);
       });
@@ -182,6 +181,9 @@ export default class Register extends React.Component {
                 <h1>Sign up</h1>
                 <p>Register in order to access D&D Adventurers League Krakow system and start playing.</p>
               </Grid>
+              {this.state.nonFieldErrors && (<Grid item xs={12}>
+                <ErrorMessageSnackbar message={this.state.nonFieldErrors}/>
+              </Grid>)}
               <Grid item xs={12}>
                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
                   <InputLabel htmlFor="signUp-email">E-mail</InputLabel>
@@ -246,6 +248,18 @@ export default class Register extends React.Component {
                    {this.diffPasswords() && (<FormHelperText id="first-name-error-text">Passwords don't match!</FormHelperText>)}
                 </FormControl>
               </Grid>
+              <Grid item xs={12}>
+                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
+                  <InputLabel htmlFor="signUp-nickname">Nickname</InputLabel>
+                  <Input
+                    id="signUp-nickname"
+                    type="text"
+                    value={this.state.nickname}
+                    onChange={this.handleChange('nickname')}
+                  />
+                </FormControl>
+              </Grid>
+
               <Grid item xs={12} md={6}>
                  <FormControl className={classNames(classes.inputMargin, classes.textField)}>
                   <InputLabel htmlFor="signUp-first-name">First name</InputLabel>
@@ -274,30 +288,6 @@ export default class Register extends React.Component {
                  {this.state.last_nameErrors && (<FormHelperText id="name-error-text">{this.state.last_nameErrors}</FormHelperText>)}
                 </FormControl>
               </Grid>
-              <Grid item xs={12} md={6}>
-                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                  <InputLabel htmlFor="signUp-nickname">Nickname</InputLabel>
-                  <Input
-                    id="signUp-nickname"
-                    type="text"
-                    value={this.state.nickname}
-                    onChange={this.handleChange('nickname')}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                 <FormControl className={classNames(classes.inputMargin, classes.textField)}>
-                  <InputLabel htmlFor="signUp-dci">Your DCI</InputLabel>
-                  <Input
-                    id="signUp-dci"
-                    type="text"
-                    value={this.state.dci}
-                    onChange={this.handleChange('dci')}
-                  />
-                 {this.state.dciErrors && (<FormHelperText id="dci-error-text">{this.state.dciErrors}</FormHelperText>)}
-                </FormControl>
-              </Grid>
-
               <Grid item xs={12}>
                 <FormControlLabel
                   control={

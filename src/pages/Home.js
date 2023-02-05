@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import {inject, observer} from "mobx-react";
-import {CurrentDMGamesList, CurrentUserGamesList, DMNotReportedGamesList} from "./GamesList";
+import {CurrentDMGamesList, CurrentUserGamesList} from "./GamesList";
 import Grid from "@material-ui/core/Grid/Grid";
 import Typography from "@material-ui/core/Typography/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -13,17 +13,13 @@ import ListItemIcon from "@material-ui/core/ListItemIcon/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import UndecoratedLink from "../common/UndecoratedLink";
 import classNames from 'classnames';
-import allogo from '../images/DnD_ADVL.png';
 import cover from '../images/dnd_cover.jpg';
-import teamIllustration from '../images/ill1.jpg';
 
 
 import {faDiscord, faFacebook} from '@fortawesome/free-brands-svg-icons'
 import {faFile, faFilePdf} from '@fortawesome/free-regular-svg-icons'
-import {Link} from "react-router-dom";
 import Divider from "@material-ui/core/Divider/Divider";
 import {openUrl} from "../utils";
-import {MissingDCINotification} from "../common/MissingDCINotification";
 library.add(faFacebook, faDiscord, faFilePdf, faFile);
 
 const styles = (theme) => ({
@@ -102,19 +98,16 @@ class Home extends React.Component {
           <Grid item xs={12} md={8} lg={9}>
           {this.props.portalStore.currentUser ? (
             <div className={classes.home}>
-                <MissingDCINotification/>
                 <CurrentUserGamesList/>
                 {this.props.portalStore.currentUser.isDM && (
                   <Fragment>
                     <CurrentDMGamesList/>
-                    <DMNotReportedGamesList/>
                   </Fragment>
                 )}
             </div>
           ) : (
             <div className={classes.root}>
               <div className={classes.centered}>
-                {/*<img src={allogo} className={classes.ALLogo}/>*/}
                 <Typography variant="h4" className={classes.mainHeader}>
                   Witamy w Dungeons & Dragons®: Organized Play Kraków!
                 </Typography>
@@ -129,12 +122,7 @@ class Home extends React.Component {
                 Podziemi rozgrywają różnorodne przygody w stale zmieniających się drużynach. Wszyscy,
                 którzy dbają o sympatyczną atmosferę przy stole i dobrą zabawę współgraczy są u nas mile widziani!
 
-                {/*This is the official website of the Dungeons &amp; Dragons Adventurers League Kraków group. Here you will find other*/}
-                {/*players and Dungeon Masters from Kraków, who are playing together D&D 5e games <a href="http://locator.wizards.com/#brand=magic&a=location&p=Krak%C3%B3w,+Poland&c=50.06465009999999,19.94497990000002&massmarket=no&loc=376610&orgid=14492&addrid=376610" onClick={openUrl}>under the official WPN</a>*/}
               </Typography>
-              {/*<Typography variant="h5" className={classNames(classes.textHeader)}>*/}
-              {/*  What is the Adventurers League?*/}
-              {/*</Typography>*/}
               <Typography variant="body1" className={classes.info}>
                 <strong>System rozgrywek OPK nie jest skomplikowany.</strong> Nasze Mistrzynie oraz Mistrzowie Podziemi ogłaszają
                 terminy sesji, oraz dopuszczalne poziomy postaci, które w danej sesji mogą uczestniczyć, a gracze
@@ -258,14 +246,6 @@ class Home extends React.Component {
                   </ListItem>
                 </UndecoratedLink>
 
-                {/* TODO: add FAQ pdf link here in the future */}
-                {/*<ListItem button>*/}
-                  {/*<ListItemIcon className={classes.communityIcon}>*/}
-                    {/*<FontAwesomeIcon icon={["far","file-pdf"]} />*/}
-                  {/*</ListItemIcon>*/}
-                  {/*<ListItemText primary="Read FAQ">*/}
-                  {/*</ListItemText>*/}
-                {/*</ListItem>*/}
               </List>
             </div>
           </Grid>

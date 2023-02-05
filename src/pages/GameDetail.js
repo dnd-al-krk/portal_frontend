@@ -20,7 +20,7 @@ import {Link} from "react-router-dom";
 import ReportDialog from "../common/ReportDialog";
 import CloseIcon from '@material-ui/icons/Close';
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
-import {MissingDCINotification} from "../common/MissingDCINotification";
+import {CannotSignUpOnGameNotification} from "../common/CannotSignUpOnGameNotification";
 
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -157,15 +157,18 @@ class GameDetail extends Component {
     return this.state.game.players.length;
   };
 
+  userIsRunning = () => {
+    return this.state.game.dm.id === this.props.portalStore.currentUser.profileID;
+  }
+
   canSignUp = () => {
     const players = this.state.game.players.map(player => player.profile.id);
     const player = this.props.portalStore.currentUser.profileID;
-    const usersGameSlot = this.state.game.dm && this.state.game.dm.id === player;
-    const hasDCI = !!this.props.portalStore.currentUser.dci;
+    const usersGameSlot = this.state.game.dm && this.userIsRunning;
     const future = this.state.game.ended === false;
     const emptySpot = this.freeSpots() > 0;
     const isDM = this.state.game.dm;
-    return isDM && future && players.indexOf(player) === -1 && !usersGameSlot && hasDCI && emptySpot;
+    return isDM && future && players.indexOf(player) === -1 && !usersGameSlot && emptySpot;
   };
 
   hasCharacters = () => {
@@ -335,29 +338,34 @@ class GameDetail extends Component {
             <List>
               {game.players.map(player => this.getUserListItem(player))}
             </List>
-            {(this.canSignUp() && this.hasCharacters()) ? (
-              <Fragment>
-                <Button variant="contained"
-                        aria-owns={anchorEl ? 'simple-menu' : null}
-                        aria-haspopup="true"
-                        color="secondary" onClick={this.showCharacterPick}>
-                  <PlusIcon/>
-                  Join this game
-                </Button>
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={this.hideCharacterPick}
-                >
-                  {this.state.characters.map(character => (
-                    <MenuItem key={`character-pick-item-${character.id}`} onClick={(e) => this.handleCharacterPick(e, character.id)}>{character.name}, {character.pc_class} {character.level}</MenuItem>
-                  ))}
-                </Menu>
-              </Fragment>
-            ) : (
-                <MissingDCINotification/>
-            )}
+            {!this.userIsRunning() &&
+              (<Fragment>
+                {(this.canSignUp() && this.hasCharacters()) ? (
+                  <Fragment>
+                    <Button variant="contained"
+                            aria-owns={anchorEl ? 'simple-menu' : null}
+                            aria-haspopup="true"
+                            color="secondary" onClick={this.showCharacterPick}>
+                      <PlusIcon/>
+                      Join this game
+                    </Button>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={this.hideCharacterPick}
+                    >
+                      {this.state.characters.map(character => (
+                        <MenuItem key={`character-pick-item-${character.id}`}
+                                  onClick={(e) => this.handleCharacterPick(e, character.id)}>{character.name}, {character.pc_class} {character.level}</MenuItem>
+                      ))}
+                    </Menu>
+                  </Fragment>
+                ) : (
+                  <CannotSignUpOnGameNotification/>
+                )}
+              </Fragment>)
+            }
             {!this.hasCharacters() && (
               <Fragment>
                 <Typography variant='body1'>
