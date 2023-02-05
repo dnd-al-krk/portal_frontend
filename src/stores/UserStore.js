@@ -8,7 +8,6 @@ export default class UserStore {
   @observable first_name;
   @observable last_name;
   @observable nickname;
-  @observable dci;
   role;
   @observable charactersCount;
 
@@ -34,7 +33,6 @@ export default class UserStore {
         this.first_name = data.user.first_name;
         this.last_name = data.user.last_name;
         this.nickname = data.nickname;
-        this.dci = data.dci;
         this.role = data.role;
         this.charactersCount = data.characters_count;
       })
@@ -53,7 +51,6 @@ export default class UserStore {
           'last_name': this.last_name,
         },
         'nickname': this.nickname,
-        'dci': this.dci,
     }).catch((err) => {
       this.root.signOut();
     });

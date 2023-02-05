@@ -17,7 +17,6 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import Menu from "@material-ui/core/Menu/Menu";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import {Link} from "react-router-dom";
-import ReportDialog from "../common/ReportDialog";
 import CloseIcon from '@material-ui/icons/Close';
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import {CannotSignUpOnGameNotification} from "../common/CannotSignUpOnGameNotification";
@@ -376,9 +375,6 @@ class GameDetail extends Component {
 
           </Grid>
         </Grid>
-
-        <ReportDialog game={game} open={this.state.reportDialogOpen} players={game.players}
-                      onClosing={this.handleCloseReportStarted} onClose={this.handleCloseReport}/>
 
         <Snackbar
           anchorOrigin={{

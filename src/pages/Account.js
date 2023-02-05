@@ -35,7 +35,6 @@ class Account extends React.Component {
     first_name: '',
     last_name: '',
     nickname: '',
-    dci: '',
     is_saving: false,
     save_text: this.SAVE_TEXT,
   };
@@ -50,7 +49,6 @@ class Account extends React.Component {
       first_name: store.first_name,
       last_name: store.last_name,
       nickname: store.nickname,
-      dci: store.dci,
     };
     this.setState(new_state);
   };
@@ -64,7 +62,6 @@ class Account extends React.Component {
     this.props.portalStore.currentUser.first_name = this.state.first_name;
     this.props.portalStore.currentUser.last_name = this.state.last_name;
     this.props.portalStore.currentUser.nickname = this.state.nickname;
-    this.props.portalStore.currentUser.dci = this.state.dci;
 
     this.props.portalStore.currentUser.saveData().then((response) => {
       this.setState({
@@ -113,16 +110,6 @@ class Account extends React.Component {
                   className={classes.textField}
                   value={this.state.nickname}
                   onChange={(event) => this.setState({nickname: event.target.value})}
-                  margin="normal"
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  id="name"
-                  label="DCI"
-                  className={classes.textField}
-                  value={this.state.dci}
-                  onChange={(event) => this.setState({dci: event.target.value})}
                   margin="normal"
                 />
               </Grid>
