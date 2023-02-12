@@ -176,7 +176,7 @@ export default class Register extends React.Component {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <h1>Sign up</h1>
-                <p>Register in order to access D&D Adventurers League Krakow system and start playing.</p>
+                <p>Register in order to access the Organized Play Krakow system and start playingA.</p>
               </Grid>
               {this.state.nonFieldErrors && (
                 <Grid item xs={12}>
