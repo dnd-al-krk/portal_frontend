@@ -220,13 +220,13 @@ class Home extends React.Component {
                   </ListItemText>
                 </ListItem>
 
-                <ListItem button onClick={() => window.open('https://docs.google.com/document/d/1oDx-bksg-GraW7YCtp8DUFwG2c4AfSwZtIWN3uYQwPc/edit?usp=sharing')}>
-                  <ListItemIcon className={classes.communityIcon}>
-                    <FontAwesomeIcon icon={["far","file"]} />
-                  </ListItemIcon>
-                  <ListItemText primary="FAQ do zasad OPK">
-                  </ListItemText>
-                </ListItem>
+                {/*<ListItem button onClick={() => window.open('https://docs.google.com/document/d/1oDx-bksg-GraW7YCtp8DUFwG2c4AfSwZtIWN3uYQwPc/edit?usp=sharing')}>*/}
+                {/*  <ListItemIcon className={classes.communityIcon}>*/}
+                {/*    <FontAwesomeIcon icon={["far","file"]} />*/}
+                {/*  </ListItemIcon>*/}
+                {/*  <ListItemText primary="FAQ do zasad OPK">*/}
+                {/*  </ListItemText>*/}
+                {/*</ListItem>*/}
 
                 <ListItem button onClick={() => window.open('https://drive.google.com/file/d/1koge3GjzgO2NhUpk2quZmOWFo7VPGzNA/view?usp=drivesdk')}>
                   <ListItemIcon className={classes.communityIcon}>
