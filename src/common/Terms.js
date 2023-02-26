@@ -27,7 +27,7 @@ export class Terms extends React.Component {
         </Typography>
         <Typography variant="body1" className={classes.text}>
           <strong>Who Are We?</strong><br/>
-          This website is owned by DnD Adventurers League - Kraków, a private group of players from Krakow, Poland.
+          This website is owned by Organized Play Kraków, a private group of players from Krakow, Poland.
         </Typography>
         <Typography variant="body1" className={classes.text}>
           <strong>Data We Gather</strong><br/>
@@ -68,7 +68,6 @@ export class Terms extends React.Component {
           <ul>
             <li>Social network logins. If you register for this site via a social network such as Facebook, Twitter, Google+, or Reddit, we obtain (with your permission) from that website your username and email address to create your account. We do not pass any information to the social network.</li>
             <li>Google. Google may serve you ads based on your browsing history or other demographic data it may hold about you. We do not have access to that individual data. Additionally, Google provides us, via the Google Analytics service, aggregate, non-identifiable, anonymous data about overall visitor demographics, but it does not share with us any information about individual users. For example, we may know that 67% of our visitors are female*, but we don't know whether you are one of those 67%. You can find Google's privacy policy here, and can opt out of Analytics here.</li>
-            <li>Wizards of the Coast. We are sending to WER system of WotC only information about DCI of the players that played in one of the games.</li>
           </ul>
         </Typography>
         <Typography variant="body1" className={classes.text}>
@@ -78,7 +77,7 @@ export class Terms extends React.Component {
         <Typography variant="body1" className={classes.text}>
           <strong>Deleting Your Information</strong><br/>
           You can delete or change information on your profile at any time. You can also change your nickname.<br/>
-          If you wish to delete your account, please contact us at <strong>dndalkrakow@gmail.com</strong>. Note that this is irreversible; you will not be able to recover the account. This will remove any personal information (as described above) that we store about you, along with your user profile.
+          If you wish to delete your account, please contact us at <strong>dndalkrakow@gmail.com</strong> from your regiestered account address. Note that this is irreversible; you will not be able to recover the account. This will remove any personal information (as described above) that we store about you, along with your user profile.
         </Typography>
         <Typography variant="body1" className={classes.text}>
           <strong>Requesting Your Information</strong><br/>

@@ -109,11 +109,11 @@ class Home extends React.Component {
             <div className={classes.root}>
               <div className={classes.centered}>
                 <Typography variant="h4" className={classes.mainHeader}>
-                  Witamy w Dungeons & Dragons®: Organized Play Kraków!
+                  Witamy w Organized Play Kraków!
                 </Typography>
               </div>
               <Typography variant="body1" className={classNames(classes.info)}>
-                <strong>Dungeons & Dragons®: Organized Play Kraków (w skrócie OPK)</strong> to społeczność,
+                <strong>Organized Play Kraków (w skrócie OPK)</strong> to społeczność,
                 która umożliwia krakowskim miłośnikom tej najpopularniejszej na świecie gry fabularnej bezpłatne
                 uczestniczenie w sesjach bez potrzeby skomplikowanego zgrywania terminów oraz podejmowania
                 długoterminowych zobowiązań.&nbsp;
@@ -185,7 +185,7 @@ class Home extends React.Component {
               </Typography>
               <Divider className={classes.textDivider}/>
               <Typography variant="body1" className={classNames(classes.info, classes.centered)}>
-                <strong>D&D: Organized Play Kraków</strong> is proudly hosted by <a href="http://toady.org" onClick={openUrl}>Toady - the interactive DM screen for 5e</a>.
+                <strong>Organized Play Kraków</strong> is proudly hosted by <a href="http://toady.org" onClick={openUrl}>Toady - the interactive DM screen for 5e</a>.
               </Typography>
             </div>
           )}
