@@ -4,6 +4,7 @@ import {CurrentDMGamesList, CurrentUserGamesList} from "./GamesList";
 import Grid from "@material-ui/core/Grid/Grid";
 import Typography from "@material-ui/core/Typography/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { Link } from "react-router-dom";
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -47,6 +48,9 @@ const styles = (theme) => ({
     marginBottom: 12,
     fontSize: "1.3em"
   },
+  biggerText: {
+    fontSize: "1.6em"
+  },
   marginTop: {
     marginTop: 20
   },
@@ -77,7 +81,7 @@ const styles = (theme) => ({
   },
   textDivider: {
     marginTop: 24,
-    marginBottom: 12,
+    marginBottom: 24,
   },
   home: {
     padding: 10,
@@ -172,6 +176,13 @@ class Home extends React.Component {
                 udziału w życiu społeczności <a target="_blank" href="https://discord.gg/BWYKVxk">na naszym Discordzie</a> oraz
                 na <a target="_blank" href="https://www.facebook.com/groups/ALKrakow/">grupie w serwisie Facebook</a>.
               </Typography>
+              <Divider className={classes.textDivider}/>
+              <Typography variant="body1" className={classNames(classes.info, classes.centered, classes.biggerText)}>
+                <strong>NASTĘPNY KROK?</strong><br/>
+              </Typography>
+              <Typography variant="body1" className={classNames(classes.info, classes.centered)}>
+                <Link to="/poradnik-pierwsza-sesja"><strong>Przeczytaj, jak zagrać swoją pierwszą sesję w OPK</strong></Link>
+              </Typography>
 
               <Divider className={classes.textDivider}/>
               <Typography variant="body1" className={classNames(classes.info, classes.centered, classes.disclaimer)}>
@@ -196,6 +207,7 @@ class Home extends React.Component {
                 Join our community
               </Typography>
               <List component="nav">
+
                 <ListItem button onClick={() => window.open('https://www.facebook.com/groups/ALKrakow/')}>
                   <ListItemIcon className={classes.communityIcon}>
                     <FontAwesomeIcon icon={["fab","facebook"]}/>
@@ -211,41 +223,6 @@ class Home extends React.Component {
                   <ListItemText primary="Discord Server">
                   </ListItemText>
                 </ListItem>
-
-                <ListItem button onClick={() => window.open('https://docs.google.com/document/d/1HT_HKIQKt0G-kceR2pzLUHKfyrnXVdwBUXl6qOLl9cI/edit?usp=sharing')}>
-                  <ListItemIcon className={classes.communityIcon}>
-                    <FontAwesomeIcon icon={["far","file"]} />
-                  </ListItemIcon>
-                  <ListItemText primary="Zasady OPK">
-                  </ListItemText>
-                </ListItem>
-
-                {/*<ListItem button onClick={() => window.open('https://docs.google.com/document/d/1oDx-bksg-GraW7YCtp8DUFwG2c4AfSwZtIWN3uYQwPc/edit?usp=sharing')}>*/}
-                {/*  <ListItemIcon className={classes.communityIcon}>*/}
-                {/*    <FontAwesomeIcon icon={["far","file"]} />*/}
-                {/*  </ListItemIcon>*/}
-                {/*  <ListItemText primary="FAQ do zasad OPK">*/}
-                {/*  </ListItemText>*/}
-                {/*</ListItem>*/}
-
-                <ListItem button onClick={() => window.open('https://drive.google.com/file/d/1koge3GjzgO2NhUpk2quZmOWFo7VPGzNA/view?usp=drivesdk')}>
-                  <ListItemIcon className={classes.communityIcon}>
-                    <FontAwesomeIcon icon={["far","file"]} />
-                  </ListItemIcon>
-                  <ListItemText primary="Katalog przygód">
-                  </ListItemText>
-                </ListItem>
-
-                <UndecoratedLink to="/terms">
-                  <ListItem button>
-                    <ListItemIcon className={classes.communityIcon}>
-                      <FontAwesomeIcon icon={["far","file"]} />
-                    </ListItemIcon>
-                    <ListItemText primary="Terms &amp; Conditions">
-                    </ListItemText>
-                  </ListItem>
-                </UndecoratedLink>
-
               </List>
             </div>
           </Grid>
