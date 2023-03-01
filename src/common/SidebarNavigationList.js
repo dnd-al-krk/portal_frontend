@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faGhost, faUserShield, faUser, faHome,
   faCalendar, faArchive, faIdCard,
-  faUserCircle, faUserPlus,
+  faUserCircle, faUserPlus, faFile
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faGhost);
@@ -27,6 +27,7 @@ library.add(faArchive);
 library.add(faIdCard);
 library.add(faUserCircle);
 library.add(faUserPlus);
+library.add(faFile);
 
 
 const styles = theme => ({
@@ -86,6 +87,30 @@ export default class SidebarNavigationList extends React.Component{
             </Hidden>
           )}
           <Divider />
+          <UndecoratedLink to="/poradnik-pierwsza-sesja">
+            <ListItem button>
+              <ListItemIcon>
+                <FontAwesomeIcon icon="file" />
+              </ListItemIcon>
+              <ListItemText primary="Poradnik: Twoja pierwsza sesja">
+              </ListItemText>
+            </ListItem>
+          </UndecoratedLink>
+          <ListItem button onClick={() => window.open('https://docs.google.com/document/d/1HT_HKIQKt0G-kceR2pzLUHKfyrnXVdwBUXl6qOLl9cI/edit?usp=sharing')}>
+            <ListItemIcon className={classes.communityIcon}>
+              <FontAwesomeIcon icon={["far","file"]} />
+            </ListItemIcon>
+            <ListItemText primary="Zasady OPK">
+            </ListItemText>
+          </ListItem>
+          <ListItem button onClick={() => window.open('https://drive.google.com/file/d/1koge3GjzgO2NhUpk2quZmOWFo7VPGzNA/view?usp=drivesdk')}>
+            <ListItemIcon className={classes.communityIcon}>
+              <FontAwesomeIcon icon={["far","file"]} />
+            </ListItemIcon>
+            <ListItemText primary="Katalog przygód">
+            </ListItemText>
+          </ListItem>
+          <Divider />
           {this.isAuth() && (
             <Fragment>
               <UndecoratedLink to={`/profiles/${this.currentProfile().profileID}`}>
@@ -144,6 +169,16 @@ export default class SidebarNavigationList extends React.Component{
                 <FontAwesomeIcon icon="id-card" />
               </ListItemIcon>
               <ListItemText primary="Characters">
+              </ListItemText>
+            </ListItem>
+          </UndecoratedLink>
+          <Divider/>
+          <UndecoratedLink to="/terms">
+            <ListItem button>
+              <ListItemIcon className={classes.communityIcon}>
+                <FontAwesomeIcon icon={["far","file"]} />
+              </ListItemIcon>
+              <ListItemText primary="Terms &amp; Conditions">
               </ListItemText>
             </ListItem>
           </UndecoratedLink>

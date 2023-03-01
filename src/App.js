@@ -28,6 +28,7 @@ import Grid from "@material-ui/core/Grid/Grid";
 import Hidden from "@material-ui/core/Hidden/Hidden";
 import {Terms} from "./common/Terms";
 import CookieConsent from "react-cookie-consent";
+import {FirstGame} from "./common/FirstGame";
 
 
 const portalStore = new PortalStore();
@@ -72,6 +73,7 @@ class App extends Component {
                     <Route exact path="/register" component={Register}/>
                     <Route exact path="/register/activated" component={RegisterActive}/>
                     <Route exact path="/terms" component={Terms}/>
+                    <Route exact path="/poradnik-pierwsza-sesja" component={FirstGame}/>
                   </Grid>
                 </Grid>
               </PushedDiv>
