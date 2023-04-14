@@ -118,7 +118,7 @@ class Home extends React.Component {
               </div>
               <Typography variant="body1" className={classNames(classes.info)}>
                 <strong>Organized Play Kraków (w skrócie OPK)</strong> to społeczność,
-                która umożliwia krakowskim miłośnikom tej najpopularniejszej na świecie gry fabularnej bezpłatne
+                która umożliwia krakowskim miłośnikom D&amp;D - najpopularniejszej na świecie gry fabularnej - bezpłatne
                 uczestniczenie w sesjach bez potrzeby skomplikowanego zgrywania terminów oraz podejmowania
                 długoterminowych zobowiązań.&nbsp;
                 <strong>Nasza społeczność skierowana jest zarówno do weteranów, jak i początkujących graczy.</strong>&nbsp;
