@@ -76,6 +76,9 @@ const styles = theme => ({
   },
   close: {
     color: '#fff',
+  },
+  spacingRight: {
+    marginRight: 12,
   }
 });
 
@@ -136,16 +139,8 @@ class GameDetail extends Component {
   };
 
   getUserListItem = (player) => {
-    let action = null;
-    if(player.profile.id === this.props.portalStore.currentUser.profileID && !this.state.game.ended){
-      action = (
-        <IconButton aria-label="Sign out" onClick={() => this.signOut()}>
-          <CancelIcon />
-        </IconButton>
-      )
-    }
     return <ProfileListItem key={`signed-up-player-${player.profile.id}`} profile={player.profile} character={player.character}
-                            history={this.props.history} action={action}/>
+                            history={this.props.history}/>
   };
 
   freeSpots = () => {
@@ -161,13 +156,17 @@ class GameDetail extends Component {
   }
 
   canSignUp = () => {
-    const players = this.state.game.players.map(player => player.profile.id);
-    const player = this.props.portalStore.currentUser.profileID;
     const future = this.state.game.ended === false;
     const emptySpot = this.freeSpots() > 0;
     const isDM = this.state.game.dm;
-    return isDM && future && players.indexOf(player) === -1 && !this.userIsRunning() && emptySpot;
+    return isDM && future && !this.userIsRunning() && (emptySpot || this.isSignedUp());
   };
+
+  isSignedUp = () => {
+    const players = this.state.game.players.map(player => player.profile.id);
+    const player = this.props.portalStore.currentUser.profileID;
+    return players.indexOf(player) !== -1
+  }
 
   hasCharacters = () => {
     return this.state.characters.length > 0
@@ -338,30 +337,49 @@ class GameDetail extends Component {
             </List>
             {!this.userIsRunning() &&
               (<Fragment>
-                {(this.canSignUp() && this.hasCharacters()) ? (
-                  <Fragment>
-                    <Button variant="contained"
-                            aria-owns={anchorEl ? 'simple-menu' : null}
-                            aria-haspopup="true"
-                            color="secondary" onClick={this.showCharacterPick}>
-                      <PlusIcon/>
-                      Join this game
-                    </Button>
-                    <Menu
-                      id="simple-menu"
-                      anchorEl={anchorEl}
-                      open={Boolean(anchorEl)}
-                      onClose={this.hideCharacterPick}
-                    >
-                      {this.state.characters.map(character => (
-                        <MenuItem key={`character-pick-item-${character.id}`}
-                                  onClick={(e) => this.handleCharacterPick(e, character.id)}>{character.name}, {character.pc_class} {character.level}</MenuItem>
-                      ))}
-                    </Menu>
-                  </Fragment>
-                ) : (
-                  <CannotSignUpOnGameNotification/>
-                )}
+                {this.hasCharacters() ?
+                  this.canSignUp() && (
+                    <Fragment>
+                      {this.isSignedUp() ? (
+                        <Fragment>
+                          <Button variant="contained"
+                                  className={classes.spacingRight}
+                                  aria-owns={anchorEl ? 'simple-menu' : null}
+                                  aria-haspopup="true"
+                                  color="secondary" onClick={this.showCharacterPick}>
+                            Change the character
+                          </Button>
+                          <Button variant="contained"
+                                  aria-owns={anchorEl ? 'simple-menu' : null}
+                                  aria-haspopup="true"
+                                  color="secondary" onClick={this.signOut}>
+                            Sign out
+                          </Button>
+                        </Fragment>
+                      ) : (
+                        <Button variant="contained"
+                                aria-owns={anchorEl ? 'simple-menu' : null}
+                                aria-haspopup="true"
+                                color="secondary" onClick={this.showCharacterPick}>
+                          <PlusIcon/>
+                          Join this game
+                        </Button>
+                      )}
+                      <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={this.hideCharacterPick}
+                      >
+                        {this.state.characters.map(character => (
+                          <MenuItem key={`character-pick-item-${character.id}`}
+                                    onClick={(e) => this.handleCharacterPick(e, character.id)}>{character.name}, {character.pc_class} {character.level}</MenuItem>
+                        ))}
+                      </Menu>
+                    </Fragment>
+                ) :
+                  !this.isSignedUp() && <CannotSignUpOnGameNotification/>
+                }
               </Fragment>)
             }
             {!this.hasCharacters() && (
