@@ -377,9 +377,9 @@ class GameDetail extends Component {
                         ))}
                       </Menu>
                     </Fragment>
-                ) : (
-                  <CannotSignUpOnGameNotification/>
-                )}
+                ) :
+                  !this.isSignedUp() && <CannotSignUpOnGameNotification/>
+                }
               </Fragment>)
             }
             {!this.hasCharacters() && (
