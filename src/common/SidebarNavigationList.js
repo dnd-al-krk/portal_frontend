@@ -96,14 +96,14 @@ export default class SidebarNavigationList extends React.Component{
               </ListItemText>
             </ListItem>
           </UndecoratedLink>
-          <ListItem button onClick={() => window.open('https://docs.google.com/document/d/1HT_HKIQKt0G-kceR2pzLUHKfyrnXVdwBUXl6qOLl9cI/edit?usp=sharing')}>
+          <ListItem button onClick={() => window.open('https://zasady.rpgkrakow.pl')}>
             <ListItemIcon className={classes.communityIcon}>
               <FontAwesomeIcon icon={["far","file"]} />
             </ListItemIcon>
             <ListItemText primary="Zasady OPK">
             </ListItemText>
           </ListItem>
-          <ListItem button onClick={() => window.open('https://drive.google.com/file/d/1koge3GjzgO2NhUpk2quZmOWFo7VPGzNA/view?usp=drivesdk')}>
+          <ListItem button onClick={() => window.open('https://zasady.rpgkrakow.pl/content_catalog.html')}>
             <ListItemIcon className={classes.communityIcon}>
               <FontAwesomeIcon icon={["far","file"]} />
             </ListItemIcon>
