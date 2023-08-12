@@ -84,7 +84,7 @@ class Account extends React.Component {
             <Grid item xs={12}>
               <TextField
                 id="name"
-                label="Nickname"
+                label="Discord Nickname )non-obligatory but recommended)"
                 className={classes.textField}
                 value={this.state.nickname}
                 onChange={(event) => this.setState({nickname: event.target.value})}
