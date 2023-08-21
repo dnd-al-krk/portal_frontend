@@ -67,10 +67,10 @@ export class FirstGame extends React.Component {
         <Typography variant="body1" className={classes.text}>
           Nie, nie musisz nikogo uprzedzać. Nie musisz pytać o zdanie ani o pozwolenie. Za nic nie musisz płacić
           (choć dobrym zwyczajem jest zamawianie czegoś przy barze pubu, który udostępnia nam stoliki na spotkania).
-          Po prostu zapisz się i przyjdź. Prawie wszystkie sesje odbywają się w R’lyeh Cafe, na Kurniki 3 w Krakowie,
-          w godzinach podanych przy konkretnej sesji (zazwyczaj po 17 w tygodniu i po 13 w weekendy).
+          Po prostu zapisz się i przyjdź. Prawie wszystkie sesje odbywają się w <ExternalLink url="https://maps.app.goo.gl/ow6bB7KWjhC1Yc787">R’lyeh Cafe, na ulicy Lubicz 28</ExternalLink> w Krakowie, w godzinach podanych przy konkretnej sesji (zazwyczaj po 17 w tygodniu i po 13 w weekendy).
           Gdy się już wciągniesz, zapoznaj się z oficjalnymi podręcznikami i rozwijaj zgodnie z nimi swoje postaci.
           Cały bogaty świat D&D masz na wyciągnięcie ręki.
+          <ExternalLink url="https://zasady.rpgkrakow.pl/">Tutaj możesz zapoznać się z naszymi zasadami- na pierwszą sesję wystarczy Ci wiedza o tworzeniu postaci z zasad podstawowych.</ExternalLink>
         </Typography>
         <Typography variant="body1" className={classes.text}>
           <strong>Masz ochotę zostać DM-em?</strong><br/>
