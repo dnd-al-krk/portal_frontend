@@ -252,7 +252,7 @@ export default class Register extends React.Component {
                   id="signUp-nickname"
                   className={classes.textField}
                   type="text"
-                  label="Nickname"
+                  label="Discord Nickname"
                   value={this.state.nickname}
                   onChange={this.handleChange('nickname')}
                   variant="outlined"
