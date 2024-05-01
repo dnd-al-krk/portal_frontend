@@ -371,7 +371,7 @@ class GameDetail extends Component {
                 }
               </Fragment>)
             }
-            {!this.hasCharacters() && (
+            {!this.hasCharacters() && !this.userIsRunning() && (
               <Fragment>
                 <Typography variant='body1'>
                   You have no character. <Link to='/characters/create'>Create one</Link>, before you can sign up for a game.
