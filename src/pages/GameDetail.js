@@ -297,8 +297,7 @@ class GameDetail extends Component {
                 <Typography variant="h6" className={classes.header}>
                   Dungeon Master Options
                 </Typography>
-                {!this.state.game.ended ? (
-                  <Fragment>
+                !this.state.game.ended ? <Fragment>
                     <Button
                       color='primary'
                       variant='contained'
@@ -309,17 +308,7 @@ class GameDetail extends Component {
                       variant='outlined'
                       className={classes.gameButton}
                       onClick={() => this.cancel(game.id)}>Cancel your booking on this game session</Button>
-                  </Fragment>
-                ) : (
-                  <Fragment>
-                    {!this.state.game.reported && (
-                      <Button color='primary'
-                        variant='contained'
-                        className={classes.gameButton}
-                        onClick={(e) => this.reportGame()}>Confirm game report</Button>
-                    )}
-                  </Fragment>
-                )}
+                  </Fragment> 
               </Fragment>
             )}
           </Grid>
