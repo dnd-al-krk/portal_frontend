@@ -241,172 +241,180 @@ class GameDetail extends Component {
     const game = this.state.game;
 
     return (
-      <div className={classes.root}>
-        <Grid container spacing={8}>
-          <Grid item xs={12} md={6}>
-            <Typography variant="h5" className={classes.header}>
-              {game.adventure.title_display}
-            </Typography>
-            <InfoTypography variant="body1">
-              <FontAwesomeIcon icon="angle-double-up" /> {game.adventure.tier !== null ? `${game.adventure.tier}` : ``}
-            </InfoTypography>
-            <InfoTypography variant="body1" >
-                <FontAwesomeIcon icon="calendar-alt" /> {this.gameDate(game)}
-            </InfoTypography>
-            <InfoTypography variant="body1">
-                <FontAwesomeIcon icon="clock" /> {this.gameTime(game)}
-            </InfoTypography>
-            <InfoTypography variant="body1">
-                <FontAwesomeIcon icon="map-marker" /> {game.table_name}
-            </InfoTypography>
-            <InfoTypography variant="body1">
-                { game.table_extra_notes !== "" && <Fragment><strong>Table note: </strong> {game.table_extra_notes}</Fragment> }
-            </InfoTypography>
-            <Typography variant="h6" className={classes.header}>
+        <div className={classes.root}>
+          <Grid container spacing={8}>
+            <Grid item xs={12} md={6}>
+              <Typography variant="h5" className={classes.header}>
+                {game.adventure.title_display}
+              </Typography>
+              <InfoTypography variant="body1">
+                <FontAwesomeIcon icon="angle-double-up"/> {game.adventure.tier !== null ? `${game.adventure.tier}` : ``}
+              </InfoTypography>
+              <InfoTypography variant="body1">
+                <FontAwesomeIcon icon="calendar-alt"/> {this.gameDate(game)}
+              </InfoTypography>
+              <InfoTypography variant="body1">
+                <FontAwesomeIcon icon="clock"/> {this.gameTime(game)}
+              </InfoTypography>
+              <InfoTypography variant="body1">
+                <FontAwesomeIcon icon="map-marker"/> {game.table_name}
+              </InfoTypography>
+              <InfoTypography variant="body1">
+                {game.table_extra_notes !== "" &&
+                    <Fragment><strong>Table note: </strong> {game.table_extra_notes}</Fragment>}
+              </InfoTypography>
+              <Typography variant="h6" className={classes.header}>
                 Dungeon Master
-            </Typography>
+              </Typography>
 
-            {game.dm ? (
-              <div className={classes.userInfo}>
-                <Avatar className={classes.userAvatar}><PersonIcon/></Avatar>
-                <Typography variant="h6" className={classes.userName}>
-                  <UndecoratedLink to={`/profiles/${game.dm.id}`}>{this.gameDM(game.dm)}</UndecoratedLink>
-                </Typography>
-              </div>
-              ): (
-              <div className={classes.userInfo}>
-                DM can no longer run this game and a new one is needed!
-                {this.props.portalStore.currentUser.role === 'Dungeon Master' && (
-                  <Button color='secondary' variant='contained' className={classes.gameButton}
-                          onClick={(e) => this.gotoGameBooking(e, game.id)}>
-                    I will run this game
-                  </Button>
-                )}
-              </div>
-            )}
-            <Typography variant="h6" className={classes.header}>
-                Additional Notes
-            </Typography>
-            <Typography variant="body1" className={classes.notes}>
-              {game.notes}
-            </Typography>
-            {game.dm && game.dm.id === this.props.portalStore.currentUser.profileID &&
-            (!this.state.game.ended || !this.state.game.reported) &&
-            (
-              <Fragment>
-                <Typography variant="h6" className={classes.header}>
-                  Dungeon Master Options
-                </Typography>
-                !this.state.game.ended ? <Fragment>
-                    <Button
-                      color='primary'
-                      variant='contained'
-                      className={classes.gameButton}
-                      onClick={(e) => this.gotoGameBooking(e, game.id)}>Edit game details</Button>
-                    <Button
-                      color='secondary'
-                      variant='outlined'
-                      className={classes.gameButton}
-                      onClick={() => this.cancel(game.id)}>Cancel your booking on this game session</Button>
-                  </Fragment> 
-              </Fragment>
-            )}
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography variant="h6" className={classes.header}>
-                Signed up players ({this.takenSpots()}/{this.state.game.spots})
-            </Typography>
-            <Typography variant='body1'>
-              As a player you can sign up here for a game if there are still spots available. If you change your mind, you
-              can always cancel your sign up by click on the <strong>X</strong> icon next to your name. When you cancel,
-              the spot will be available to other players.
-            </Typography>
-            <List>
-              {game.players.map(player => this.getUserListItem(player))}
-            </List>
-            {!this.userIsRunning() &&
-              (<Fragment>
-                {this.hasCharacters() ?
-                  this.canSignUp() && (
-                    <Fragment>
-                      {this.isSignedUp() ? (
-                        <Fragment>
-                          <Button variant="contained"
-                                  className={classes.spacingRight}
-                                  aria-owns={anchorEl ? 'simple-menu' : null}
-                                  aria-haspopup="true"
-                                  color="secondary" onClick={this.showCharacterPick}>
-                            Change the character
-                          </Button>
-                          <Button variant="contained"
-                                  aria-owns={anchorEl ? 'simple-menu' : null}
-                                  aria-haspopup="true"
-                                  color="secondary" onClick={this.signOut}>
-                            Sign out
-                          </Button>
-                        </Fragment>
-                      ) : (
-                        <Button variant="contained"
-                                aria-owns={anchorEl ? 'simple-menu' : null}
-                                aria-haspopup="true"
-                                color="secondary" onClick={this.showCharacterPick}>
-                          <PlusIcon/>
-                          Join this game
+              {game.dm ? (
+                  <div className={classes.userInfo}>
+                    <Avatar className={classes.userAvatar}><PersonIcon/></Avatar>
+                    <Typography variant="h6" className={classes.userName}>
+                      <UndecoratedLink to={`/profiles/${game.dm.id}`}>{this.gameDM(game.dm)}</UndecoratedLink>
+                    </Typography>
+                  </div>
+              ) : (
+                  <div className={classes.userInfo}>
+                    DM can no longer run this game and a new one is needed!
+                    {this.props.portalStore.currentUser.role === 'Dungeon Master' && (
+                        <Button color='secondary' variant='contained' className={classes.gameButton}
+                                onClick={(e) => {
+                                  if (this.isSignedUp) {
+                                    this.signOut();                                 }
+                                  this.gotoGameBooking(e, game.id);
+                                }}>
+                          I will run this game
                         </Button>
-                      )}
-                      <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={this.hideCharacterPick}
-                      >
-                        {this.state.characters.map(character => (
-                          <MenuItem key={`character-pick-item-${character.id}`}
-                                    onClick={(e) => this.handleCharacterPick(e, character.id)}>{character.name}, {character.pc_class} {character.level}</MenuItem>
-                        ))}
-                      </Menu>
-                    </Fragment>
-                ) :
-                  !this.isSignedUp() && <CannotSignUpOnGameNotification/>
-                }
-              </Fragment>)
-            }
-            {!this.hasCharacters() && !this.userIsRunning() && (
-              <Fragment>
-                <Typography variant='body1'>
-                  You have no character. <Link to='/characters/create'>Create one</Link>, before you can sign up for a game.
-                </Typography>
-              </Fragment>
-            )}
+                    )}
+                  </div>
+              )}
+              <Typography variant="h6" className={classes.header}>
+                Additional Notes
+              </Typography>
+              <Typography variant="body1" className={classes.notes}>
+                {game.notes}
+              </Typography>
+              {game.dm && game.dm.id === this.props.portalStore.currentUser.profileID &&
+                  (!this.state.game.ended || !this.state.game.reported) &&
+                  (
+                      <Fragment>
+                        <Typography variant="h6" className={classes.header}>
+                          Dungeon Master Options
+                        </Typography>
+                        !this.state.game.ended ? <Fragment>
+                        <Button
+                            color='primary'
+                            variant='contained'
+                            className={classes.gameButton}
+                            onClick={(e) => this.gotoGameBooking(e, game.id)}>Edit game details</Button>
+                        <Button
+                            color='secondary'
+                            variant='outlined'
+                            className={classes.gameButton}
+                            onClick={() => this.cancel(game.id)}>Cancel your booking on this game session</Button>
+                      </Fragment>
+                      </Fragment>
+                  )}
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography variant="h6" className={classes.header}>
+                Signed up players ({this.takenSpots()}/{this.state.game.spots})
+              </Typography>
+              <Typography variant='body1'>
+                As a player you can sign up here for a game if there are still spots available. If you change your mind,
+                you
+                can always cancel your sign up by click on the <strong>X</strong> icon next to your name. When you
+                cancel,
+                the spot will be available to other players.
+              </Typography>
+              <List>
+                {game.players.map(player => this.getUserListItem(player))}
+              </List>
+              {!this.userIsRunning() &&
+                  (<Fragment>
+                    {this.hasCharacters() ?
+                        this.canSignUp() && (
+                            <Fragment>
+                              {this.isSignedUp() ? (
+                                  <Fragment>
+                                    <Button variant="contained"
+                                            className={classes.spacingRight}
+                                            aria-owns={anchorEl ? 'simple-menu' : null}
+                                            aria-haspopup="true"
+                                            color="secondary" onClick={this.showCharacterPick}>
+                                      Change the character
+                                    </Button>
+                                    <Button variant="contained"
+                                            aria-owns={anchorEl ? 'simple-menu' : null}
+                                            aria-haspopup="true"
+                                            color="secondary" onClick={this.signOut}>
+                                      Sign out
+                                    </Button>
+                                  </Fragment>
+                              ) : (
+                                  <Button variant="contained"
+                                          aria-owns={anchorEl ? 'simple-menu' : null}
+                                          aria-haspopup="true"
+                                          color="secondary" onClick={this.showCharacterPick}>
+                                    <PlusIcon/>
+                                    Join this game
+                                  </Button>
+                              )}
+                              <Menu
+                                  id="simple-menu"
+                                  anchorEl={anchorEl}
+                                  open={Boolean(anchorEl)}
+                                  onClose={this.hideCharacterPick}
+                              >
+                                {this.state.characters.map(character => (
+                                    <MenuItem key={`character-pick-item-${character.id}`}
+                                              onClick={(e) => this.handleCharacterPick(e, character.id)}>{character.name}, {character.pc_class} {character.level}</MenuItem>
+                                ))}
+                              </Menu>
+                            </Fragment>
+                        ) :
+                        !this.isSignedUp() && <CannotSignUpOnGameNotification/>
+                    }
+                  </Fragment>)
+              }
+              {!this.hasCharacters() && !this.userIsRunning() && (
+                  <Fragment>
+                    <Typography variant='body1'>
+                      You have no character. <Link to='/characters/create'>Create one</Link>, before you can sign up for
+                      a game.
+                    </Typography>
+                  </Fragment>
+              )}
 
+            </Grid>
           </Grid>
-        </Grid>
 
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          open={this.state.openSnackbar}
-          autoHideDuration={6000}
-          onClose={this.handleSnackbarClose}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={<span id="message-id">Report sent</span>}
-          action={[
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="primary"
-              className={classes.close}
-              onClick={this.handleSnackbarClose}
-            >
-              <CloseIcon/>
-            </IconButton>,
-          ]}
-        />
-      </div>
+          <Snackbar
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              open={this.state.openSnackbar}
+              autoHideDuration={6000}
+              onClose={this.handleSnackbarClose}
+              ContentProps={{
+                'aria-describedby': 'message-id',
+              }}
+              message={<span id="message-id">Report sent</span>}
+              action={[
+                <IconButton
+                    key="close"
+                    aria-label="Close"
+                    color="primary"
+                    className={classes.close}
+                    onClick={this.handleSnackbarClose}
+                >
+                  <CloseIcon/>
+                </IconButton>,
+              ]}
+          />
+        </div>
     );
   }
 }
