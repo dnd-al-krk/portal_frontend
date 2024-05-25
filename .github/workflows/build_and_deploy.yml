@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: Build and Deploy
+    name: Build
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -27,7 +27,9 @@ jobs:
           path: "build/*"
 
   deployment:
+    name: Deploy
     runs-on: ubuntu-latest
+    environment: production
     needs: build
     steps:
       - uses: actions/download-artifact@v4
