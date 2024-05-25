@@ -5,7 +5,9 @@ on:
 
 jobs:
   build:
+    name: Build and Deploy
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
@@ -30,11 +32,9 @@ jobs:
           path: "build"
 
       - uses: appleboy/scp-action@v0.1.7
-        env:
-          HOST: ${{ secrets.HOST }}
-          KEY: ${{ secrets.KEY }}
-          USERNAME: ${{ secrets.USERNAME }}
-          PORT: ${{ secrets.PORT }}
         with:
+          host: ${{ secrets.HOST }}
+          key: ${{ secrets.KEY }}
+          username: ${{ secrets.USERNAME }}
           source: "build/*"
           target: "~/build/"
