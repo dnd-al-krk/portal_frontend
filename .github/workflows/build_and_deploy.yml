@@ -55,6 +55,6 @@ jobs:
           key: ${{ secrets.KEY }}
           username: ${{ secrets.USERNAME }}
           script: |
-            rm -rf ${{ secrets.DEPLOY_DIR }}
-            cp -rp ${{ secrets.TEMP_DEPLOY_DIR }}/build/* ${{ secrets.DEPLOY_DIR }}/
-#            rm -rf ${{ secrets.TEMP_DEPLOY_DIR }}/build
+            rm -rf ${{ secrets.DEPLOY_DIR }}/*
+            cp -frp ${{ secrets.TEMP_DEPLOY_DIR }}/build/* ${{ secrets.DEPLOY_DIR }}/
+            rm -rf ${{ secrets.TEMP_DEPLOY_DIR }}/build
