@@ -26,6 +26,10 @@ jobs:
           name: build
           path: "build/*"
 
+  deployment:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - uses: actions/download-artifact@v4
         with:
           name: build
@@ -46,4 +50,15 @@ jobs:
           key: ${{ secrets.KEY }}
           username: ${{ secrets.USERNAME }}
           source: "build/"
-          target: ${{ secrets.DEPLOY_DIR }}/
+          target: ${{ secrets.TEMP_DEPLOY_DIR }}
+
+      - name: Moving the build
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          key: ${{ secrets.KEY }}
+          username: ${{ secrets.USERNAME }}
+          script: |
+            rm -rf ${{ secrets.DEPLOY_DIR }}
+            mv ${{ secrets.TEMP_DEPLOY_DIR }}/build ${{ secrets.DEPLOY_DIR }}
+            rm -rf ${{ secrets.TEMP_DEPLOY_DIR }}
