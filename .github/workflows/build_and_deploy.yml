@@ -38,7 +38,7 @@ jobs:
           key: ${{ secrets.KEY }}
           username: ${{ secrets.USERNAME }}
           script: |
-            cp -r ${{ secrets.DEPLOY_DIR }} ${{ secrets.DEPLOY_DIR }}.bak-`date +"%s"`
+            cp -a ${{ secrets.DEPLOY_DIR }} ${{ secrets.DEPLOY_DIR }}.bak-`date +"%s"`
 
       - uses: appleboy/scp-action@v0.1.7
         with:
