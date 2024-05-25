@@ -31,10 +31,19 @@ jobs:
           name: build
           path: "build"
 
+      - name: Backing up the previous build
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          key: ${{ secrets.KEY }}
+          username: ${{ secrets.USERNAME }}
+          script: |
+            cp -r ${{ secrets.DEPLOY_DIR }} ${{ secrets.DEPLOY_DIR }}.bak-`date +"%s"`
+
       - uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.HOST }}
           key: ${{ secrets.KEY }}
           username: ${{ secrets.USERNAME }}
           source: "build/*"
-          target: "~/build/"
+          target: ${{ secrets.DEPLOY_DIR }}
