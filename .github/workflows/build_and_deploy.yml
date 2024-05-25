@@ -45,5 +45,5 @@ jobs:
           host: ${{ secrets.HOST }}
           key: ${{ secrets.KEY }}
           username: ${{ secrets.USERNAME }}
-          source: "build/*"
+          source: "build/build/*"
           target: ${{ secrets.DEPLOY_DIR }}
