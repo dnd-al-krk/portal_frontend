@@ -10,23 +10,32 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js
+      - name: Setting up node.js
         uses: actions/setup-node@v4
         with:
           node-version: '10.15.1'
 
-      - run: npm install
+      - name: Installing dependencies
+        run: npm install
 
-      - run: npm run build_prod
+      - name: Building the project
+        run: npm run build_prod
         env:
           CI: ""
 
-      - uses: actions/upload-artifact@v4
+      - name: Uploading artifact
+        uses: actions/upload-artifact@v4
         with:
           name: build
           path: "build/*"
 
-      - uses: actions/download-artifact@v4
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Pulling build files
+        uses: actions/download-artifact@v4
         with:
           name: build
           path: ""
@@ -40,7 +49,8 @@ jobs:
           script: |
             cp -a ${{ secrets.DEPLOY_DIR }} ${{ secrets.DEPLOY_DIR }}.bak-`date +"%s"`
 
-      - uses: appleboy/scp-action@v0.1.7
+      - name: Sending files to production
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.HOST }}
           key: ${{ secrets.KEY }}
@@ -48,7 +58,7 @@ jobs:
           source: "build/"
           target: ${{ secrets.TEMP_DEPLOY_DIR }}
 
-      - name: Moving the build
+      - name: Promoting build to production
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
