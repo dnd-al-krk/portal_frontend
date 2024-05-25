@@ -2,6 +2,12 @@ name: Build and Deploy
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - src/**
+      - package.json
 
 jobs:
   build:
