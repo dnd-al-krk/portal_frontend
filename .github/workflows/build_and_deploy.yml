@@ -57,4 +57,4 @@ jobs:
           script: |
             rm -rf ${{ secrets.DEPLOY_DIR }}
             mv ${{ secrets.TEMP_DEPLOY_DIR }}/build ${{ secrets.DEPLOY_DIR }}
-            rm -rf ${{ secrets.TEMP_DEPLOY_DIR }}
+            rm -rf ${{ secrets.TEMP_DEPLOY_DIR }}/build
