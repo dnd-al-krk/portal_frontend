@@ -16,6 +16,8 @@ jobs:
       - run: npm install
 
       - run: npm run build_prod
+        env:
+          CI: ""
 
       - uses: actions/upload-artifact@v4
         with:
