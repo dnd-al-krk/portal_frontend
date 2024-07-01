@@ -296,13 +296,14 @@ class GameDetail extends Component {
                 {game.notes}
               </Typography>
               {game.dm && game.dm.id === this.props.portalStore.currentUser.profileID &&
-                  (!this.state.game.ended || !this.state.game.reported) &&
+                  (!this.state.game.ended) &&
                   (
                       <Fragment>
                         <Typography variant="h6" className={classes.header}>
                           Dungeon Master Options
                         </Typography>
-                        !this.state.game.ended ? <Fragment>
+                        {!this.state.game.ended ? (
+                        <Fragment>
                         <Button
                             color='primary'
                             variant='contained'
@@ -314,6 +315,7 @@ class GameDetail extends Component {
                             className={classes.gameButton}
                             onClick={() => this.cancel(game.id)}>Cancel your booking on this game session</Button>
                       </Fragment>
+                      ):( <Fragment></Fragment>)}
                       </Fragment>
                   )}
             </Grid>
