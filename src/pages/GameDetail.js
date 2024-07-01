@@ -302,7 +302,7 @@ class GameDetail extends Component {
                         <Typography variant="h6" className={classes.header}>
                           Dungeon Master Options
                         </Typography>
-                        {!this.state.game.ended ? (
+                        (!this.state.game.ended && 
                         <Fragment>
                         <Button
                             color='primary'
