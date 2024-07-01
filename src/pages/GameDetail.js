@@ -31,7 +31,7 @@ library.add(faCalendarAlt);
 library.add(faClock);
 library.add(faMapMarker);
 
-
+//game details page- opens when you click on game session
 const InfoTypography = styled(Typography)`
   && {
     margin-bottom: 10px;
