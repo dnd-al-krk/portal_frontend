@@ -315,7 +315,6 @@ class GameDetail extends Component {
                             className={classes.gameButton}
                             onClick={() => this.cancel(game.id)}>Cancel your booking on this game session</Button>
                       </Fragment>)
-                      ):( <Fragment></Fragment>)}
                       </Fragment>
                   )}
             </Grid>
