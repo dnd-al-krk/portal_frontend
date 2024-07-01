@@ -28,6 +28,7 @@ library.add(faDiceD20);
 library.add(faAngleDoubleUp);
 library.add(faCalendarAlt);
 
+//uncertain what this page is, not imported in App.js
 const TierDiv = styled.div`
   margin-top: 5px;
 `;

@@ -13,7 +13,7 @@ import CalendarIcon from '@material-ui/icons/CalendarToday';
 import {dateToString, weekdayOf} from "../utils";
 import Autocomplete from '@material-ui/lab/Autocomplete'
 
-
+//game booking page /games/game/[session-hash]/book
 const styles = theme => ({
   header: {
     marginBottom: theme.spacing(1),

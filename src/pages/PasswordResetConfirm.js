@@ -15,6 +15,8 @@ import {NarrowContent} from "../common/Content";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Link from "react-router-dom/es/Link";
 
+//password reset page /password-reset/[pwd-reset-hash]
+
 const styles = (theme) => ({
   textField: {
     width: '100%',

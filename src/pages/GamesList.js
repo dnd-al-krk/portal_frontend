@@ -10,6 +10,7 @@ import FormGroup from "@material-ui/core/FormGroup/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import {BoolStorage} from "../common/PortalUtils"
 
+//upcoming games list /games
 
 const styles = (theme) => ({
   root: {
