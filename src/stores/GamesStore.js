@@ -1,5 +1,5 @@
 import {computed, observable} from 'mobx';
-import {dateToString, weekdayOf} from "../utils";
+import {fullDateToString, dateToString, weekdayOf} from "../utils";
 import Api from "../api";
 
 export default class GamesStore {
@@ -89,4 +89,9 @@ export default class GamesStore {
     return dateToString(date);
   }
 
+  static getFullDateString(game) {
+     if(!game.date) return '';
+     const date = new Date(game.date);
+     return fullDateToString(date);
+  }
 }

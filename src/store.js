@@ -100,6 +100,12 @@ export class PortalStore {
     return this.api.fetchData('characters');
   }
 
+/*
+  @action.bound
+  fetchCharacters(){
+    return this.api.fetchData('games');
+  }
+*/
   @action.bound
   fetchProfileCharacters(owner, dead){
 
