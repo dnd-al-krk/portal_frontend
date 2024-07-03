@@ -26,3 +26,15 @@ export const openUrl = e => {
     e.preventDefault();
     window.open(e.target.href);
 };
+
+
+{/*character counter*/}
+export const countString = (element_name) => {
+
+   var string = document.getElementById(element_name).value
+
+   return string.length
+
+
+}
+
