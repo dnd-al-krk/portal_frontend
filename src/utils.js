@@ -1,7 +1,12 @@
 
 
 export const dateToString = (date) => {
-    return ("0" + date.getDate()).slice(-2) + '.' + ("0" + (date.getMonth()+1)).slice(-2);
+   return ("0" + date.getDate()).slice(-2) + '.' + ("0" + (date.getMonth()+1)).slice(-2);
+};
+
+export const fullDateToString = (date) => {
+   return ("0" + date.getDate()).slice(-2) + '.' + ("0" + (date.getMonth()+1)).slice(-2) + '.' + date.getFullYear();
+
 };
 
 
@@ -21,3 +26,15 @@ export const openUrl = e => {
     e.preventDefault();
     window.open(e.target.href);
 };
+
+
+{/*character counter*/}
+export const countString = (element_name) => {
+
+   var string = document.getElementById(element_name).value
+
+   return string.length
+
+
+}
+

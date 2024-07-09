@@ -14,7 +14,7 @@ import CharactersList from "../common/CharactersList";
 const styles = (theme) => ({
 
 });
-
+//characters list (global) /characters
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
 export default class Characters extends React.Component{

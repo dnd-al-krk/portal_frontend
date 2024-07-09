@@ -8,6 +8,7 @@ import {inject, observer} from "mobx-react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
+//character creation page /characters/create
 const styles = (theme) => ({
   addButton: {
     marginTop: 20,

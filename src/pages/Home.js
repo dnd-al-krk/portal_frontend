@@ -22,7 +22,7 @@ import {faFile, faFilePdf} from '@fortawesome/free-regular-svg-icons'
 import Divider from "@material-ui/core/Divider/Divider";
 import {openUrl} from "../utils";
 library.add(faFacebook, faDiscord, faFilePdf, faFile);
-
+//homepage displaying when user isn't logged in
 const styles = (theme) => ({
   communityIcon: {
     fontSize: 24

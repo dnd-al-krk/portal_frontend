@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography/Typography";
 import {WideContent} from "../common/Content";
 import ProfileListItem from "../common/ProfileListItem";
 
+//league players list /profiles
 const styles = theme => ({
   textField: {
     marginLeft: theme.spacing(1),

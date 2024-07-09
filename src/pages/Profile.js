@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button/Button";
 import Divider from "@material-ui/core/Divider/Divider";
 import Spinner from "../common/LoadingDiv";
 
-
+//user profile page- /profiles/[user-id]
 const styles = theme => ({
   avatar: {
     float: 'left',

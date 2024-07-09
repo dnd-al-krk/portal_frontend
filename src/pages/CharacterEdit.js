@@ -21,7 +21,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Link from "react-router-dom/es/Link";
 import TextField from "@material-ui/core/TextField";
 
-
+//character edit page /characters/[character-hash]/edit
 const styles = (theme) => ({
   addButton: {
     marginTop: 20,

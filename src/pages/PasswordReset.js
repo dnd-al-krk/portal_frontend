@@ -8,7 +8,7 @@ import {NarrowContent} from "../common/Content";
 import Link from "react-router-dom/es/Link";
 import TextField from "@material-ui/core/TextField";
 
-
+//password reset page /password-reset
 const styles = (theme) => ({
   textField: {
     width: '100%',

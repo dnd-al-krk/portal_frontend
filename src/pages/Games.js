@@ -28,6 +28,7 @@ library.add(faDiceD20);
 library.add(faAngleDoubleUp);
 library.add(faCalendarAlt);
 
+//games archive /games/archive
 const TierDiv = styled.div`
   margin-top: 5px;
 `;
@@ -139,7 +140,7 @@ export class GameCard extends React.Component {
   getDate = () => {
     const { game, classes } = this.props;
     return <SubheadingDiv>
-        <FontAwesomeIcon icon='calendar-alt'/> {GamesStore.getDateString(game)} {GamesStore.getWeekDay(game)}
+    <FontAwesomeIcon icon='calendar-alt'/> { game.ended ? (GamesStore.getFullDateString(game) + ' ' + GamesStore.getWeekDay(game) + ' ' + game.time_start) : (GamesStore.getDateString(game) + ' ' + GamesStore.getWeekDay(game) + ' ' + game.time_start) }
         <strong>{game.timeStart}</strong>
         { game.adventure && game.adventure.tier !== null ? (<TierDiv><FontAwesomeIcon icon="angle-double-up" /> {game.adventure.tier}</TierDiv>) : `` }
       </SubheadingDiv>;
