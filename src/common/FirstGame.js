@@ -35,11 +35,11 @@ export class FirstGame extends React.Component {
           <strong>Nie można grać w D&D, nie mając swojej postaci.</strong>
         </Typography>
         <Typography variant="body1" className={classes.text}>
-          Przygotuj postać poziomu 1, zgodnie z podstawowymi regułami,
-          które można znaleźć na <ExternalLink url="https://dnd.wizards.com/what-is-dnd/basic-rules">stronie Wizards of the Coast</ExternalLink>.
+          Przygotuj postać poziomu 1, zgodnie z podstawowymi regułami z roku 2014,
+          które można znaleźć na <ExternalLink url="https://www.dndbeyond.com/sources/dnd/basic-rules-2014">stronie Wizards of the Coast</ExternalLink>.
           Stosujemy zasady <strong>Point Buy i Starting Equipment</strong>
           (nie losujemy statystyk ani startowego złota!) – szczegółowe objaśnienia znajdziesz w pliku z zasadami OPK,
-          ale <strong>postaci oparte na podstawowych regułach i Podręczniku Gracza/Player’s Handbook (PHB) są zawsze dozwolone.</strong>{' '}
+          ale <strong>postaci oparte na podstawowych regułach i Podręczniku Gracza/Player’s Handbook z roku 2014 (PHB 2014) są zawsze dozwolone.</strong>{' '}
           Nie musisz znać wszystkich zasad by zagrać.
         </Typography>
         <Typography variant="body1" className={classes.text}>
