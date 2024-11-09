@@ -107,7 +107,7 @@ export default class TokenAuthorizationStore {
     const instance = axios.create({
       headers: {
         'X-CSRFToken': Cookies.get('csrftoken'),
-        'Authorization': `JWT ${this.token}`
+        'Authorization': `Bearer ${this.token}`
       }
     });
 
@@ -149,7 +149,7 @@ export default class TokenAuthorizationStore {
       'username': user,
       'password': password,
     }).then((response) => {
-      if (response.status === 200) {
+      if (response.status === 201) {
         this.token = response.data.token;
         this.hardResetToken();
       }
