@@ -26,9 +26,9 @@ import PasswordResetConfirm from "./pages/PasswordResetConfirm";
 import SidebarNavigationList from "./common/SidebarNavigationList";
 import Grid from "@material-ui/core/Grid/Grid";
 import Hidden from "@material-ui/core/Hidden/Hidden";
-import {Terms} from "./common/Terms";
+import Terms from "./common/Terms";
 import CookieConsent from "react-cookie-consent";
-import {FirstGame} from "./common/FirstGame";
+import FirstGame from "./common/FirstGame";
 
 
 const portalStore = new PortalStore();

@@ -19,7 +19,7 @@ import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import {Link} from "react-router-dom";
 import CloseIcon from '@material-ui/icons/Close';
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
-import {CannotSignUpOnGameNotification} from "../common/CannotSignUpOnGameNotification";
+import CannotSignUpOnGameNotification from "../common/CannotSignUpOnGameNotification";
 
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'

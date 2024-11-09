@@ -6,7 +6,7 @@ import LoadingDiv from "./LoadingDiv";
 
 
 @inject('portalStore') @observer
-export default class Loader extends Component {
+class Loader extends Component {
 
   state = {
     loading: true,
@@ -38,3 +38,5 @@ export default class Loader extends Component {
     }
   }
 }
+
+export default Loader;

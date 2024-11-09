@@ -18,7 +18,7 @@ const styles = (theme) => {
 
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
-export default class CharactersList extends React.Component {
+class CharactersList extends React.Component {
   render() {
     const {characters, use_by} = this.props;
 
@@ -57,3 +57,5 @@ export default class CharactersList extends React.Component {
     )
   }
 }
+
+export default CharactersList;

@@ -20,7 +20,7 @@ const styles = (theme) => ({
 
 
 @withStyles(styles, {withTheme:true})
-export class ErrorMessageSnackbar extends React.Component {
+class ErrorMessageSnackbar extends React.Component {
   render() {
     const {classes, message} = this.props;
 
@@ -38,3 +38,5 @@ export class ErrorMessageSnackbar extends React.Component {
     )
   }
 }
+
+export { ErrorMessageSnackbar };

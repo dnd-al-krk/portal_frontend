@@ -80,7 +80,7 @@ const styles = theme => ({
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
 @withRouter
-export class GameInfo extends React.Component {
+class GameInfo extends React.Component {
 
   gotoDM = (e, id) => {
     e.stopPropagation();
@@ -131,7 +131,7 @@ export class GameInfo extends React.Component {
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
 @withRouter
-export class GameCard extends React.Component {
+class GameCard extends React.Component {
 
   isEmpty = () => {
     return this.props.game.adventure === null;
@@ -199,7 +199,7 @@ export class GameCard extends React.Component {
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
 @withRouter
-export default class Games extends React.Component {
+class Games extends React.Component {
 
   gameFull = (game) => {
     return Math.max(game.spots - game.players.length, 0) === 0
@@ -227,3 +227,6 @@ export default class Games extends React.Component {
     );
   }
 }
+
+export { GameInfo, GameCard };
+export default Games;

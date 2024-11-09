@@ -32,7 +32,7 @@ const styles = (theme) => ({
 
 @withStyles(styles, { withTheme: true })
 @inject('portalStore') @observer
-export default class PasswordResetConfirm extends React.Component {
+class PasswordResetConfirm extends React.Component {
   state = {
     isSigning: false,
     done: false,
@@ -177,3 +177,5 @@ export default class PasswordResetConfirm extends React.Component {
     )
   }
 }
+
+export default PasswordResetConfirm;

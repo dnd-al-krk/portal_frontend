@@ -23,6 +23,8 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Turnstile from 'react-turnstile';
 import { TURNSTILE_SITE_KEY } from "../constants";
 
+// import * as ReactTurnstile from 'react-turnstile';
+// console.log(ReactTurnstile);
 
 const styles = (theme) => ({
   textFieldWrapper: {
@@ -46,7 +48,7 @@ const styles = (theme) => ({
 
 
 @withStyles(styles, {withTheme:true})
-export class RegisterActive extends React.Component {
+class RegisterActive extends React.Component {
   render() {
     const {classes} = this.props;
     return (
@@ -61,7 +63,7 @@ export class RegisterActive extends React.Component {
 
 @withStyles(styles, { withTheme: true })
 @inject('portalStore') @observer
-export default class Register extends React.Component {
+class Register extends React.Component {
   state = {
     redirectToReferrer: false,
     isSigning: false,
@@ -343,3 +345,6 @@ export default class Register extends React.Component {
     )
   }
 }
+
+export { RegisterActive };
+export default Register;

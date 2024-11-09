@@ -25,7 +25,7 @@ const styles = (theme) => ({
 });
 
 @withStyles(styles, {withTheme: true})
-export  class InputField extends React.Component {
+class InputField extends React.Component {
   render(){
 
     const {classes, name, label, onChange, value, type, ...rest} = this.props;
@@ -46,7 +46,7 @@ export  class InputField extends React.Component {
 }
 
 @withStyles(styles, {withTheme: true})
-export class SelectField extends React.Component {
+class SelectField extends React.Component {
   render() {
 
     const {classes, name, label, value, onChange, options, blank, required, helper_text, error} = this.props;
@@ -83,3 +83,5 @@ export class SelectField extends React.Component {
     )
   }
 }
+
+export { SelectField, InputField };

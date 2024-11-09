@@ -49,7 +49,7 @@ const styles = theme => ({
 
 @withStyles(styles, { withTheme: true })
 @inject('portalStore') @observer
-export default class Profile extends React.Component {
+class Profile extends React.Component {
 
   constructor(props){
     super(props);
@@ -154,3 +154,5 @@ export default class Profile extends React.Component {
     )
   }
 }
+
+export default Profile;

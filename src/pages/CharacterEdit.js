@@ -38,7 +38,7 @@ const styles = (theme) => ({
 
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
-export default class CharacterEdit extends React.Component {
+class CharacterEdit extends React.Component {
 
   state = {
     id: this.props.match.params.id,
@@ -260,3 +260,5 @@ export default class CharacterEdit extends React.Component {
     )
   }
 }
+
+export default CharacterEdit;
