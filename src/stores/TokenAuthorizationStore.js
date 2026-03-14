@@ -11,7 +11,7 @@ import {
 import {API_HOSTNAME} from "../config";
 
 const csrftoken = Cookies.get('csrftoken');
-
+const REFRESH_TOKEN = 'refresh_token';
 
 export const axiosInstance = axios.create({
   headers: {
@@ -23,6 +23,7 @@ export const axiosInstance = axios.create({
 export default class TokenAuthorizationStore {
   @observable root = null;
   @observable token = window.localStorage.getItem(JWT_TOKEN);
+  @observable refresh_token = window.localStorage.getItem(REFRESH_TOKEN);
   @observable token_iat = window.localStorage.getItem(JWT_TOKEN_IAT);
   @observable token_original_iat = window.localStorage.getItem('jwt_orig_iat');
 
@@ -36,6 +37,17 @@ export default class TokenAuthorizationStore {
           window.localStorage.setItem(JWT_TOKEN, token);
         } else {
           window.localStorage.removeItem(JWT_TOKEN);
+        }
+      }
+    );
+
+    reaction(
+      () => this.refresh_token,
+      refresh_token => {
+        if (refresh_token){
+          window.localStorage.setItem(REFRESH_TOKEN, refresh_token);
+        } else {
+          window.localStorage.removeItem(REFRESH_TOKEN);
         }
       }
     );
@@ -92,8 +104,8 @@ export default class TokenAuthorizationStore {
   }
 
   @action.bound refreshToken() {
-    return axiosInstance.post(`${API_HOSTNAME}/token/refresh/`, {'token': this.token, 'orig_iat': this.token_original_iat}).then(response => {
-      this.token = response.data.token;
+    return axiosInstance.post(`${API_HOSTNAME}/token/refresh/`, {'refresh': this.refresh_token}).then(response => {
+      this.token = response.data.access;
       this.resetToken();
       return response;
     })
@@ -149,8 +161,9 @@ export default class TokenAuthorizationStore {
       'username': user,
       'password': password,
     }).then((response) => {
-      if (response.status === 201) {
-        this.token = response.data.token;
+      if (response.status === 200) {
+        this.token = response.data.access;
+        this.refresh_token = response.data.refresh;
         this.hardResetToken();
       }
       return response;
@@ -159,6 +172,7 @@ export default class TokenAuthorizationStore {
 
   signOut(){
     this.token = undefined;
+    this.refresh_token = undefined;
     this.token_iat = undefined;
     this.token_original_iat = undefined;
     // FIXME: should be independent from the root store
@@ -167,10 +181,17 @@ export default class TokenAuthorizationStore {
 
   @action.bound
   autologin(){
-    if(this.token && new Date().getTime() < this.token_original_iat + TOKEN_EXPIRATION_DELTA){
-      return this.refreshToken();
+    // Only refresh if we have both tokens and token hasn't fully expired
+    if(this.token && this.refresh_token && new Date().getTime() < this.token_original_iat + TOKEN_EXPIRATION_DELTA){
+      // Only actually refresh if it's time to (TOKEN_REFRESH_RATE has passed)
+      if(this.tokenShouldRefresh){
+        return this.refreshToken();
+      }
+      // Otherwise just return success, token is still valid
+      return Promise.resolve();
     }
     else{
+      this.signOut();
       return null;
     }
   }
