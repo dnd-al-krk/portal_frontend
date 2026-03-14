@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and Deploy Frontend
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ jobs:
       - name: Setting up node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '10.15.1'
+          node-version: '22'
 
       - name: Installing dependencies
         run: npm install
@@ -64,3 +64,12 @@ jobs:
           username: ${{ secrets.USERNAME }}
           source: "*"
           target: ${{ secrets.DEPLOY_DIR }}
+
+      - name: Updating config
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          key: ${{ secrets.KEY }}
+          username: ${{ secrets.USERNAME }}
+          script: |
+            cp -a ${{ secrets.DEPLOY_DIR }}/../.htaccess ${{ secrets.DEPLOY_DIR }}/
