@@ -1,4 +1,4 @@
-FROM node:10.15.1
+FROM node:22
 
 RUN mkdir /code
 COPY . /code/
