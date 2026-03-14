@@ -13,7 +13,7 @@ const styles = (theme) => ({
 });
 
 @withStyles(styles, {withTheme:true})
-export class Terms extends React.Component {
+class Terms extends React.Component {
   render() {
     const {classes} = this.props;
 
@@ -87,3 +87,5 @@ export class Terms extends React.Component {
     )
   }
 }
+
+export default Terms;

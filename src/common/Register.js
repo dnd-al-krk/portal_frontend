@@ -20,7 +20,11 @@ import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Turnstile from 'react-turnstile';
+import { TURNSTILE_SITE_KEY } from "../constants";
 
+// import * as ReactTurnstile from 'react-turnstile';
+// console.log(ReactTurnstile);
 
 const styles = (theme) => ({
   textFieldWrapper: {
@@ -44,7 +48,7 @@ const styles = (theme) => ({
 
 
 @withStyles(styles, {withTheme:true})
-export class RegisterActive extends React.Component {
+class RegisterActive extends React.Component {
   render() {
     const {classes} = this.props;
     return (
@@ -59,7 +63,7 @@ export class RegisterActive extends React.Component {
 
 @withStyles(styles, { withTheme: true })
 @inject('portalStore') @observer
-export default class Register extends React.Component {
+class Register extends React.Component {
   state = {
     redirectToReferrer: false,
     isSigning: false,
@@ -80,6 +84,11 @@ export default class Register extends React.Component {
     nonFieldErrors: null,
     signupText: 'Sign up',
     showPassword: false,
+    turnstileToken: null,
+  };
+
+  handleToken = (token) => {
+    this.setState({turnstileToken: token});
   };
 
   signup = (e) => {
@@ -103,7 +112,8 @@ export default class Register extends React.Component {
           password: this.state.password,
           first_name: this.state.first_name,
           last_name: this.state.last_name,
-        }
+        },
+        turnstile_token: this.state.turnstileToken,
       })
         .then(() => {
           this.setState(() => ({
@@ -301,11 +311,17 @@ export default class Register extends React.Component {
                 {this.state.termsErrors && (<FormHelperText id="terms-error-text">You cannot register until you agree to our terms.</FormHelperText>)}
               </Grid>
               <Grid item xs={12}>
+                <Turnstile
+                  sitekey={TURNSTILE_SITE_KEY}
+                  onVerify={this.handleToken}
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <Button variant="contained"
                         color="primary"
                         type="submit"
                         className={classes.button}
-                        disabled={this.state.isSigning}
+                        disabled={this.state.isSigning || !this.state.turnstileToken}
                         onClick={this.signup}>
                   { this.state.signupText }
                 </Button>
@@ -329,3 +345,6 @@ export default class Register extends React.Component {
     )
   }
 }
+
+export { RegisterActive };
+export default Register;

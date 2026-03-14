@@ -26,9 +26,9 @@ import PasswordResetConfirm from "./pages/PasswordResetConfirm";
 import SidebarNavigationList from "./common/SidebarNavigationList";
 import Grid from "@material-ui/core/Grid/Grid";
 import Hidden from "@material-ui/core/Hidden/Hidden";
-import {Terms} from "./common/Terms";
+import Terms from "./common/Terms";
 import CookieConsent from "react-cookie-consent";
-import {FirstGame} from "./common/FirstGame";
+import FirstGame from "./common/FirstGame";
 
 
 const portalStore = new PortalStore();
@@ -37,6 +37,10 @@ const PushedDiv = styled.div`
   padding-top: 80px;
 `;
 
+
+const renderWithProps = (Component) => (routeProps) => (
+  <Component {...routeProps}/>
+);
 
 @observer
 class App extends Component {
@@ -56,9 +60,9 @@ class App extends Component {
                     </Grid>
                   </Hidden>
                   <Grid item xs={12} md={9} lg={10}>
-                    <Route exact path="/" component={Home}/>
-                    <Route exact path="/password-reset/" component={PasswordReset}/>
-                    <Route exact path="/password-reset/:token" component={PasswordResetConfirm}/>
+                    <Route exact path="/" render={renderWithProps(Home)}/>
+                    <Route exact path="/password-reset/" render={renderWithProps(PasswordReset)}/>
+                    <Route exact path="/password-reset/:token" render={renderWithProps(PasswordResetConfirm)}/>
                     <RouteRequiresLogin exact path="/games/archive" component={PastGamesList}/>
                     <RouteRequiresLogin exact path="/games" component={FutureGamesList}/>
                     <RouteRequiresLogin exact path="/games/game/:id" component={GameDetail}/>
@@ -69,11 +73,11 @@ class App extends Component {
                     <RouteRequiresLogin exact path="/characters/create" component={CharacterCreate}/>
                     <RouteRequiresLogin exact path="/characters/:id/edit" component={CharacterEdit}/>
                     <RouteRequiresLogin path="/account" component={Account}/>
-                    <Route exact path="/login" component={Login}/>
-                    <Route exact path="/register" component={Register}/>
-                    <Route exact path="/register/activated" component={RegisterActive}/>
-                    <Route exact path="/terms" component={Terms}/>
-                    <Route exact path="/poradnik-pierwsza-sesja" component={FirstGame}/>
+                    <Route exact path="/login" render={renderWithProps(Login)}/>
+                    <Route exact path="/register" render={renderWithProps(Register)}/>
+                    <Route exact path="/register/activated" render={renderWithProps(RegisterActive)}/>
+                    <Route exact path="/terms" render={renderWithProps(Terms)}/>
+                    <Route exact path="/poradnik-pierwsza-sesja" render={renderWithProps(FirstGame)}/>
                   </Grid>
                 </Grid>
               </PushedDiv>

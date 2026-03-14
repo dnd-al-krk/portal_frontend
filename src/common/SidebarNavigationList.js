@@ -41,7 +41,7 @@ const styles = theme => ({
 
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
-export default class SidebarNavigationList extends React.Component{
+class SidebarNavigationList extends React.Component{
 
   currentProfile(){
     return this.props.portalStore.currentUser;
@@ -187,3 +187,5 @@ export default class SidebarNavigationList extends React.Component{
     );
   }
 }
+
+export default SidebarNavigationList;

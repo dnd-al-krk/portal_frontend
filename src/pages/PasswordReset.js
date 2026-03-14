@@ -29,7 +29,7 @@ const styles = (theme) => ({
 
 @withStyles(styles, { withTheme: true })
 @inject('portalStore') @observer
-export default class PasswordReset extends React.Component {
+class PasswordReset extends React.Component {
   state = {
     redirectToReferrer: false,
     isSigning: false,
@@ -119,3 +119,5 @@ export default class PasswordReset extends React.Component {
     )
   }
 }
+
+export default PasswordReset;

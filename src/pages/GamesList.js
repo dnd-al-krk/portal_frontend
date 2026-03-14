@@ -32,7 +32,7 @@ const styles = (theme) => ({
 
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
-export class FutureGamesList extends React.Component {
+class FutureGamesList extends React.Component {
 
   state = {
     loading: true,
@@ -114,7 +114,7 @@ export class FutureGamesList extends React.Component {
 
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
-export class PastGamesList extends React.Component {
+class PastGamesList extends React.Component {
 
   state = {
     loading: true,
@@ -221,7 +221,7 @@ export class PastGamesList extends React.Component {
 
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
-export class GamesList extends React.Component {
+class GamesList extends React.Component {
 
   state = {
     loading: true,
@@ -261,7 +261,7 @@ export class GamesList extends React.Component {
 
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
-export class CurrentUserGamesList extends React.Component {
+class CurrentUserGamesList extends React.Component {
 
   state = {
     loading: true,
@@ -313,7 +313,7 @@ export class CurrentUserGamesList extends React.Component {
 
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
-export class CurrentDMGamesList extends React.Component {
+class CurrentDMGamesList extends React.Component {
 
   state = {
     loading: true,
@@ -361,3 +361,5 @@ export class CurrentDMGamesList extends React.Component {
       )
   }
 }
+
+export {FutureGamesList, PastGamesList, CurrentDMGamesList, CurrentUserGamesList}

@@ -3,11 +3,11 @@ FROM node:10.15.1
 RUN mkdir /code
 COPY . /code/
 
-RUN useradd --create-home --home-dir /home/front front
+#RUN useradd --create-home --home-dir /home/node node
 
-RUN chown -R front:front /code
+RUN chown -R node:node /code
 
-USER front
+USER node
 
 WORKDIR /code
 

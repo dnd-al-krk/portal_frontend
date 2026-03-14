@@ -25,7 +25,7 @@ const styles = (theme) => ({
 
 @withStyles(styles, {withTheme: true})
 @inject('portalStore') @observer
-export default class CharacterCreate extends React.Component {
+class CharacterCreate extends React.Component {
 
   state = {
     name: '',
@@ -200,3 +200,5 @@ export default class CharacterCreate extends React.Component {
     )
   }
 }
+
+export default CharacterCreate;

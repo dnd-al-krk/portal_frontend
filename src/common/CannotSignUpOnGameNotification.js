@@ -24,7 +24,7 @@ const styles = (theme) => ({
 
 @withStyles(styles, {withTheme:true})
 @inject('portalStore') @observer
-export class CannotSignUpOnGameNotification extends React.Component {
+class CannotSignUpOnGameNotification extends React.Component {
   render() {
     const {classes} = this.props;
 
@@ -42,3 +42,5 @@ export class CannotSignUpOnGameNotification extends React.Component {
     )
   }
 }
+
+export default CannotSignUpOnGameNotification;

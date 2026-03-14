@@ -22,7 +22,7 @@ const styles = (theme) => ({
 
 
 @withStyles(styles, {withTheme:true})
-export class FirstGame extends React.Component {
+class FirstGame extends React.Component {
   render() {
     const {classes} = this.props;
 
@@ -84,3 +84,5 @@ export class FirstGame extends React.Component {
     )
   }
 }
+
+export default FirstGame;
